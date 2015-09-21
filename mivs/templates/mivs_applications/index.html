@@ -1,0 +1,56 @@
+{% extends "preregistration/preregbase.html" %}
+{% block title %}MIVS Application{% endblock %}
+{% block backlink %}{% endblock %}
+{% block content %}
+
+<style type="text/css">
+    table td { padding: 10px; }
+</style>
+
+<div class="masthead"></div>
+<div class="panel panel-default">
+    <h2>MAGFest Indie Videogame Showcase</h2>
+    This is your application-in-progress for the MAGFest Indie Videogame Showcase for your studio, {{ studio.name }}.
+
+    <h2>Presenters</h2>
+    If you are accepted, you'll receive {{ c.INDIE_BADGE_COMPS }} complementary badges along with your table space.
+    You can enter additional people, but you'll need to pay the standard attendee rate for those additional badges.
+    <table>
+    {% for developer in studio.developers %}
+        <tr>
+            <td><ul style="margin:0px"><li></li></ul></td>
+            <td>
+                <!-- TODO: break full_name property into mixin class -->
+                {{ developer.first_name }} {{ developer.last_name }}
+                [<a href="developer?id={{ developer.id }}">Edit</a>]
+            </td>
+            <td>{{ developer.email }}</td>
+            <td>
+                {% if developer.primary_contact %}
+                    <i>Primary Contact</i>
+                {% else %}
+                    <form method="post" action="delete_developer">
+                        <input type="hidden" name="id" value="{{ developer.id }}" />
+                        <input type="submit" value="Delete" />
+                    </form>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+    <a href="developer?id=None">Add a Presenter</a>
+
+    <h2>Games</h2>
+    You have currently registered {{ studio.games|length }} game{{ studio.games|length|pluralize }}, of which
+    {{ studio.submitted_games|length }} have been submitted.  You may submit any number of games for consideration.
+    <br/>
+    <a href="game">Add a game</a>
+
+    {% for game in studio.games %}
+        <h3>{{ game.title }} [<a href="game?id={{ game.id }}">Edit</a>]</h3>
+        {% if game.submitted %}This game has been submitted{% endif %}
+    {% endfor %}
+
+</div>
+
+{% endblock %}
