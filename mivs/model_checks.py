@@ -67,3 +67,12 @@ def agreements(game):
         return 'You must agree to showtimes, or something'  # TODO: figure out what this is
     elif not game.agreed_liability:
         return 'You must check the box that indicates you agree to our liability waiver'
+
+
+@validation.IndieGame
+def submitted(game):
+    if game.submitted:
+        return 'You cannot edit a game after it has been submitted'
+
+
+IndieGameCode.required = [('code', 'Game Code')]

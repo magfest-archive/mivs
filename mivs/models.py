@@ -81,6 +81,20 @@ class IndieGame(MagModel):
     reviews = relationship('IndieGameReview', backref='game')
     screenshots = relationship('IndieGameScreenshot', backref='game')
 
+    @property
+    def missing_steps(self):
+        steps = []
+        if self.code_type != c.NO_CODE:
+            if not self.codes:
+                steps.append('You have not yet attached any codes to this game for our judges to use')
+            elif not any(code.unlimited_use for code in self.codes) and len(self.codes) < c.CODES_REQUIRED:
+                steps.append('You have not attached the {} codes you must provide for our judges'.format(c.CODES_REQUIRED))
+        return steps
+
+    @property
+    def submittable(self):
+        return not self.missing_steps
+
 
 class IndieGameScreenshot(MagModel):
     game_id     = Column(UUID, ForeignKey('indie_game.id'))
@@ -89,10 +103,15 @@ class IndieGameScreenshot(MagModel):
 
 
 class IndieGameCode(MagModel):
-    game_id     = Column(UUID, ForeignKey('indie_game.id'))
-    judge_id    = Column(UUID, ForeignKey('indie_judge.id'), nullable=True)
-    single_use  = Column(Boolean, default=False)
-    judge_notes = Column(UnicodeText, admin_only=True)
+    game_id       = Column(UUID, ForeignKey('indie_game.id'))
+    judge_id      = Column(UUID, ForeignKey('indie_judge.id'), nullable=True)
+    code          = Column(UnicodeText)
+    unlimited_use = Column(Boolean, default=False)
+    judge_notes   = Column(UnicodeText, admin_only=True)
+
+    @property
+    def type_label(self):
+        return 'Unlimited-Use' if self.unlimited_use else 'Single-Person'
 
 
 class IndieGameReview(MagModel):
@@ -103,3 +122,39 @@ class IndieGameReview(MagModel):
     feedback_developer = Column(UnicodeText)
     feedback_staff     = Column(UnicodeText)
     staff_notes        = Column(UnicodeText)
+
+
+@on_startup
+def add_applicant_restriction():
+    """
+    We use convenience functions for our form handling, e.g. to instantiate an
+    attendee from an id or from form data we use the session.attendee() method.
+    This method runs on startup and overrides the methods which are used for the
+    game application forms to add a new "applicant" parameter.  If truthy, this
+    triggers three additional behaviors:
+    1) We check that there is currently a logged in studio, and redirect to the
+       login page if there is not.
+    2) We check that the item being edited belongs to the currently-logged-in
+       studio and raise an exception if it does not.  This check is bypassed for
+       new things which have not yet been saved to the database.
+    3) If the model is one with a "studio" relationship, we set that to the
+       currently-logged-in studio.
+    """
+    def override_getter(method_name):
+        orig_getter = getattr(Session.SessionMixin, method_name)
+        @wraps(orig_getter)
+        def with_applicant(self, *args, **kwargs):
+            applicant = kwargs.pop('applicant', False)
+            instance = orig_getter(self, *args, **kwargs)
+            if applicant:
+                studio = self.logged_in_studio()
+                if hasattr(instance.__class__, 'game'):
+                    assert instance.is_new or studio == instance.game.studio
+                else:
+                    assert instance.is_new or studio == instance.studio
+                    instance.studio = studio
+            return instance
+        setattr(Session.SessionMixin, method_name, with_applicant)
+
+    for name in ['indie_developer', 'indie_game', 'indie_game_code', 'indie_game_screenshot']:
+        override_getter(name)

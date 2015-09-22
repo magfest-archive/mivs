@@ -1,56 +1,104 @@
-{% extends "preregistration/preregbase.html" %}
-{% block title %}MIVS Application{% endblock %}
-{% block backlink %}{% endblock %}
-{% block content %}
+{% extends "mivs_base.html" %}
+{% block body %}
 
 <style type="text/css">
-    table td { padding: 10px; }
+    table td { padding: 5px; }
+    table td ul { margin: 0px; }
 </style>
 
-<div class="masthead"></div>
-<div class="panel panel-default">
-    <h2>MAGFest Indie Videogame Showcase</h2>
-    This is your application-in-progress for the MAGFest Indie Videogame Showcase for your studio, {{ studio.name }}.
+<h2>MAGFest Indie Videogame Showcase</h2>
+This is your application-in-progress for the MAGFest Indie Videogame Showcase for your studio "{{ studio.name }}".
 
-    <h2>Presenters</h2>
-    If you are accepted, you'll receive {{ c.INDIE_BADGE_COMPS }} complementary badges along with your table space.
-    You can enter additional people, but you'll need to pay the standard attendee rate for those additional badges.
-    <table>
-    {% for developer in studio.developers %}
-        <tr>
-            <td><ul style="margin:0px"><li></li></ul></td>
-            <td>
-                <!-- TODO: break full_name property into mixin class -->
-                {{ developer.first_name }} {{ developer.last_name }}
-                [<a href="developer?id={{ developer.id }}">Edit</a>]
-            </td>
-            <td>{{ developer.email }}</td>
-            <td>
-                {% if developer.primary_contact %}
-                    <i>Primary Contact</i>
-                {% else %}
-                    <form method="post" action="delete_developer">
-                        <input type="hidden" name="id" value="{{ developer.id }}" />
-                        <input type="submit" value="Delete" />
+<h3>Presenters</h3>
+If you are accepted, you'll receive {{ c.INDIE_BADGE_COMPS }} complementary badges along with your table space.
+You can enter additional people, but you'll need to pay the standard attendee rate for those additional badges.
+<table>
+{% for developer in studio.developers %}
+    <tr>
+        <td><ul><li></li></ul></td>
+        <td>{{ developer.first_name }} {{ developer.last_name }}</td>
+        <td>[<a href="developer?id={{ developer.id }}">Edit</a>]</td>
+        <td>{{ developer.email }}</td>
+        <td>
+            {% if developer.primary_contact %}
+                <i>Primary Contact</i>
+            {% else %}
+                <form method="post" action="delete_developer">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ developer.id }}" />
+                    <input type="submit" value="Delete" />
+                </form>
+            {% endif %}
+        </td>
+    </tr>
+{% endfor %}
+</table>
+<a href="developer?id=None">Add a Presenter</a>
+
+<h3>Games</h3>
+You have currently registered {{ studio.games|length }} game{{ studio.games|length|pluralize }}, of which you have
+submitted {{ studio.submitted_games|length }}.  You may submit any number of games for consideration.
+<br/>
+<a href="game">Add a game</a>
+
+{% for game in studio.games %}
+    <h4>
+        {{ game.title }}
+        {% if not game.submitted %}[<a href="game?id={{ game.id }}">Edit</a>]{% endif %}
+    </h4>
+
+    <b>STATUS:</b>
+    {% if game.submitted %}
+        This game has been submitted.
+    {% elif not game.submittable %}
+        You cannot submit this game until the following criteria are met:
+        <ul>
+        {% for step in game.missing_steps %}
+            <li>{{ step }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        You've met all the prerequisites to submit this game for consideration.  After submitting you may no longer
+        edit the game details unless the judges kick the game back to you and request edits.  You will still be able
+        to manage the game codes and screenshots after submitting.  Our judges will not look at your game until you
+        officially submit it by clicking this button:
+        <form method="post" action="submit_game" class="form-horizontal">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ game.id }}" />
+            <input type="submit" class="btn btn-primary" value="Submit Game For Consideration" />
+        </form>
+    {% endif %}
+
+    <h4>Game Codes</h4>
+    {% if game.code_type == c.NO_CODE %}
+        You have indicated that once the judges access your game at the URL you've provided, they will not require any
+        kind of access code in order to play.
+        {% if not game.submitted %}
+            If this is not correct, please <a href="game?id={{ game.id }}">edit your game information</a> to indicate
+            what type of code is required.
+        {% endif %}
+    {% else %}
+        You have uploaded {{ game.codes|length }} code{{ game.codes|length|pluralize }}.
+        <table style="max-width:100%">
+        {% for code in game.codes %}
+            <tr>
+                <td><ul><li></li></ul></td>
+                <td>{{ code.type_label }}</td>
+                <td>{{ code.code }}</td>
+                <td>
+                    <form method="post" action="delete_code">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ code.id }}" />
+                    <input type="submit" value="Delete" />
                     </form>
-                {% endif %}
-            </td>
-        </tr>
-    {% endfor %}
-    </table>
-    <a href="developer?id=None">Add a Presenter</a>
-
-    <h2>Games</h2>
-    You have currently registered {{ studio.games|length }} game{{ studio.games|length|pluralize }}, of which
-    {{ studio.submitted_games|length }} have been submitted.  You may submit any number of games for consideration.
-    <br/>
-    <a href="game">Add a game</a>
-
-    {% for game in studio.games %}
-        <h3>{{ game.title }} [<a href="game?id={{ game.id }}">Edit</a>]</h3>
-        {% if game.submitted %}This game has been submitted{% endif %}
-    {% endfor %}
-
-</div>
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+        {% if not game.codes or not game.codes.0.unlimited_use %}
+            <a href="code?game_id={{ game.id }}">Add a code</a>
+        {% endif %}
+    {% endif %}
+{% endfor %}
 
 {% endblock %}
