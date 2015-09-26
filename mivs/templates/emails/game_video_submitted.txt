@@ -1,0 +1,7 @@
+{{ game.studio.primary_contact.first_name }},
+
+This is a confirmation that you have submitted a video to our panel of judges for your game {{ game.title }}
+
+As always, you can continue your application at any time at {{ c.URL_BASE }}/mivs_applications/continue_app?id={{ game.studio.id }}
+
+{{ c.MIVS_EMAIL_SIGNATURE }}
