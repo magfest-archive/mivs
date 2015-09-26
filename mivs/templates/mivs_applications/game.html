@@ -2,9 +2,11 @@
 {% block body %}
 
 <script>
-    var CODES_REQUIRING_INSTRUCTIONS = [{{ c.PASSWORD }}, {{ c.CUSTOM }}];
     var showOrHideCodeInstructions = function () {
-        setVisible($.field('code_instructions').parents('.form-group'), _(CODES_REQUIRING_INSTRUCTIONS).contains($.val('code_type')));
+        setVisible(
+            $.field('code_instructions').parents('.form-group'),
+            _({{ c.CODES_REQUIRING_INSTRUCTIONS|jsonize }}).contains($.val('code_type'))
+        );
     };
     $(function () {
         showOrHideCodeInstructions();
@@ -68,7 +70,7 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Link to Game:</label>
+        <label class="col-sm-3 control-label optional-field">Link to Game:</label>
         <div class="col-sm-6">
             <input class="form-control" type="text" name="link_to_game" value="{{ game.link_to_game }}" />
             <p class="help-block">

@@ -7,7 +7,15 @@ class SessionMixin:
         try:
             return self.indie_studio(cherrypy.session['studio_id'])
         except:
-            raise HTTPRedirect('../mivs_applications/login')
+            raise HTTPRedirect('../mivs_applications/start')
+
+    def delete_screenshot(self, screenshot):
+        self.delete(screenshot)
+        try:
+            os.remove(screenshot.filepath)
+        except:
+            pass
+        self.commit()
 
 
 @Session.model_mixin
@@ -40,6 +48,16 @@ class IndieStudio(MagModel):
     games = relationship('IndieGame', backref='studio')
     developers = relationship('IndieDeveloper', backref='studio')
 
+    email_model_name = 'studio'
+
+    @property
+    def email(self):
+        return self.primary_contact.email
+
+    @property
+    def primary_contact(self):
+        return [dev for dev in self.developers if dev.primary_contact][0]
+
     @property
     def submitted_games(self):
         return [g for g in self.games if g.submitted]
@@ -63,12 +81,13 @@ class IndieGame(MagModel):
     how_to_play       = Column(UnicodeText)       # 1000 max
     link_to_video     = Column(UnicodeText)
     link_to_game      = Column(UnicodeText)
-    password_to_game  = Column(UnicodeText)       # web server password
+    password_to_game  = Column(UnicodeText)
     code_type         = Column(Choice(c.CODE_TYPE_OPTS), default=c.NO_CODE)
     code_instructions = Column(UnicodeText)
     build_status      = Column(Choice(c.BUILD_STATUS_OPTS))
     build_notes       = Column(UnicodeText)       # 500 max
     shown_events      = Column(UnicodeText)
+    video_submitted   = Column(Boolean, default=False)
     submitted         = Column(Boolean, default=False)
     agreed_liability  = Column(Boolean, default=False)
     agreed_showtimes  = Column(Boolean, default=False)
@@ -81,15 +100,31 @@ class IndieGame(MagModel):
     reviews = relationship('IndieGameReview', backref='game')
     screenshots = relationship('IndieGameScreenshot', backref='game')
 
+    email_model_name = 'game'
+
+    @property
+    def email(self):
+        return self.studio.email
+
     @property
     def missing_steps(self):
         steps = []
+        if not self.link_to_game:
+            steps.append('You have not yet included a link to where the judges can access your game')
         if self.code_type != c.NO_CODE:
             if not self.codes:
                 steps.append('You have not yet attached any codes to this game for our judges to use')
             elif not any(code.unlimited_use for code in self.codes) and len(self.codes) < c.CODES_REQUIRED:
                 steps.append('You have not attached the {} codes you must provide for our judges'.format(c.CODES_REQUIRED))
+        if not self.agreed_showtimes:
+            steps.append('You must agree to showtimes, or something')  # TODO: figure out what this is
+        if not self.agreed_liability:
+            steps.append('You must check the box that agrees to our liability waiver (click the Edit link above)')
         return steps
+
+    @property
+    def video_submittable(self):
+        return bool(self.link_to_video)
 
     @property
     def submittable(self):
@@ -97,9 +132,19 @@ class IndieGame(MagModel):
 
 
 class IndieGameScreenshot(MagModel):
-    game_id     = Column(UUID, ForeignKey('indie_game.id'))
-    screenshot  = Column(LargeBinary(c.MAX_SCREENSHOT_SIZE))
-    description = Column(UnicodeText)
+    game_id      = Column(UUID, ForeignKey('indie_game.id'))
+    filename     = Column(UnicodeText)
+    content_type = Column(UnicodeText)
+    extension    = Column(UnicodeText)
+    description  = Column(UnicodeText)
+
+    @property
+    def url(self):
+        return '../mivs_applications/view_screenshot?id={}'.format(self.id)
+
+    @property
+    def filepath(self):
+        return os.path.join(c.SCREENSHOT_DIR, str(self.id))
 
 
 class IndieGameCode(MagModel):

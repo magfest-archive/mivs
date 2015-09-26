@@ -1,0 +1,7 @@
+{{ studio.primary_contact.first_name }},
+
+Thanks for registering your studio ({{ studio.name }}) with the MAGFest Indie Videogame Showcase!
+
+You can continue your application at any time at {{ c.URL_BASE }}/mivs_applications/continue_app?id={{ studio.id }}
+
+{{ c.MIVS_EMAIL_SIGNATURE }}

@@ -1,6 +1,8 @@
+import shutil
 from urllib.request import urlopen
 
 from sqlalchemy.types import LargeBinary
+from cherrypy.lib.static import serve_file
 
 from uber.common import *
 from mivs._version import __version__
