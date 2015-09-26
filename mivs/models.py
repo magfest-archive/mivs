@@ -187,6 +187,7 @@ def add_applicant_restriction():
     """
     def override_getter(method_name):
         orig_getter = getattr(Session.SessionMixin, method_name)
+
         @wraps(orig_getter)
         def with_applicant(self, *args, **kwargs):
             applicant = kwargs.pop('applicant', False)
