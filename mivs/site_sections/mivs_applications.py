@@ -11,7 +11,7 @@ class Root:
 
     def logout(self):
         cherrypy.session.pop('studio_id', None)
-        raise HTTPRedirect('login?message={}', 'You have been logged out')
+        raise HTTPRedirect('studio?message={}', 'You have been logged out')
 
     def continue_app(self, id):
         cherrypy.session['studio_id'] = id
