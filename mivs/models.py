@@ -7,7 +7,7 @@ class SessionMixin:
         try:
             return self.indie_studio(cherrypy.session['studio_id'])
         except:
-            raise HTTPRedirect('../mivs_applications/start')
+            raise HTTPRedirect('../mivs_applications/studio')
 
     def delete_screenshot(self, screenshot):
         self.delete(screenshot)
