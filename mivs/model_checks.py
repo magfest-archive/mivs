@@ -14,7 +14,7 @@ IndieStudio.required = [('name', 'Studio Name')]
 
 @validation.IndieStudio
 def valid_url(studio):
-    if studio.website and _is_invalid_url(studio.website):
+    if studio.website and _is_invalid_url(studio.website_href):
         return 'We cannot contact that website; please enter a valid url or leave the website field blank until your website goes online'
 
 
@@ -57,7 +57,7 @@ def instructions(game):
 
 @validation.IndieGame
 def video_link(game):
-    if game.link_to_video and _is_invalid_url(game.link_to_video):
+    if game.link_to_video and _is_invalid_url(game.video_href):
         return 'The link you provided for the intro/instructional video does not appear to work'
 
 

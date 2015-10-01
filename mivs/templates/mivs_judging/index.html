@@ -1,0 +1,32 @@
+{% extends "mivs_base.html" %}
+{% block body %}
+
+<h2>Indie Judging</h2>
+
+This is a placeholder page and will be fleshed out over the coming month.
+
+<table style="width:100%">
+<thead>
+    <tr>
+        <th>Studio</th>
+        <th>Game</th>
+        <th>Video Link</th>
+    </tr>
+</thead>
+<tbody>
+{% for game in games %}
+    <tr>
+        <td>{{ game.studio.name }}</td>
+        <td>{{ game.title }}</td>
+        <td>
+            {% if game.link_to_video %}
+                <a href="{{ game.video_href }}">{{ game.link_to_video }}</a>
+            {% endif %}
+            {% if game.video_submitted %}<i>(Submitted)</i>{% endif %}
+        </td>
+    </tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock %}

@@ -1,6 +1,10 @@
 from mivs import *
 
 
+def href(url):
+    return ('http://' + url) if url and not url.startswith('http') else url
+
+
 @Session.model_mixin
 class SessionMixin:
     def logged_in_studio(self):
@@ -51,6 +55,10 @@ class IndieStudio(MagModel):
     email_model_name = 'studio'
 
     @property
+    def website_href(self):
+        return href(self.website)
+
+    @property
     def email(self):
         return self.primary_contact.email
 
@@ -84,7 +92,7 @@ class IndieGame(MagModel):
     password_to_game  = Column(UnicodeText)
     code_type         = Column(Choice(c.CODE_TYPE_OPTS), default=c.NO_CODE)
     code_instructions = Column(UnicodeText)
-    build_status      = Column(Choice(c.BUILD_STATUS_OPTS))
+    build_status      = Column(Choice(c.BUILD_STATUS_OPTS), default=c.PRE_ALPHA)
     build_notes       = Column(UnicodeText)       # 500 max
     shown_events      = Column(UnicodeText)
     video_submitted   = Column(Boolean, default=False)
@@ -105,6 +113,10 @@ class IndieGame(MagModel):
     @property
     def email(self):
         return self.studio.email
+
+    @property
+    def video_href(self):
+        return href(self.link_to_video)
 
     @property
     def missing_steps(self):

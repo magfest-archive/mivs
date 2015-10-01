@@ -12,9 +12,12 @@ This is your application-in-progress for the MAGFest Indie Videogame Showcase fo
 <a href="studio">{{ studio.name }}</a>.  If you are not a member of {{ studio.name }} then please
 <a href="logout">log out</a>.
 
-<h3>Presenters</h3>
-If you are accepted, you'll receive {{ c.INDIE_BADGE_COMPS }} complementary badges along with your table space.
-You can enter additional people, but you'll need to pay the standard attendee rate for those additional badges.
+<h3>Team Members</h3>
+
+If your game is accepted, you will receive {{ c.INDIE_BADGE_COMPS }} complementary badges along with your booth space.
+One badge for yourself and one can be utilized by another team member.  Additional team members must purchase their badges.
+Transfer of badges between team members is prohibited.
+
 <table>
 {% for developer in studio.developers %}
     <tr>
@@ -56,10 +59,14 @@ You may submit any number of games for consideration.
         {% if game.video_submitted %}
             The video of your game has been submitted.
         {% elif not game.video_submittable %}
-            You can include a link to a video of your game to be submitted to our panel of judges using the Edit link above.
+            Please include a link to a video using the Edit link above, no longer than 2 minutes, showing
+            at least 30 seconds of uninterrupted gameplay.  This video will be utilized by our judges to
+            determine if your game is accepted through Round 1 of judging.  If your game is accepted into
+            the showcase, this video link may be embedded on the MIVS web-page and/or other places that
+            MAGFest advertises the MIVS area.
         {% else %}
-            Once you're ready for our judges to look at the video link you've provided, you can submit it to our panel of
-            judges for consideration:
+            Once you're ready for our judges to look at the video link you've provided, you can submit it
+            to our panel of judges for consideration:
             <form method="post" action="submit_video">
                 {% csrf_token %}
                 <input type="hidden" name="id" value="{{ game.id }}" />
@@ -67,26 +74,28 @@ You may submit any number of games for consideration.
             </form>
         {% endif %}
 
-        <h4>Game Submission</h4>
-        {% if game.submitted %}
-            This game has been submitted.
-        {% elif not game.submittable %}
-            You cannot submit this game until the following criteria are met:
-            <ul>
-            {% for step in game.missing_steps %}
-                <li>{{ step }}</li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            You've met all the prerequisites to submit this game for consideration.  After submitting you may no longer
-            edit the game details unless the judges kick the game back to you and request edits.  You will still be able
-            to manage the game codes and screenshots after submitting.  Our judges will not look at your game until you
-            officially submit it by clicking this button:
-            <form method="post" action="submit_game" class="form-horizontal">
-                {% csrf_token %}
-                <input type="hidden" name="id" value="{{ game.id }}" />
-                <input type="submit" value="Submit Game For Consideration" />
-            </form>
+        {% if c.ALLOW_GAME_SUBMISSION %}
+            <h4>Game Submission</h4>
+            {% if game.submitted %}
+                This game has been submitted.
+            {% elif not game.submittable %}
+                You cannot submit this game until the following criteria are met:
+                <ul>
+                {% for step in game.missing_steps %}
+                    <li>{{ step }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                You've met all the prerequisites to submit this game for consideration.  After submitting you may no longer
+                edit the game details unless the judges kick the game back to you and request edits.  You will still be able
+                to manage the game codes and screenshots after submitting.  Our judges will not look at your game until you
+                officially submit it by clicking this button:
+                <form method="post" action="submit_game" class="form-horizontal">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ game.id }}" />
+                    <input type="submit" value="Submit Game For Consideration" />
+                </form>
+            {% endif %}
         {% endif %}
 
         {% if game.link_to_game %}
