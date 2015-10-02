@@ -16,7 +16,7 @@ This is a placeholder page and will be fleshed out over the coming month.
 <tbody>
 {% for game in games %}
     <tr>
-        <td>{{ game.studio.name }}</td>
+        <td><a href="{{ c.URL_BASE }}/mivs_applications/continue_app?id={{ game.studio.id }}">{{ game.studio.name }}</a></td>
         <td>{{ game.title }}</td>
         <td>
             {% if game.link_to_video %}
