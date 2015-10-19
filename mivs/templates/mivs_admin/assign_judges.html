@@ -34,10 +34,17 @@
 
     The following judges have preferences which match {{ game.title }}'s listed genres ({{ game.genres_labels|join:' / ' }}).
 
-    <table>
+    <table class="table">
+    <thead>
+        <tr>
+            <th>Judge</th>
+            <th>Genres</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
     {% for judge in matching %}
         <tr>
-            <td><ul><li></li></ul></td>
             <td>{{ judge.full_name }}</td>
             <td>{{ judge.genres_labels|join:' / ' }}</td>
             <td>
@@ -51,6 +58,7 @@
             </td>
         </tr>
     {% endfor %}
+    </tbody>
     </table>
 {% endif %}
 
@@ -60,10 +68,17 @@
     Below is a list of judges whose preferred genres do NOT match {{ game.title }}'s listed genres,
     who you may still assign to review this game anyway as you find appropriate:
 
-    <table>
+    <table class="table">
+    <thead>
+        <tr>
+            <th>Judge</th>
+            <th>Genres</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
     {% for judge in nonmatching %}
         <tr>
-            <td><ul><li></li></ul></td>
             <td>{{ judge.full_name }}</td>
             <td>{{ judge.genres_labels|join:' / ' }}</td>
             <td>
@@ -77,6 +92,7 @@
             </td>
         </tr>
     {% endfor %}
+    </tbody>
     </table>
 {% endif %}
 
