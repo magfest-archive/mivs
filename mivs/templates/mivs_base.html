@@ -2,6 +2,16 @@
 {% block title %}MIVS Application{% endblock %}
 {% block backlink %}{% endblock %}
 {% block content %}
+    <style type="text/css">
+        table { max-width: 100%; }
+        table td, table th { padding: 5px; }
+        table td ul { margin: 0px; }
+        .return-link {
+            display: block;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
     <div class="masthead"></div>
     <div class="panel panel-default" style="padding-left:15px">
         {% block body %}{% endblock %}

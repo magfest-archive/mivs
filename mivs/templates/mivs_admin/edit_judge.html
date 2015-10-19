@@ -1,0 +1,31 @@
+{% extends "mivs_base.html" %}
+{% block body %}
+
+<h2>Edit {{ judge.full_name }}</h2>
+
+<form method="post" action="edit_judge" role="form" class="form-horizontal">
+    <input type="hidden" name="id" value="{{ judge.id }}" />
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Genres:</label>
+        <div class="col-sm-6">
+            {% checkgroup judge.genres %}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label optional-field">MIVS Staff Notes:</label>
+        <div class="col-sm-6">
+            <textarea class="form-control" name="staff_notes" rows="4">{{ judge.staff_notes }}</textarea>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-6 col-sm-offset-2">
+            <button type="submit" class="btn btn-primary">Upload Changes</button>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

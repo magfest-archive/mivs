@@ -5,6 +5,16 @@ def href(url):
     return ('http://' + url) if url and not url.startswith('http') else url
 
 
+class ReviewMixin:
+    @property
+    def video_reviews(self):
+        return [r for r in self.reviews if r.video_status != c.PENDING]
+
+    @property
+    def game_reviews(self):
+        return [r for r in self.reviews if r.game_status != c.PENDING]
+
+
 @Session.model_mixin
 class SessionMixin:
     def logged_in_studio(self):
@@ -21,23 +31,43 @@ class SessionMixin:
             pass
         self.commit()
 
+    def indie_judges(self):
+        return self.query(IndieJudge).join(IndieJudge.admin_account).join(AdminAccount.attendee).order_by(Attendee.full_name).all()
+
+    def indie_games(self):
+        return self.query(IndieGame).options(joinedload(IndieGame.studio), joinedload(IndieGame.reviews)).order_by('name').all()
+
 
 @Session.model_mixin
 class AdminAccount:
     judge = relationship('IndieJudge', uselist=False, backref='admin_account')
 
 
-class IndieJudge(MagModel):
+class IndieJudge(MagModel, ReviewMixin):
     admin_id    = Column(UUID, ForeignKey('admin_account.id'))
-    genres      = Column(MultiChoice(c.INDIE_GENRE_OPTS))
+    genres      = Column(MultiChoice(c.INDIE_JUDGE_GENRE_OPTS))
     staff_notes = Column(UnicodeText)
 
     codes = relationship('IndieGameCode', backref='judge')
     reviews = relationship('IndieGameReview', backref='judge')
 
+    email_model_name = 'judge'
+
+    @property
+    def all_genres(self):
+        return c.ALL_GENRES in self.genres_ints
+
     @property
     def attendee(self):
         return self.admin_account.attendee
+
+    @property
+    def full_name(self):
+        return self.attendee.full_name
+
+    @property
+    def email(self):
+        return self.attendee.email
 
 
 class IndieStudio(MagModel):
@@ -80,7 +110,7 @@ class IndieDeveloper(MagModel):
     cellphone       = Column(UnicodeText)
 
 
-class IndieGame(MagModel):
+class IndieGame(MagModel, ReviewMixin):
     studio_id         = Column(UUID, ForeignKey('indie_studio.id'))
     title             = Column(UnicodeText)
     brief_description = Column(UnicodeText)
@@ -174,12 +204,16 @@ class IndieGameCode(MagModel):
 class IndieGameReview(MagModel):
     game_id            = Column(UUID, ForeignKey('indie_game.id'))
     judge_id           = Column(UUID, ForeignKey('indie_judge.id'))
-    status             = Column(Choice(c.REVIEW_STATUS_OPTS))
-    score              = Column(Integer, default=0)  # 0 = not reviewed, 1-5 score (5 is best)
-    feedback_developer = Column(UnicodeText)
-    feedback_staff     = Column(UnicodeText)
+    video_status       = Column(Choice(c.VIDEO_REVIEW_STATUS_OPTS), default=c.PENDING)
+    game_status        = Column(Choice(c.GAME_REVIEW_STATUS_OPTS), default=c.PENDING)
+    video_score        = Column(Integer, default=0)  # 0 = not reviewed, 1-5 score (5 is best)
+    game_score         = Column(Integer, default=0)  # 0 = not reviewed, 1-5 score (5 is best)
+    video_review       = Column(UnicodeText)
+    game_review        = Column(UnicodeText)
+    developer_response = Column(UnicodeText)
     staff_notes        = Column(UnicodeText)
 
+    __table_args__ = (UniqueConstraint('game_id', 'judge_id', name='review_game_judge_uniq'),)
 
 @on_startup
 def add_applicant_restriction():
@@ -190,7 +224,7 @@ def add_applicant_restriction():
     game application forms to add a new "applicant" parameter.  If truthy, this
     triggers three additional behaviors:
     1) We check that there is currently a logged in studio, and redirect to the
-       login page if there is not.
+       initial application form if there is not.
     2) We check that the item being edited belongs to the currently-logged-in
        studio and raise an exception if it does not.  This check is bypassed for
        new things which have not yet been saved to the database.

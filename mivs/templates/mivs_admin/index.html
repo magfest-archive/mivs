@@ -1,0 +1,57 @@
+{% extends "mivs_base.html" %}
+{% block body %}
+
+<h3>MIVS Judges</h3>
+
+<a href="create_judge">Add a judge</a>
+
+<table class="table">
+<thead>
+    <tr>
+        <th>Judge</th>
+        <th>Games Assigned</th>
+        <th>Video Reviews Completed</th>
+        <th>Game Reviews Completed</th>
+    </tr>
+</thead>
+<tbody>
+{% for judge in judges %}
+    <tr>
+        <td><a href="edit_judge?id={{ judge.id }}">{{ judge.full_name }}</a></td>
+        <td><a href="assign_games?judge_id={{ judge.id }}">{{ judge.reviews|length }}</a></td>
+        <td>{{ judge.video_reviews|length }}</td>
+        <td>{{ judge.game_reviews|length }}</td>
+{% endfor %}
+</tbody>
+</table>
+
+<h3>MIVS Submitted Games</h3>
+
+<table class="table">
+<thead>
+    <tr>
+        <th>Game</th>
+        <th>Studio</th>
+        <th>Judges Assigned</th>
+        <th>Video Reviews Completed</th>
+        <th>Game Reviews Completed</th>
+    </tr>
+</thead>
+<tbody>
+{% for game in games %}
+    <tr>
+        <td>{{ game.title }}</td>
+        <td>{{ game.studio.name }}</td>
+        <td><a href="assign_judges?game_id={{ game.id }}">{{ game.reviews|length }}</a></td>
+        <td>{{ game.video_reviews|length }}</td>
+        <td>{{ game.game_reviews|length }}</td>
+{% endfor %}
+</tbody>
+</table>
+
+
+<table class="table">
+    
+</table>
+
+{% endblock %}
