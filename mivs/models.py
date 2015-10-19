@@ -222,6 +222,7 @@ class IndieGameReview(MagModel):
 
     __table_args__ = (UniqueConstraint('game_id', 'judge_id', name='review_game_judge_uniq'),)
 
+
 @on_startup
 def add_applicant_restriction():
     """
