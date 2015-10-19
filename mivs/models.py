@@ -23,6 +23,13 @@ class SessionMixin:
         except:
             raise HTTPRedirect('../mivs_applications/studio')
 
+    def logged_in_judge(self):
+        judge = self.admin_attendee().admin_account.judge
+        if judge:
+            return judge
+        else:
+            raise HTTPRedirect('../accounts/homepage?message={}', 'You have been given judge access but not had a judge entry created for you - please contact a MIVS admin to correct this.')
+
     def delete_screenshot(self, screenshot):
         self.delete(screenshot)
         try:
@@ -230,6 +237,12 @@ def add_applicant_restriction():
        new things which have not yet been saved to the database.
     3) If the model is one with a "studio" relationship, we set that to the
        currently-logged-in studio.
+
+    We do not perform these kinds of checks for indie judges, for two reasons:
+    1) We're less concerned about judges abusively editing each other's reviews.
+    2) There are probably some legitimate use cases for one judge to be able to
+       edit another's reviews, e.g. to correct typos or reset a review's status
+       after a link has been fixed, etc.
     """
     def override_getter(method_name):
         orig_getter = getattr(Session.SessionMixin, method_name)
