@@ -141,6 +141,7 @@ class IndieGame(MagModel, ReviewMixin):
     agreed_reminder2  = Column(Boolean, default=False)
     status            = Column(Choice(c.GAME_STATUS_OPTS), default=c.NEW, admin_only=True)
     judge_notes       = Column(UnicodeText, admin_only=True)
+    registered        = Column(UTCDateTime, server_default=utcnow())
 
     codes = relationship('IndieGameCode', backref='game')
     reviews = relationship('IndieGameReview', backref='game')
