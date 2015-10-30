@@ -1,29 +1,28 @@
 {% extends "mivs_base.html" %}
 {% block body %}
 
-<h2>Indie Judging</h2>
+<h2>Your MIVS Games For Review</h2>
 
-This is a placeholder page and will be fleshed out over the coming month.
+You ({{ judge.full_name }}) have been assigned {{ judge.reviews|length }} games for review
+of which {{ judge.video_reviews|length }} have had their videos reviewed
+and {{ judge.game_reviews|length }} have had the actual game reviewed.
 
-<table style="width:100%">
+<table class="table">
 <thead>
     <tr>
-        <th>Studio</th>
         <th>Game</th>
-        <th>Video Link</th>
+        <th>Studio</th>
+        <th>Video Review Status</th>
+        <th>Game Review Status</th>
     </tr>
 </thead>
 <tbody>
-{% for game in games %}
+{% for review in judge.reviews %}
     <tr>
-        <td><a href="{{ c.URL_BASE }}/mivs_applications/continue_app?id={{ game.studio.id }}">{{ game.studio.name }}</a></td>
-        <td>{{ game.title }}</td>
-        <td>
-            {% if game.link_to_video %}
-                <a href="{{ game.video_href }}">{{ game.link_to_video }}</a>
-            {% endif %}
-            {% if game.video_submitted %}<i>(Submitted)</i>{% endif %}
-        </td>
+        <td>{{ review.game.title }}</td>
+        <td>{{ review.game.studio.name }}</td>
+        <td><a href="video_review?id={{ review.id }}">{{ review.video_status_label }}</a></td>
+        <td>{{ review.game_status_label }}</td>
     </tr>
 {% endfor %}
 </tbody>

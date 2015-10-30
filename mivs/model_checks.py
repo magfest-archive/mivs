@@ -76,3 +76,6 @@ IndieGameScreenshot.required = [('description', 'Description')]
 def valid_type(screenshot):
     if screenshot.extension not in c.ALLOWED_SCREENSHOT_TYPES:
         return 'Our server did not recognize your upload as a valid image'
+
+
+IndieJudge.required = [('genres', 'Genres')]

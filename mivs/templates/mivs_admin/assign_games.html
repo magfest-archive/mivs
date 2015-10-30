@@ -1,0 +1,111 @@
+{% extends "mivs_base.html" %}
+{% block body %}
+
+<h2>Assign Games to {{ judge.full_name }}</h2>
+
+<a class="return-link" href="index">Return to main judge/game list</a>
+
+{% if judge.reviews %}
+    {{ judge.full_name }} already has the following games assigned:
+    <table class="table">
+    <thead>
+        <tr>
+            <th>Game</th>
+            <th>Studio</th>
+            <th>Video Review</th>
+            <th>Game Review</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for review in judge.reviews %}
+            <tr>
+                <td>{{ review.game.title }}</td>
+                <td>({{ review.game.studio.name }})</td>
+                <td>{{ review.video_status_label }}</td>
+                <td>{{ review.game_status_label }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+{% else %}
+    {{ judge.full_name }} currently has no games assigned for review.
+{% endif %}
+
+{% if matching %}
+    <h3>Games matching {{ judge.full_name }}'s preferred genres</h3>
+
+    {% if judge.all_genres %}
+        Because {{ judge.full_name }} is listed as being interested in all game genres, below is a list of all games not
+        already assigned to {{ judge.full_name }}.
+    {% else %}
+        Below is a list of games not already assigned to {{ judge.full_name }} which matches one or more of their preferred
+        genres ({{ judge.genres_labels|join:' / ' }}).
+    {% endif %}
+
+    <table class="table">
+    <thead>
+        <tr>
+            <th>Game</th>
+            <th>Studio</th>
+            <th>Genres</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for game in matching %}
+        <tr>
+            <td>{{ game.title }}</td>
+            <td>{{ game.studio.name }}</td>
+            <td>{{ game.genres_labels|join:' / ' }}</td>
+            <td>
+                <form method="post" action="assign">
+                    {% csrf_token %}
+                    <input type="hidden" name="game_id" value="{{ game.id }}" />
+                    <input type="hidden" name="judge_id" value="{{ judge.id }}" />
+                    <input type="hidden" name="return_to" value="assign_games?judge_id={{ judge.id }}" />
+                    <input type="submit" value="Assign to {{ judge.full_name }} for Review" />
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+{% endif %}
+
+{% if nonmatching %}
+    <h3>Other Games</h3>
+
+    Below are a list of games NOT matching {{ judge.full_name }}'s preferred genres, which you may still assign to
+    them for review anyway as you see appropriate:
+
+    <table class="table">
+    <thead>
+        <tr>
+            <th>Game</th>
+            <th>Studio</th>
+            <th>Genres</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for game in nonmatching %}
+        <tr>
+            <td>{{ game.title }}</td>
+            <td>{{ game.studio.name }}</td>
+            <td>{{ game.genres_labels|join:' / ' }}</td>
+            <td>
+                <form method="post" action="assign">
+                    {% csrf_token %}
+                    <input type="hidden" name="game_id" value="{{ game.id }}" />
+                    <input type="hidden" name="judge_id" value="{{ judge.id }}" />
+                    <input type="hidden" name="return_to" value="assign_games?judge_id={{ judge.id }}" />
+                    <input type="submit" value="Assign Anyway" />
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+{% endif %}
+
+{% endblock %}
