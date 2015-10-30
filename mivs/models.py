@@ -85,6 +85,7 @@ class IndieStudio(MagModel):
     facebook    = Column(UnicodeText)
     status      = Column(Choice(c.STUDIO_STATUS_OPTS), default=c.NEW, admin_only=True)
     staff_notes = Column(UnicodeText, admin_only=True)
+    registered  = Column(UTCDateTime, server_default=utcnow())
 
     games = relationship('IndieGame', backref='studio')
     developers = relationship('IndieDeveloper', backref='studio')
@@ -213,7 +214,7 @@ class IndieGameReview(MagModel):
     judge_id           = Column(UUID, ForeignKey('indie_judge.id'))
     video_status       = Column(Choice(c.VIDEO_REVIEW_STATUS_OPTS), default=c.PENDING)
     game_status        = Column(Choice(c.GAME_REVIEW_STATUS_OPTS), default=c.PENDING)
-    video_score        = Column(Integer, default=0)  # 0 = not reviewed, 1-5 score (5 is best)
+    video_score        = Column(Choice(c.VIDEO_REVIEW_OPTS), default=c.PENDING)
     game_score         = Column(Integer, default=0)  # 0 = not reviewed, 1-5 score (5 is best)
     video_review       = Column(UnicodeText)
     game_review        = Column(UnicodeText)

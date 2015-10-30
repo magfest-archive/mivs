@@ -12,3 +12,8 @@ class MIVSEmail(AutomatedEmail):
 MIVSEmail(IndieStudio, 'Your MIVS Studio Has Been Registered', 'studio_registered.txt', lambda studio: True)
 MIVSEmail(IndieGame, 'Your MIVS Game Video Has Been Submitted', 'game_video_submitted.txt', lambda game: game.video_submitted)
 MIVSEmail(IndieGame, 'Your MIVS Game Has Been Submitted', 'game_submitted.txt', lambda game: game.submitted)
+
+MIVSEmail(IndieStudio, 'MIVS - Wat no video?', 'videoless_studio.txt',
+          lambda studio: days_after(2, studio.registered)
+                     and days_before(7, c.ROUND_ONE_DEADLINE)
+                     and not any([g.link_to_video for g in studio.games]))
