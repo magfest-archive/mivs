@@ -13,6 +13,12 @@ IndieStudio.required = [('name', 'Studio Name')]
 
 
 @validation.IndieStudio
+def new_studio_deadline(studio):
+    if studio.is_new and c.AFTER_ROUND_ONE_DEADLINE:
+        return 'Sorry, but the round one deadline has already passed, so no new studios may be registered'
+
+
+@validation.IndieStudio
 def valid_url(studio):
     if studio.website and _is_invalid_url(studio.website_href):
         return 'We cannot contact that website; please enter a valid url or leave the website field blank until your website goes online'
@@ -47,6 +53,12 @@ IndieGame.required = [
     ('genres', 'Genres'),
     ('description', 'Full Description'),
 ]
+
+
+@validation.IndieGame
+def new_game_deadline(game):
+    if game.is_new and c.AFTER_ROUND_ONE_DEADLINE:
+        return 'Sorry, but the round one deadline has already passed, so no new games may be registered'
 
 
 @validation.IndieGame
