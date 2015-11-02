@@ -20,7 +20,7 @@ and {{ judge.game_reviews|length }} have had the actual game reviewed.
 {% for review in judge.reviews %}
     <tr>
         <td>{{ review.game.title }}</td>
-        <td>{{ review.game.studio.name }}</td>
+        <td><a href="studio?id={{ review.game.studio.id }}">{{ review.game.studio.name }}</a></td>
         <td><a href="video_review?id={{ review.id }}">{{ review.video_status_label }}</a></td>
         <td>{{ review.game_status_label }}</td>
     </tr>
