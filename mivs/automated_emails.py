@@ -17,3 +17,9 @@ MIVSEmail(IndieStudio, 'MIVS - Wat no video?', 'videoless_studio.txt',
           lambda studio: days_after(2, studio.registered)
                      and days_before(7, c.ROUND_ONE_DEADLINE)
                      and not any([g.link_to_video for g in studio.games]))
+
+MIVSEmail(IndieGame, 'Your game has made it into MIVS Round Two', 'video_accepted.txt',
+          lambda game: game.status == c.JUDGING)
+
+MIVSEmail(IndieGame, 'Your game has been declined from MIVS', 'video_declined.txt',
+          lambda game: game.status == c.VIDEO_DECLINED)
