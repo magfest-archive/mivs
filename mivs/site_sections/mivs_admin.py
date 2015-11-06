@@ -98,11 +98,12 @@ class Root:
     @csrf_protected
     def assign(self, session, game_id, judge_id, return_to):
         return_to = return_to + '&message={}'
-        if session.query(IndieGameReview).filter_by(game_id=game_id, judge_id=judge_id).first():
-            raise HTTPRedirect(return_to, 'That game has already been assigned to that judge')
-        else:
-            session.add(IndieGameReview(game_id=game_id, judge_id=judge_id))
-            raise HTTPRedirect(return_to, 'Game assigned to judge')
+        game_id, judge_id = listify(game_id), listify(judge_id)
+        for gid in listify(game_id):
+            for jid in listify(judge_id):
+                if not session.query(IndieGameReview).filter_by(game_id=gid, judge_id=jid).first():
+                    session.add(IndieGameReview(game_id=gid, judge_id=jid))
+        raise HTTPRedirect(return_to, 'Assignment successful')
 
     def video_results(self, session, id, message=''):
         return {

@@ -42,34 +42,32 @@
         genres ({{ judge.genres_labels|join:' / ' }}).
     {% endif %}
 
-    <table class="table">
-    <thead>
-        <tr>
-            <th>Game</th>
-            <th>Studio</th>
-            <th>Genres</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for game in matching %}
-        <tr>
-            <td>{{ game.title }}</td>
-            <td>{{ game.studio.name }}</td>
-            <td>{{ game.genres_labels|join:' / ' }}</td>
-            <td>
-                <form method="post" action="assign">
-                    {% csrf_token %}
-                    <input type="hidden" name="game_id" value="{{ game.id }}" />
-                    <input type="hidden" name="judge_id" value="{{ judge.id }}" />
-                    <input type="hidden" name="return_to" value="assign_games?judge_id={{ judge.id }}" />
-                    <input type="submit" value="Assign to {{ judge.full_name }} for Review" />
-                </form>
-            </td>
-        </tr>
-    {% endfor %}
-    </tbody>
-    </table>
+    <form method="post" action="assign">
+        {% csrf_token %}
+        <input type="hidden" name="judge_id" value="{{ judge.id }}" />
+        <input type="hidden" name="return_to" value="assign_games?judge_id={{ judge.id }}" />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Game</th>
+                    <th>Studio</th>
+                    <th>Genres</th>
+                    <th>Assign <a href="#" onClick="return mivs.checkAll(this)">(Check All)</a></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for game in matching %}
+                <tr>
+                    <td>{{ game.title }}</td>
+                    <td>{{ game.studio.name }}</td>
+                    <td>{{ game.genres_labels|join:' / ' }}</td>
+                    <td><input type="checkbox" name="game_id" value="{{ game.id }}" /></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <input type="submit" value="Assign" />
+    </form>
 {% endif %}
 
 {% if nonmatching %}
@@ -78,34 +76,32 @@
     Below are a list of games NOT matching {{ judge.full_name }}'s preferred genres, which you may still assign to
     them for review anyway as you see appropriate:
 
-    <table class="table">
-    <thead>
-        <tr>
-            <th>Game</th>
-            <th>Studio</th>
-            <th>Genres</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for game in nonmatching %}
-        <tr>
-            <td>{{ game.title }}</td>
-            <td>{{ game.studio.name }}</td>
-            <td>{{ game.genres_labels|join:' / ' }}</td>
-            <td>
-                <form method="post" action="assign">
-                    {% csrf_token %}
-                    <input type="hidden" name="game_id" value="{{ game.id }}" />
-                    <input type="hidden" name="judge_id" value="{{ judge.id }}" />
-                    <input type="hidden" name="return_to" value="assign_games?judge_id={{ judge.id }}" />
-                    <input type="submit" value="Assign Anyway" />
-                </form>
-            </td>
-        </tr>
-    {% endfor %}
-    </tbody>
-    </table>
+    <form method="post" action="assign">
+        {% csrf_token %}
+        <input type="hidden" name="judge_id" value="{{ judge.id }}" />
+        <input type="hidden" name="return_to" value="assign_games?judge_id={{ judge.id }}" />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Game</th>
+                    <th>Studio</th>
+                    <th>Genres</th>
+                    <th>Assign <a href="#" onClick="return mivs.checkAll(this)">(Check All)</a></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for game in nonmatching %}
+                <tr>
+                    <td>{{ game.title }}</td>
+                    <td>{{ game.studio.name }}</td>
+                    <td>{{ game.genres_labels|join:' / ' }}</td>
+                    <td><input type="checkbox" name="game_id" value="{{ game.id }}" /></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <input type="submit" value="Assign" />
+    </form>
 {% endif %}
 
 {% endblock %}

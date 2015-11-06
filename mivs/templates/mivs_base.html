@@ -19,6 +19,14 @@
             white-space: nowrap;
         }
     </style>
+    <script>
+        var mivs = {
+            checkAll: function (element) {
+                $(element).parents('table').find(':checkbox').prop('checked', true);
+                return false;
+            }
+        };
+    </script>
     <div class="masthead"></div>
     <div class="panel panel-default" style="padding-left:15px">
         {% block body %}{% endblock %}
