@@ -31,6 +31,7 @@
 <thead>
     <tr>
         <th>Game</th>
+        <th>Status</th>
         <th>Studio</th>
         <th>Judges Assigned</th>
         <th>Video Reviews Completed</th>
@@ -41,17 +42,19 @@
 {% for game in games %}
     <tr>
         <td>{{ game.title }}</td>
+        <td>{{ game.status_label }}</td>
         <td>{{ game.studio.name }}</td>
         <td><a href="assign_judges?game_id={{ game.id }}">{{ game.reviews|length }}</a></td>
-        <td>{{ game.video_reviews|length }}</td>
+        <td>
+            {% if game.video_reviews %}
+                <a href="video_results?id={{ game.id }}">{{ game.video_reviews|length }}
+            {% else %}
+                0
+            {% endif %}
+        </td>
         <td>{{ game.game_reviews|length }}</td>
 {% endfor %}
 </tbody>
-</table>
-
-
-<table class="table">
-    
 </table>
 
 {% endblock %}
