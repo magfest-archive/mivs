@@ -75,7 +75,7 @@
         </div>
     </div>
 
-    {% if c.ALLOW_GAME_SUBMISSION %}
+    {% if c.ALLOW_GAME_SUBMISSION and game.status != c.VIDEO_DECLINED %}
         <div class="form-group">
             <label class="col-sm-3 control-label optional-field">Link to Game:</label>
             <div class="col-sm-6">

@@ -162,13 +162,13 @@ class IndieGame(MagModel, ReviewMixin):
         steps = []
         if not self.link_to_game:
             steps.append('You have not yet included a link to where the judges can access your game')
-        if self.code_type != c.NO_CODE:
+        if self.code_type != c.NO_CODE and self.link_to_game:
             if not self.codes:
                 steps.append('You have not yet attached any codes to this game for our judges to use')
             elif not any(code.unlimited_use for code in self.codes) and len(self.codes) < c.CODES_REQUIRED:
                 steps.append('You have not attached the {} codes you must provide for our judges'.format(c.CODES_REQUIRED))
         if not self.agreed_showtimes:
-            steps.append('You must agree to showtimes, or something')  # TODO: figure out what this is
+            steps.append('You must agree to the showtimes detailed on the game form (click the Edit link above)')
         if not self.agreed_liability:
             steps.append('You must check the box that agrees to our liability waiver (click the Edit link above)')
         return steps

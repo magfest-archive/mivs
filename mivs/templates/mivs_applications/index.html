@@ -75,7 +75,7 @@ You have {% if c.BEFORE_ROUND_ONE_DEADLINE %}currently{% endif %} registered {{ 
             </form>
         {% endif %}
 
-        {% if c.ALLOW_GAME_SUBMISSION %}
+        {% if c.ALLOW_GAME_SUBMISSION and game.status != c.VIDEO_DECLINED %}
             <h4>Game Submission</h4>
             {% if game.submitted %}
                 This game has been submitted.
