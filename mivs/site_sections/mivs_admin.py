@@ -10,6 +10,38 @@ class Root:
             'games': [g for g in session.indie_games() if g.video_submitted]
         }
 
+    @csv_file
+    def everything(self, out, session):
+        out.writerow([
+            'Game', 'Studio', 'Primary Contact Name', 'Primary Contact Email',
+            'Genres', 'Brief Description', 'Long Description', 'How to Play',
+            'Link to Video', 'Link to Game', 'Game Link Password',
+            'Game Requires Codes?', 'Code Instructions', 'Build Status', 'Build Notes',
+            'Video Submitted', 'Game Submitted', 'Current Status', 'Registered'
+        ])
+        for game in session.indie_games():
+            out.writerow([
+                game.title,
+                game.studio.name,
+                game.studio.primary_contact.first_name + ' ' + game.studio.primary_contact.last_name,
+                game.email,
+                ' / '.join(game.genres_labels),
+                game.brief_description,
+                game.description,
+                game.how_to_play,
+                game.link_to_video,
+                game.link_to_game,
+                game.password_to_game,
+                game.code_type_label,
+                game.code_instructions,
+                game.build_status_label,
+                game.build_notes,
+                'submitted' if game.video_submitted else 'not submitted',
+                'submitted' if game.submitted else 'not submitted',
+                game.status_label,
+                game.registered.strftime('%Y-%m-%d')
+            ])
+
     def create_judge(self, session, message='', first_name='', last_name='', email='', **params):
         judge = session.indie_judge(params, checkgroups=['genres'])
         if cherrypy.request.method == 'POST':
