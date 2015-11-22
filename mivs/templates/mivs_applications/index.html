@@ -16,7 +16,7 @@ Transfer of badges between team members is prohibited.
 {% for developer in studio.developers %}
     <tr>
         <td><ul><li></li></ul></td>
-        <td>{{ developer.first_name }} {{ developer.last_name }}</td>
+        <td>{{ developer.full_name }}</td>
         <td>[<a href="developer?id={{ developer.id }}">Edit</a>]</td>
         <td>{{ developer.email }}</td>
         <td>

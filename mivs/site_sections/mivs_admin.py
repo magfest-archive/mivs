@@ -23,7 +23,7 @@ class Root:
             out.writerow([
                 game.title,
                 game.studio.name,
-                game.studio.primary_contact.first_name + ' ' + game.studio.primary_contact.last_name,
+                game.studio.primary_contact.full_name,
                 game.email,
                 ' / '.join(game.genres_labels),
                 game.brief_description,

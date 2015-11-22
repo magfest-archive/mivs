@@ -117,6 +117,10 @@ class IndieDeveloper(MagModel):
     email           = Column(UnicodeText)
     cellphone       = Column(UnicodeText)
 
+    @property
+    def full_name(self):
+        return self.first_name + ' ' + self.last_name
+
 
 class IndieGame(MagModel, ReviewMixin):
     studio_id         = Column(UUID, ForeignKey('indie_studio.id'))
