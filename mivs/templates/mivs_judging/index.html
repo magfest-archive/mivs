@@ -7,13 +7,17 @@ You ({{ judge.full_name }}) have been assigned {{ judge.reviews|length }} games 
 of which {{ judge.video_reviews|length }} have had their videos reviewed
 and {{ judge.game_reviews|length }} have had the actual game reviewed.
 
-<table class="table">
+<table class="table datatable">
 <thead>
     <tr>
         <th>Game</th>
         <th>Studio</th>
-        <th>Video Review Status</th>
-        <th>Game Review Status</th>
+        {% if c.ALLOW_GAME_SUBMISSION %}
+            <th>Game Review Status</th>
+            <th>Your Score</th>
+        {% else %}
+            <th>Video Review Status</th>
+        {% endif %}
     </tr>
 </thead>
 <tbody>
@@ -21,8 +25,12 @@ and {{ judge.game_reviews|length }} have had the actual game reviewed.
     <tr>
         <td>{{ review.game.title }}</td>
         <td><a href="studio?id={{ review.game.studio.id }}">{{ review.game.studio.name }}</a></td>
-        <td><a href="video_review?id={{ review.id }}">{{ review.video_status_label }}</a></td>
-        <td>{{ review.game_status_label }}</td>
+        {% if c.ALLOW_GAME_SUBMISSION %}
+            <td>{{ review.game_status_label }}</td>
+            <td>{{ review.game_score|default:"not reviewed yet" }}</td>
+        {% else %}
+            <td><a href="video_review?id={{ review.id }}">{{ review.video_status_label }}</a></td>
+        {% endif %}
     </tr>
 {% endfor %}
 </tbody>

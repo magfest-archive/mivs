@@ -185,6 +185,22 @@ class IndieGame(MagModel, ReviewMixin):
     def submittable(self):
         return not self.missing_steps
 
+    @property
+    def scores(self):
+        return [r.game_score for r in self.reviews if r.game_score]
+
+    @property
+    def score_sum(self):
+        return sum(self.scores, 0)
+
+    @property
+    def average_score(self):
+        return (self.score_sum / len(self.scores)) if self.scores else 0
+
+    @property
+    def has_issues(self):
+        return any(r.game_status in (c.BROKEN, c.BAD_LINK, c.BAD_CODE) for r in self.reviews)
+
 
 class IndieGameScreenshot(MagModel):
     game_id      = Column(UUID, ForeignKey('indie_game.id'))

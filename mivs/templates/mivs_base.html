@@ -18,8 +18,14 @@
         table.nobr td {
             white-space: nowrap;
         }
+        td.issue {
+            color: red;
+            font-weight: bold;
+            text-align: center;
+        }
     </style>
     <script>
+        $.fn.dataTable.defaults.pageLength = 'All';
         var mivs = {
             checkAll: function (element) {
                 $(element).parents('table').find(':checkbox').prop('checked', true);

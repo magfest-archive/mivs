@@ -1,11 +1,15 @@
 {% extends "mivs_base.html" %}
 {% block body %}
 
+<style type="text/css">
+    #mainContainer { max-width: 1000px; }
+</style>
+
 <h3>MIVS Judges</h3>
 
 <a href="create_judge">Add a judge</a>
 
-<table class="table">
+<table class="table datatable">
 <thead>
     <tr>
         <th>Judge</th>
@@ -27,15 +31,19 @@
 
 <h3>MIVS Submitted Games</h3>
 
-<table class="table">
+<table class="table datatable">
 <thead>
     <tr>
         <th>Game</th>
         <th>Status</th>
+        <th>Issues</th>
         <th>Studio</th>
+        <th>Primary Contact</th>
         <th>Judges Assigned</th>
         <th>Video Reviews Completed</th>
         <th>Game Reviews Completed</th>
+        <th>Summed Score</th>
+        <th>Average Score</th>
     </tr>
 </thead>
 <tbody>
@@ -43,7 +51,9 @@
     <tr>
         <td>{{ game.title }}</td>
         <td>{{ game.status_label }}</td>
-        <td>{{ game.studio.name }}</td>
+        <td class="issue">{{ game.has_issues|yesno:"!," }}</td>
+        <td><a href="../mivs_applications/continue_app?id={{ game.studio.id }}" target="_blank">{{ game.studio.name }}</a></td>
+        <td>{{ game.studio.primary_contact.full_name }}</td>
         <td><a href="assign_judges?game_id={{ game.id }}">{{ game.reviews|length }}</a></td>
         <td>
             {% if game.video_reviews %}
@@ -53,6 +63,8 @@
             {% endif %}
         </td>
         <td>{{ game.game_reviews|length }}</td>
+        <td>{{ game.score_sum }}</td>
+        <td>{{ game.average_score }}</td>
 {% endfor %}
 </tbody>
 </table>
