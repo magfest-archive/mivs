@@ -151,3 +151,20 @@ class Root:
             game = session.indie_game(id)
             game.status = int(status)
             raise HTTPRedirect('index?message={}{}{}', game.title, ' has been marked as ', game.status_label)
+
+    def problems(self, session, game_id):
+        game = session.indie_game(game_id)
+        if not game.has_issues:
+            raise HTTPRedirect('index?message={}{}', game.title, ' has no outstanding issues')
+        else:
+            return {'game': game}
+
+    @csrf_protected
+    def reset_problems(self, session, game_id):
+        game = session.indie_game(game_id)
+        for review in game.reviews:
+            if review.has_video_issues:
+                review.video_status = c.PENDING
+            if review.has_game_issues:
+                review.game_status = c.PENDING
+        raise HTTPRedirect('index?message={}{}', review.game.title, ' has been marked as having its judging issues fixed')

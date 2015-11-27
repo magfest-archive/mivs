@@ -199,7 +199,7 @@ class IndieGame(MagModel, ReviewMixin):
 
     @property
     def has_issues(self):
-        return any(r.game_status in (c.BROKEN, c.BAD_LINK, c.BAD_CODE) for r in self.reviews)
+        return any(r.has_issues for r in self.reviews)
 
 
 class IndieGameScreenshot(MagModel):
@@ -243,6 +243,18 @@ class IndieGameReview(MagModel):
     staff_notes        = Column(UnicodeText)
 
     __table_args__ = (UniqueConstraint('game_id', 'judge_id', name='review_game_judge_uniq'),)
+
+    @property
+    def has_video_issues(self):
+        return self.video_status in c.PROBLEM_STATUSES
+
+    @property
+    def has_game_issues(self):
+        return self.game_status in c.PROBLEM_STATUSES
+
+    @property
+    def has_issues(self):
+        return self.has_video_issues or self.has_game_issues
 
 
 @on_startup

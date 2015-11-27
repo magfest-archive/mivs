@@ -16,3 +16,5 @@ c.create_enum_val('all_genres')
 c.make_enum('indie_judge_genre', mivs_config['enums']['indie_genre'])
 c.INDIE_JUDGE_GENRES[c.ALL_GENRES] = _all_genres_desc
 c.INDIE_JUDGE_GENRE_OPTS.insert(0, (c.ALL_GENRES, _all_genres_desc))
+
+c.PROBLEM_STATUSES = {getattr(c, status.upper()) for status in c.PROBLEM_STATUSES.split(',')}
