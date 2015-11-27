@@ -8,6 +8,7 @@ from uber.common import *
 from mivs._version import __version__
 from mivs.config import *
 from mivs.models import *
+import mivs.tasks
 import mivs.model_checks
 import mivs.automated_emails
 
