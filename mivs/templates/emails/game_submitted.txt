@@ -1,7 +1,9 @@
 {{ game.studio.primary_contact.first_name }},
 
-This is a confirmation that you have submitted your game {{ game.title }} to our panel of judges.
+This is a confirmation that you have submitted your game {{ game.title }} to our panel of judges for Round Two (the final round) of judging.
 
-As always, you can continue your application at any time at {{ c.URL_BASE }}/mivs_applications/continue_app?id={{ game.studio.id }}
+Judging will start December 1 and last through mid-January.
+
+Results will be posted ASAP in January; expecting the absolute latest date would be January 19th.
 
 {{ c.MIVS_EMAIL_SIGNATURE }}
