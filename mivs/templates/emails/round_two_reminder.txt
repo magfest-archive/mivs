@@ -1,0 +1,9 @@
+{{ game.studio.primary_contact.first_name }},
+
+Thanks again for submitting your game ({{ game.title }}) to the MAGFest Indie Videogame Showcase!
+
+We just wanted to remind you that {{ c.ROUND_TWO_DEADLINE|datetime }} is the last chance to submit a playable demo with at least 15 minutes of gameplay for your game.  Updated builds will not be accepted after the deadline, so you should get yours in as soon as you can.
+
+You can finish your application anytime until the deadline at {{ c.URL_BASE }}/mivs_applications/continue_app?id={{ game.studio.id }}
+
+{{ c.MIVS_EMAIL_SIGNATURE }}

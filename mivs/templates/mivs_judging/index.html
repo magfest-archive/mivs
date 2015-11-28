@@ -22,16 +22,18 @@ and {{ judge.game_reviews|length }} have had the actual game reviewed.
 </thead>
 <tbody>
 {% for review in judge.reviews %}
-    <tr>
-        <td>{{ review.game.title }}</td>
-        <td><a href="studio?id={{ review.game.studio.id }}">{{ review.game.studio.name }}</a></td>
-        {% if c.ALLOW_GAME_SUBMISSION %}
-            <td>{{ review.game_status_label }}</td>
-            <td>{{ review.game_score|default:"not reviewed yet" }}</td>
-        {% else %}
-            <td><a href="video_review?id={{ review.id }}">{{ review.video_status_label }}</a></td>
-        {% endif %}
-    </tr>
+    {% if not c.ALLOW_GAME_SUBMISSION or review.game.status != c.VIDEO_DECLINED %}
+        <tr>
+            <td>{{ review.game.title }}</td>
+            <td><a href="studio?id={{ review.game.studio.id }}">{{ review.game.studio.name }}</a></td>
+            {% if c.ALLOW_GAME_SUBMISSION %}
+                <td><a href="game_review?id={{ review.id }}">{{ review.game_status_label }}</a></td>
+                <td>{{ review.game_score|default:"not reviewed yet" }}</td>
+            {% else %}
+                <td><a href="video_review?id={{ review.id }}">{{ review.video_status_label }}</a></td>
+            {% endif %}
+        </tr>
+    {% endif %}
 {% endfor %}
 </tbody>
 </table>

@@ -1,7 +1,7 @@
 {% extends "mivs_base.html" %}
 {% block body %}
 
-<h3>{{ game.title }} Judging results</h3>
+<h3>{{ game.title }} video judging results</h3>
 
 {{ game.title }} has been assigned to {{ game.reviews|length }} judges, of whom {{ game.video_reviews|length }}
 have reviewed its video submission.
@@ -10,7 +10,7 @@ have reviewed its video submission.
 
 This game is marked as {{ game.status_label }}.
 {% if game.status == c.NEW %}
-    <form method="post" action="mark_video_verdict">
+    <form method="post" action="mark_verdict">
         {% csrf_token %}
         <input type="hidden" name="id" value="{{ game.id }}" />
         <select name="status">
@@ -42,9 +42,5 @@ This game is marked as {{ game.status_label }}.
 {% endfor %}
 </tbody>
 </table>
-
-{% if c.review %}
-    
-{% endif %}
 
 {% endblock %}

@@ -5,7 +5,7 @@ Congratulations!  Your game ({{ game.title }}) has made it past Round 1 judging 
 Round 2, the final round, requires your team to submit your game in a playable form or a demo version of your game for the judges to play.  You may submit your demo by continuing your application at {{ c.URL_BASE }}/mivs_applications/continue_app?id={{ game.studio.id }}
 
 Rules for round 2 submissions:
-1) Deadlines to submit a video is before Dec 1, 2015.
+1) Deadlines to submit your game is before Dec 1, 2015.
 2) After the deadline, updated builds will not be accepted
 3) Demos must have at least 15 minutes of game play.
 4) If a registration/unlock code is required; please provide {{ c.CODES_REQUIRED }} codes for our judges or a single code which works for all judges.

@@ -31,3 +31,19 @@ class Root:
             'message': message,
             'review': review
         }
+
+    def game_review(self, session, message='', **params):
+        review = session.indie_game_review(params)
+        if cherrypy.request.method == 'POST':
+            if review.game_status == c.PENDING:
+                message = 'You must select a Game Status to tell us whether or not you were able to download and run the game'
+            elif review.game_status == c.PLAYABLE and not review.game_score:
+                message = 'You must indicate whether or not you believe the game should be accepted'
+            else:
+                raise HTTPRedirect('index?message={}{}', review.game.title, ' game review has been uploaded')
+
+        return {
+            'review': review,
+            'message': message,
+            'game_code': session.code_for(review.game)
+        }

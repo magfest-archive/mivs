@@ -1,0 +1,5 @@
+{{ game.studio.primary_contact.first_name }},
+
+placeholder text, will get email text from MIVS folks later
+
+{{ c.MIVS_EMAIL_SIGNATURE }}

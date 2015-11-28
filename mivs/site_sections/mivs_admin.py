@@ -137,16 +137,16 @@ class Root:
                     session.add(IndieGameReview(game_id=gid, judge_id=jid))
         raise HTTPRedirect(return_to, 'Assignment successful')
 
-    def video_results(self, session, id, message=''):
-        return {
-            'message': message,
-            'game': session.indie_game(id)
-        }
+    def video_results(self, session, id):
+        return {'game': session.indie_game(id)}
+
+    def game_results(self, session, id):
+        return {'game': session.indie_game(id)}
 
     @csrf_protected
-    def mark_video_verdict(self, session, id, status):
+    def mark_verdict(self, session, id, status):
         if not status:
-            raise HTTPRedirect('video_results?id={}&message={}', id, 'You did not mark a status')
+            raise HTTPRedirect('index?message={}', 'You did not mark a status')
         else:
             game = session.indie_game(id)
             game.status = int(status)

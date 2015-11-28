@@ -66,7 +66,13 @@
                 0
             {% endif %}
         </td>
-        <td>{{ game.game_reviews|length }}</td>
+        <td>
+            {% if game.game_reviews %}
+                <a href="game_results?id={{ game.id }}">{{ game.game_reviews|length }}
+            {% else %}
+                0
+            {% endif %}
+        </td>
         <td>{{ game.score_sum }}</td>
         <td>{{ game.average_score }}</td>
 {% endfor %}

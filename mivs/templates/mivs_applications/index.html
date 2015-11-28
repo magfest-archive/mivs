@@ -79,6 +79,9 @@ You have {% if c.BEFORE_ROUND_ONE_DEADLINE %}currently{% endif %} registered {{ 
             <h4>Game Submission</h4>
             {% if game.submitted %}
                 This game has been submitted.
+            {% elif c.AFTER_ROUND_TWO_DEADLINE %}
+                You may no longer submit this game for consideration, as it is past the
+                {{ c.ROUND_TWO_DEADLINE|datetime }} deadline.
             {% elif not game.submittable %}
                 You cannot submit this game until the following criteria are met:
                 <ul>
@@ -126,7 +129,7 @@ You have {% if c.BEFORE_ROUND_ONE_DEADLINE %}currently{% endif %} registered {{ 
                     </tr>
                 {% endfor %}
                 </table>
-                {% if not game.codes or not game.codes.0.unlimited_use %}
+                {% if not game.codes or not game.unlimited_code %}
                     <a href="code?game_id={{ game.id }}">Add a code</a>
                 {% endif %}
             {% endif %}

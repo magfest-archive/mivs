@@ -1,0 +1,45 @@
+{% extends "mivs_base.html" %}
+{% block body %}
+
+<h3>{{ game.title }} judging results</h3>
+
+{{ game.title }} has been assigned to {{ game.reviews|length }} judges, of whom {{ game.game_reviews|length }} have reviewed it.
+
+<br/> <br/>
+
+{% if game.status == c.JUDGING %}
+    <form method="post" action="mark_verdict">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ game.id }}" />
+        <select name="status">
+            <option value="">Choose whether to accept this game into the Showcase</option>
+            <option value="{{ c.ACCEPTED }}">Accept</option>
+            <option value="{{ c.GAME_DECLINED }}">Decline</option>
+            <option value="{{ c.WAITLISTED }}">Waitlist</option>
+        </select>
+        <input type="submit" value="Mark Verdict" />
+    </form>
+{% endif %}
+
+<table class="table">
+<thead>
+    <tr>
+        <th>Judge</th>
+        <th>Game Status</th>
+        <th>Review</th>
+        <th>Notes</th>
+    </tr>
+</thead>
+<tbody>
+{% for review in game.game_reviews %}
+    <tr>
+        <td>{{ review.judge.full_name }}</td>
+        <td>{{ review.game_status_label }}</td>
+        <td>{% if review.game_score %}{{ review.video_score_label }}{% endif %}</td>
+        <td>{{ review.game_review }}</td>
+    </tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock %}
