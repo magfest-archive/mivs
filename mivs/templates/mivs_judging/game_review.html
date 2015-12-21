@@ -61,7 +61,7 @@ for reviewing the game:
         </div>
     </div>
 
-    {% if game.password_to_game %}
+    {% if review.game.password_to_game %}
         <div class="form-group">
             <label class="col-sm-3 control-label">Password:</label>
             <div class="col-sm-6 game-display">
@@ -77,7 +77,7 @@ for reviewing the game:
         </div>
     </div>
 
-    {% if game.code_instructions %}
+    {% if review.game.code_instructions %}
         <div class="form-group">
             <label class="col-sm-3 control-label">Code Instructions:</label>
             <div class="col-sm-6 game-display">
@@ -86,7 +86,7 @@ for reviewing the game:
         </div>
     {% endif %}
 
-    {% if game.code_type != c.NO_CODE %}
+    {% if review.game.code_type != c.NO_CODE %}
         <div class="form-group">
             <label class="col-sm-3 control-label">Game Code:</label>
             <div class="col-sm-6 game-display">
