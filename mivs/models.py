@@ -174,6 +174,10 @@ class IndieGame(MagModel, ReviewMixin):
         return href(self.link_to_video)
 
     @property
+    def href(self):
+        return href(self.link_to_game)
+
+    @property
     def missing_steps(self):
         steps = []
         if not self.link_to_game:
