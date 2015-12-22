@@ -69,6 +69,10 @@ class IndieJudge(MagModel, ReviewMixin):
     email_model_name = 'judge'
 
     @property
+    def judging_complete(self):
+        return len(self.reviews) == len(self.game_reviews)
+
+    @property
     def all_genres(self):
         return c.ALL_GENRES in self.genres_ints
 

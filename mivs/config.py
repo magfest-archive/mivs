@@ -18,3 +18,6 @@ c.INDIE_JUDGE_GENRES[c.ALL_GENRES] = _all_genres_desc
 c.INDIE_JUDGE_GENRE_OPTS.insert(0, (c.ALL_GENRES, _all_genres_desc))
 
 c.PROBLEM_STATUSES = {getattr(c, status.upper()) for status in c.PROBLEM_STATUSES.split(',')}
+
+# used for computing the difference between the "drop-dead deadline" and the "soft deadline"
+c.SOFT_JUDGING_DEADLINE = c.JUDGING_DEADLINE - timedelta(days=7)
