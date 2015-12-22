@@ -39,6 +39,9 @@ MIVSEmail(IndieGame, 'Your game application has been declined from MIVS', 'game_
 MIVSEmail(IndieGame, 'Your MIVS application has been waitlisted', 'game_waitlisted.txt',
           lambda game: game.status == c.WAITLISTED)
 
+MIVSEmail(IndieGame, 'MIVS judging is wrapping up', 'round_two_closing.txt',
+          lambda game: game.submitted and days_before(14, c.JUDGING_DEADLINE))
+
 MIVSEmail(IndieJudge, 'MIVS Judging is about to begin!', 'judge_intro.txt')
 
 MIVSEmail(IndieJudge, 'MIVS Judging has begun!', 'judging_begun.txt')
