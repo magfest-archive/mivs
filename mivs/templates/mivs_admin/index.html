@@ -42,7 +42,6 @@
         <th>Judges Assigned</th>
         <th>Video Reviews Completed</th>
         <th>Game Reviews Completed</th>
-        <th>Summed Score</th>
         <th>Average Score</th>
     </tr>
 </thead>
@@ -73,7 +72,6 @@
                 0
             {% endif %}
         </td>
-        <td>{{ game.score_sum }}</td>
         <td>{{ game.average_score }}</td>
 {% endfor %}
 </tbody>

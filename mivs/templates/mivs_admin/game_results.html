@@ -26,7 +26,7 @@
     <tr>
         <th>Judge</th>
         <th>Game Status</th>
-        <th>Review</th>
+        <th>Score</th>
         <th>Notes</th>
     </tr>
 </thead>
@@ -35,7 +35,7 @@
     <tr>
         <td>{{ review.judge.full_name }}</td>
         <td>{{ review.game_status_label }}</td>
-        <td>{% if review.game_score %}{{ review.video_score_label }}{% endif %}</td>
+        <td>{% if review.game_score %}{{ review.game_score }}{% endif %}</td>
         <td>{{ review.game_review }}</td>
     </tr>
 {% endfor %}

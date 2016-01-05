@@ -17,7 +17,8 @@ class Root:
             'Genres', 'Brief Description', 'Long Description', 'How to Play',
             'Link to Video', 'Link to Game', 'Game Link Password',
             'Game Requires Codes?', 'Code Instructions', 'Build Status', 'Build Notes',
-            'Video Submitted', 'Game Submitted', 'Current Status', 'Registered'
+            'Video Submitted', 'Game Submitted', 'Current Status', 'Registered',
+            'Average Score', 'Individual Scores'
         ])
         for game in session.indie_games():
             out.writerow([
@@ -39,8 +40,9 @@ class Root:
                 'submitted' if game.video_submitted else 'not submitted',
                 'submitted' if game.submitted else 'not submitted',
                 game.status_label,
-                game.registered.strftime('%Y-%m-%d')
-            ])
+                game.registered.strftime('%Y-%m-%d'),
+                str(game.average_score)
+            ] + [str(score) for score in game.scores])
 
     def create_judge(self, session, message='', first_name='', last_name='', email='', **params):
         judge = session.indie_judge(params, checkgroups=['genres'])
