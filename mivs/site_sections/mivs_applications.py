@@ -149,3 +149,67 @@ class Root:
         else:
             game.submitted = True
             raise HTTPRedirect('index?message={}', 'Your game has been submitted to our panel of judges')
+
+    def confirm(self, session, csrf_token=None, decision=None):
+        studio = session.logged_in_studio()
+        if not studio.comped_badges:
+            raise HTTPRedirect('index?message={}', 'You did not have any games accepted')
+        elif studio.group:
+            raise HTTPRedirect('index?message={}', 'Your group has already been created')
+
+        has_leader = False
+        badges_remaining = studio.comped_badges
+        developers = sorted(studio.developers, key=lambda d: (not d.primary_contact, d.full_name))
+        for dev in developers:
+            if not dev.matching_attendee and badges_remaining:
+                dev.comped = True
+                badges_remaining -= 1
+            else:
+                dev.comped = False
+
+            if not has_leader and not getattr(dev.matching_attendee, 'group_id', None):
+                dev.leader = has_leader = True
+            else:
+                dev.leader = False
+
+        if cherrypy.request.method == 'POST':
+            check_csrf(csrf_token)
+            assert decision in ['Accept', 'Decline']
+            if decision == 'Decline':
+                for game in studio.games:
+                    if game.status == c.ACCEPTED:
+                        game.status = c.STUDIO_DECLINED
+                raise HTTPRedirect('index?message={}', 'You have been marked as declining space in the showcase')
+            else:
+                group = studio.group = Group(name='MIVS Studio: ' + studio.name, can_add=True)
+                session.add(group)
+                session.commit()
+                for dev in developers:
+                    if dev.matching_attendee:
+                        if not dev.matching_attendee.group_id:
+                            group.attendees.append(dev.matching_attendee)
+                            if dev.leader:
+                                group.leader_id = dev.matching_attendee.id
+                    else:
+                        attendee = Attendee(
+                            placeholder=True,
+                            badge_type=c.ATTENDEE_BADGE,
+                            paid=c.NEED_NOT_PAY if dev.comped else c.PAID_BY_GROUP,
+                            first_name=dev.first_name,
+                            last_name=dev.last_name,
+                            cellphone=dev.cellphone,
+                            email=dev.email
+                        )
+                        group.attendees.append(attendee)
+                        session.commit()
+                        if dev.leader:
+                            group.leader_id = attendee.id
+                for i in range(badges_remaining):
+                    group.attendees.append(Attendee(badge_type=c.ATTENDEE_BADGE, paid=c.NEED_NOT_PAY))
+                group.cost = group.default_cost
+                raise HTTPRedirect('index?message={}', 'Your studio has been registered')
+
+        return {
+            'studio': studio,
+            'developers': developers
+        }
