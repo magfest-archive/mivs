@@ -19,5 +19,7 @@ c.INDIE_JUDGE_GENRE_OPTS.insert(0, (c.ALL_GENRES, _all_genres_desc))
 
 c.PROBLEM_STATUSES = {getattr(c, status.upper()) for status in c.PROBLEM_STATUSES.split(',')}
 
+c.FINAL_GAME_STATUSES = [c.ACCEPTED, c.WAITLISTED, c.DECLINED, c.STUDIO_DECLINED]
+
 # used for computing the difference between the "drop-dead deadline" and the "soft deadline"
 c.SOFT_JUDGING_DEADLINE = c.JUDGING_DEADLINE - timedelta(days=7)

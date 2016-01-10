@@ -58,6 +58,11 @@ class AdminAccount:
     judge = relationship('IndieJudge', uselist=False, backref='admin_account')
 
 
+@Session.model_mixin
+class Group:
+    studio = relationship('IndieStudio', uselist=False, backref='group')
+
+
 class IndieJudge(MagModel, ReviewMixin):
     admin_id    = Column(UUID, ForeignKey('admin_account.id'))
     genres      = Column(MultiChoice(c.INDIE_JUDGE_GENRE_OPTS))
@@ -90,6 +95,7 @@ class IndieJudge(MagModel, ReviewMixin):
 
 
 class IndieStudio(MagModel):
+    group_id    = Column(UUID, ForeignKey('group.id'), nullable=True)
     name        = Column(UnicodeText, unique=True)
     address     = Column(UnicodeText)
     website     = Column(UnicodeText)
@@ -120,6 +126,14 @@ class IndieStudio(MagModel):
     def submitted_games(self):
         return [g for g in self.games if g.submitted]
 
+    @property
+    def comped_badges(self):
+        return c.INDIE_BADGE_COMPS * len([g for g in self.games if g.status == c.ACCEPTED])
+
+    @property
+    def unclaimed_badges(self):
+        return max(0, self.comped_badges - len([d for d in self.developers if not d.matching_attendee]))
+
 
 class IndieDeveloper(MagModel):
     studio_id       = Column(UUID, ForeignKey('indie_studio.id'))
@@ -132,6 +146,14 @@ class IndieDeveloper(MagModel):
     @property
     def full_name(self):
         return self.first_name + ' ' + self.last_name
+
+    @property
+    def matching_attendee(self):
+        return self.session.query(Attendee).filter(
+            func.lower(Attendee.first_name) == self.first_name.lower(),
+            func.lower(Attendee.last_name) == self.last_name.lower(),
+            func.lower(Attendee.email) == self.email.lower()
+        ).first()
 
 
 class IndieGame(MagModel, ReviewMixin):
