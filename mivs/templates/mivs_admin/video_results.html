@@ -37,7 +37,7 @@ This game is marked as {{ game.status_label }}.
         <td>{{ review.judge.full_name }}</td>
         <td>{{ review.video_status_label }}</td>
         <td>{% if review.video_score != c.PENDING %}{{ review.video_score_label }}{% endif %}</td>
-        <td>{{ review.video_review }}</td>
+        <td>{{ review.video_review|linebreaksbr }}</td>
     </tr>
 {% endfor %}
 </tbody>
