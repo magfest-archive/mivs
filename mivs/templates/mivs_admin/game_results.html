@@ -7,19 +7,36 @@
 
 <br/> <br/>
 
-{% if game.status == c.JUDGING %}
-    <form method="post" action="mark_verdict">
-        {% csrf_token %}
-        <input type="hidden" name="id" value="{{ game.id }}" />
-        <select name="status">
-            <option value="">Choose whether to accept this game into the Showcase</option>
-            <option value="{{ c.ACCEPTED }}">Accept</option>
-            <option value="{{ c.GAME_DECLINED }}">Decline</option>
-            <option value="{{ c.WAITLISTED }}">Waitlist</option>
-        </select>
-        <input type="submit" value="Mark Verdict" />
-    </form>
-{% endif %}
+<form id="mark-form" method="post" action="mark_verdict" style="display:none">
+    {% csrf_token %}
+    <input type="hidden" name="id" value="{{ game.id }}" />
+    <select name="status">
+        <option value="">Choose whether to accept this game into the Showcase</option>
+        <option value="{{ c.ACCEPTED }}">Accept</option>
+        <option value="{{ c.GAME_DECLINED }}">Decline</option>
+        <option value="{{ c.WAITLISTED }}">Waitlist</option>
+    </select>
+    <input type="submit" value="Mark Verdict" />
+</form>
+<div id="show-link"></div>
+<script>
+    $(function () {
+        var $showLink = $('#show-link'), $markForm = $('#mark-form');
+        {% if game.status in c.FINAL_GAME_STATUSES %}
+            $.field('status').val({{ game.status }});
+            $showLink
+                .append('This game has already been marked as {{ game.status_label }}, but you can edit it by ')
+                .append(
+                    $('<a style="cursor:pointer">clicking here</a>').on('click', function () {
+                        $markForm.show();
+                        $showLink.hide();
+                    })
+                ).append('.');
+        {% elif game.status == c.JUDGING %}
+            $('#mark-form').show();
+        {% endif %}
+    });
+</script>
 
 <table class="table">
 <thead>
@@ -36,7 +53,7 @@
         <td>{{ review.judge.full_name }}</td>
         <td>{{ review.game_status_label }}</td>
         <td>{% if review.game_score %}{{ review.game_score }}{% endif %}</td>
-        <td>{{ review.game_review }}</td>
+        <td>{{ review.game_review|linebreaksbr }}</td>
     </tr>
 {% endfor %}
 </tbody>
