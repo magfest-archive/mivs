@@ -39,7 +39,7 @@ class Root:
                 game.build_notes,
                 'submitted' if game.video_submitted else 'not submitted',
                 'submitted' if game.submitted else 'not submitted',
-                game.status_label,
+                'accepted and confirmed' if game.status == c.ACCEPTED and game.studio.group_id else game.status_label,
                 game.registered.strftime('%Y-%m-%d'),
                 '\n'.join(c.URL_BASE + screenshot.url.lstrip('.') for screenshot in game.screenshots),
                 str(game.average_score)
