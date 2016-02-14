@@ -1,8 +1,14 @@
 from mivs import *
 
-AutomatedEmail.extra_models[IndieStudio] = lambda session: session.query(IndieStudio).all()
-AutomatedEmail.extra_models[IndieGame] = lambda session: session.query(IndieGame).all()
-AutomatedEmail.extra_models[IndieJudge] = lambda session: session.query(IndieJudge).all()
+AutomatedEmail.queries.update({
+    IndieStudio: lambda session: session.query(IndieStudio)
+                                        .options(subqueryload(IndieStudio.developers),
+                                                 subqueryload(IndieStudio.games)),
+    IndieGame: lambda session: session.query(IndieGame)
+                                      .options(joinedload(IndieGame.studio).subqueryload(IndieStudio.developers)),
+    IndieJudge: lambda session: session.query(IndieJudge)
+                                       .options(joinedload(IndieJudge.admin_account).joinedload(AdminAccount.attendee))
+})
 
 
 class MIVSEmail(AutomatedEmail):
@@ -56,3 +62,5 @@ MIVSEmail(IndieJudge, 'Reminder: MIVS Judging due by {}'.format(c.JUDGING_DEADLI
           lambda judge: days_before(3, c.JUDGING_DEADLINE) and not judge.judging_complete)
 
 MIVSEmail(IndieJudge, 'MIVS Judging and {EVENT_NAME} Staffing', 'judge_staffers.txt')
+
+MIVSEmail(IndieJudge, 'MIVS Judge badge information', 'judge_badge_info.txt')
