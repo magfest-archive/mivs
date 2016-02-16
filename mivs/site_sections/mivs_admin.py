@@ -171,3 +171,14 @@ class Root:
             if review.has_game_issues:
                 review.game_status = c.PENDING
         raise HTTPRedirect('index?message={}{}', review.game.title, ' has been marked as having its judging issues fixed')
+
+    @csv_file
+    def presenters(self, out, session):
+        presenters = set()
+        for game in (session.query(IndieGame)
+                            .filter_by(status=c.ACCEPTED)
+                            .options(joinedload(IndieGame.studio).joinedload(IndieStudio.group))):
+            for attendee in getattr(game.studio.group, 'attendees', []):
+                if not attendee.is_unassigned and attendee not in presenters:
+                    presenters.add(attendee)
+                    out.writerow([attendee.full_name, game.studio.name])
