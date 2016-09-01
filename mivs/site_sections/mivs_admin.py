@@ -11,6 +11,18 @@ class Root:
         }
 
     @csv_file
+    def social_media(self, out, session):
+        out.writerow(['Studio', 'Website', 'Twitter', 'Facebook'])
+        for game in session.indie_games():
+            if game.status == c.ACCEPTED and game.studio.group_id:
+                out.writerow([
+                    game.studio.name,
+                    game.studio.website,
+                    game.studio.twitter,
+                    game.studio.facebook
+                ])
+
+    @csv_file
     def everything(self, out, session):
         out.writerow([
             'Game', 'Studio', 'Primary Contact Name', 'Primary Contact Email',
