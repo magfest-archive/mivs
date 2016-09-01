@@ -3,7 +3,8 @@ from mivs import *
 
 def _is_invalid_url(url):
     try:
-        with urlopen(url) as f:
+        log.debug("_is_invalid_url() is fetching '%s' to check if it's reachable." % url)
+        with urlopen(url, timeout=30) as f:
             f.read()
     except:
         return True
