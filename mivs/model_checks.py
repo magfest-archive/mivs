@@ -2,7 +2,7 @@ from mivs import *
 
 
 def _is_invalid_url(url):
-    if not c.VALIDATE_SUBMITTED_URLS:
+    if c.SKIP_MIVS_URL_VALIDATION:
         return False
 
     try:
