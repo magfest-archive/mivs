@@ -2,6 +2,9 @@ from mivs import *
 
 
 def _is_invalid_url(url):
+    if not c.VALIDATE_SUBMITTED_URLS:
+        return False
+
     try:
         log.debug("_is_invalid_url() is fetching '%s' to check if it's reachable." % url)
         with urlopen(url, timeout=30) as f:
