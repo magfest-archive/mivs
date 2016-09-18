@@ -1,12 +1,22 @@
 from mivs import *
 
 
+def is_mivs_admin():
+    return c.INDIE_ADMIN in AdminAccount.access_set()
+
+
+def allowed_to_submit_round1():
+    return c.BEFORE_ROUND_ONE_DEADLINE or is_mivs_admin()
+
+
 @all_renderable()
 class Root:
     def index(self, session, message=''):
         return {
             'message': message,
-            'studio': session.logged_in_studio()
+            'studio': session.logged_in_studio(),
+            'allowed_to_add_game': allowed_to_submit_round1(),
+            'is_mivs_admin': is_mivs_admin(),
         }
 
     def logout(self):
@@ -34,7 +44,9 @@ class Root:
         studio = session.indie_studio(dict(params, id=cherrypy.session.get('studio_id', 'None')), restricted=True)
         developer = session.indie_developer(params)
 
-        if cherrypy.request.method == 'POST':
+        allowed_to_submit = allowed_to_submit_round1() or not studio.is_new
+
+        if cherrypy.request.method == 'POST' and allowed_to_submit:
             message = check(studio)
             if not message and studio.is_new:
                 message = check(developer)
@@ -48,7 +60,9 @@ class Root:
         return {
             'message': message,
             'studio': studio,
-            'developer': developer
+            'developer': developer,
+            'allowed_to_submit': allowed_to_submit,
+            'is_mivs_admin': is_mivs_admin(),
         }
 
     def game(self, session, message='', **params):
