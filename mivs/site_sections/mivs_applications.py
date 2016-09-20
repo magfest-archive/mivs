@@ -1,12 +1,8 @@
 from mivs import *
 
 
-def is_mivs_admin():
-    return c.INDIE_ADMIN in AdminAccount.access_set()
-
-
 def allowed_to_submit_round1():
-    return c.BEFORE_ROUND_ONE_DEADLINE or is_mivs_admin()
+    return c.BEFORE_ROUND_ONE_DEADLINE or c.HAS_INDIE_ADMIN_ACCESS
 
 
 @all_renderable()
@@ -16,7 +12,6 @@ class Root:
             'message': message,
             'studio': session.logged_in_studio(),
             'allowed_to_add_game': allowed_to_submit_round1(),
-            'is_mivs_admin': is_mivs_admin(),
         }
 
     def logout(self):
@@ -62,7 +57,6 @@ class Root:
             'studio': studio,
             'developer': developer,
             'allowed_to_submit': allowed_to_submit,
-            'is_mivs_admin': is_mivs_admin(),
         }
 
     def game(self, session, message='', **params):

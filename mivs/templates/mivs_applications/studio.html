@@ -3,12 +3,12 @@
 
 {% if studio.is_new %}
     <h2>MAGFest Indie Videogame Showcase</h2>
-    {% if c.BEFORE_ROUND_ONE_DEADLINE or is_mivs_admin %}
+    {% if c.BEFORE_ROUND_ONE_DEADLINE or c.HAS_INDIE_ADMIN_ACCESS %}
         Please fill out information about your studio.  You will then be prompted to enter information about the game(s)
         you are submitting.  If you've already submitted an application, you can use the link provided in the email we've
         sent you which you can use to continue an existing application.
 
-        {% if is_mivs_admin %}
+        {% if c.HAS_INDIE_ADMIN_ACCESS %}
             <br/><br/><b><font color="red">
             ADMIN NOTE: Because you are logged in as a MIVS admin, you can still use this form to manually enter a new
             studio. For non-admin users, they will see a message about the deadline being passed.
