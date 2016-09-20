@@ -18,7 +18,7 @@ IndieStudio.required = [('name', 'Studio Name')]
 
 @validation.IndieStudio
 def new_studio_deadline(studio):
-    if studio.is_new and c.AFTER_ROUND_ONE_DEADLINE and c.INDIE_ADMIN not in AdminAccount.access_set():
+    if studio.is_new and c.AFTER_ROUND_ONE_DEADLINE and c.HAS_INDIE_ADMIN_ACCESS:
         return 'Sorry, but the round one deadline has already passed, so no new studios may be registered'
 
 
@@ -61,7 +61,7 @@ IndieGame.required = [
 
 @validation.IndieGame
 def new_game_deadline(game):
-    if game.is_new and c.AFTER_ROUND_ONE_DEADLINE and c.INDIE_ADMIN not in AdminAccount.access_set():
+    if game.is_new and c.AFTER_ROUND_ONE_DEADLINE and c.HAS_INDIE_ADMIN_ACCESS:
         return 'Sorry, but the round one deadline has already passed, so no new games may be registered'
 
 
