@@ -2,8 +2,8 @@
 
 This is a confirmation that you have submitted your game {{ game.title }} to our panel of judges for Round Two (the final round) of judging.
 
-Judging will start December 1 and last through mid-January.
+Judging will last through the month of October, and results will be posted in November - we are aiming for November 6th.
 
-Results will be posted ASAP in January; expecting the absolute latest date would be January 19th.
+Good luck!
 
 {{ c.MIVS_EMAIL_SIGNATURE }}
