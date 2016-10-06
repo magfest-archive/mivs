@@ -67,7 +67,7 @@ You have {% if c.BEFORE_ROUND_ONE_DEADLINE %}currently{% endif %} registered {{ 
 {% for game in studio.games %}
     <h4>
         {{ game.title }}
-        {% if not game.submitted %}[<a href="game?id={{ game.id }}">Edit</a>]{% endif %}
+        {% if c.HAS_INDIE_ADMIN_ACCESS or not game.submitted %}[<a href="game?id={{ game.id }}">Edit</a>]{% endif %}
     </h4>
 
     {% if game.status in c.FINAL_GAME_STATUSES %}
