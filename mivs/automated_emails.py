@@ -64,3 +64,5 @@ MIVSEmail(IndieJudge, 'Reminder: MIVS Judging due by {}'.format(c.JUDGING_DEADLI
 MIVSEmail(IndieJudge, 'MIVS Judging and {EVENT_NAME} Staffing', 'judge_staffers.txt')
 
 MIVSEmail(IndieJudge, 'MIVS Judge badge information', 'judge_badge_info.txt')
+
+MIVSEmail(IndieJudge, 'MIVS Judging about to begin', 'judge_2016.txt')
