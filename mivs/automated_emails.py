@@ -59,7 +59,7 @@ MIVSEmail(IndieJudge, 'MIVS Judging is almost over!', 'judging_reminder.txt',
           lambda judge: days_before(7, c.SOFT_JUDGING_DEADLINE))
 
 MIVSEmail(IndieJudge, 'Reminder: MIVS Judging due by {}'.format(c.JUDGING_DEADLINE.strftime('%B %-d')), 'final_judging_reminder.txt',
-          lambda judge: days_before(3, c.JUDGING_DEADLINE) and not judge.judging_complete)
+          lambda judge: days_before(5, c.JUDGING_DEADLINE) and not judge.judging_complete)
 
 MIVSEmail(IndieJudge, 'MIVS Judging and {EVENT_NAME} Staffing', 'judge_staffers.txt')
 
