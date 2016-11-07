@@ -288,6 +288,13 @@ class IndieGameReview(MagModel):
 
     __table_args__ = (UniqueConstraint('game_id', 'judge_id', name='review_game_judge_uniq'),)
 
+    @presave_adjustment
+    def no_score_if_broken(self):
+        if self.has_video_issues:
+            self.video_score = c.PENDING
+        if self.has_game_issues:
+            self.game_score = 0
+
     @property
     def has_video_issues(self):
         return self.video_status in c.PROBLEM_STATUSES
