@@ -23,7 +23,7 @@ MIVSEmail(IndieGame, 'Your MIVS Game Video Has Been Submitted', 'game_video_subm
 MIVSEmail(IndieGame, 'Your MIVS Game Has Been Submitted', 'game_submitted.txt', lambda game: game.submitted)
 
 MIVSEmail(IndieStudio, 'MIVS - Wat no video?', 'videoless_studio.txt',
-          lambda studio: days_after(2, studio.registered)
+          lambda studio: days_after(2, studio.registered)()
                      and not any(game.video_submitted for game in studio.games),
           when=days_before(7, c.ROUND_ONE_DEADLINE))
 
