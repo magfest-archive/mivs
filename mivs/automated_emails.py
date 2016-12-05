@@ -23,12 +23,12 @@ MIVSEmail(IndieGame, 'Your MIVS Game Video Has Been Submitted', 'game_video_subm
 MIVSEmail(IndieGame, 'Your MIVS Game Has Been Submitted', 'game_submitted.txt', lambda game: game.submitted)
 
 MIVSEmail(IndieStudio, 'MIVS - Wat no video?', 'videoless_studio.txt',
-          lambda studio: days_after(2, studio.registered)
-                     and days_before(7, c.ROUND_ONE_DEADLINE)
-                     and not any(game.video_submitted for game in studio.games))
+          lambda studio: days_after(2, studio.registered)()
+                     and not any(game.video_submitted for game in studio.games),
+          when=days_before(7, c.ROUND_ONE_DEADLINE))
 
 MIVSEmail(IndieGame, 'Last chance to submit your game to MIVS', 'round_two_reminder.txt',
-          lambda game: game.status == c.JUDGING and not game.submitted and days_before(7, c.ROUND_TWO_DEADLINE))
+          lambda game: game.status == c.JUDGING and not game.submitted, when=days_before(7, c.ROUND_TWO_DEADLINE))
 
 MIVSEmail(IndieGame, 'Your game has made it into MIVS Round Two', 'video_accepted.txt',
           lambda game: game.status == c.JUDGING)
@@ -46,20 +46,20 @@ MIVSEmail(IndieGame, 'Your MIVS application has been waitlisted', 'game_waitlist
           lambda game: game.status == c.WAITLISTED)
 
 MIVSEmail(IndieGame, 'Last chance to accept your MIVS booth', 'game_accept_reminder.txt',
-          lambda game: game.status == c.ACCEPTED and not game.studio.group_id and days_before(2, c.MIVS_CONFIRM_DEADLINE))
+          lambda game: game.status == c.ACCEPTED and not game.studio.group_id, when=days_before(2, c.MIVS_CONFIRM_DEADLINE))
 
 MIVSEmail(IndieGame, 'MIVS judging is wrapping up', 'round_two_closing.txt',
-          lambda game: game.submitted and days_before(14, c.JUDGING_DEADLINE))
+          lambda game: game.submitted, when=days_before(14, c.JUDGING_DEADLINE))
 
 MIVSEmail(IndieJudge, 'MIVS Judging is about to begin!', 'judge_intro.txt')
 
 MIVSEmail(IndieJudge, 'MIVS Judging has begun!', 'judging_begun.txt')
 
 MIVSEmail(IndieJudge, 'MIVS Judging is almost over!', 'judging_reminder.txt',
-          lambda judge: days_before(7, c.SOFT_JUDGING_DEADLINE))
+          when=days_before(7, c.SOFT_JUDGING_DEADLINE))
 
 MIVSEmail(IndieJudge, 'Reminder: MIVS Judging due by {}'.format(c.JUDGING_DEADLINE.strftime('%B %-d')), 'final_judging_reminder.txt',
-          lambda judge: days_before(5, c.JUDGING_DEADLINE) and not judge.judging_complete)
+          lambda judge: not judge.judging_complete, when=days_before(5, c.JUDGING_DEADLINE))
 
 MIVSEmail(IndieJudge, 'MIVS Judging and {EVENT_NAME} Staffing', 'judge_staffers.txt')
 
