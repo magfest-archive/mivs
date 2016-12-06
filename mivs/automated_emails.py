@@ -49,7 +49,7 @@ MIVSEmail(IndieGame, 'Last chance to accept your MIVS booth', 'game_accept_remin
           lambda game: game.status == c.ACCEPTED and not game.studio.group_id, when=days_before(2, c.MIVS_CONFIRM_DEADLINE))
 
 MIVSEmail(IndieGame, 'MIVS December Updates: Hotels and Magfest Versus!', 'december_updates.txt',
-          lambda game: game.status == c.ACCEPTED)
+          lambda game: game.confirmed)
 
 MIVSEmail(IndieGame, 'MIVS judging is wrapping up', 'round_two_closing.txt',
           lambda game: game.submitted, when=days_before(14, c.JUDGING_DEADLINE))
