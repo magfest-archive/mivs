@@ -25,7 +25,7 @@ class Root:
     @csv_file
     def everything(self, out, session):
         out.writerow([
-            'Game', 'Studio', 'Primary Contact Name', 'Primary Contact Email',
+            'Game', 'Studio', 'Studio URL', 'Primary Contact Name', 'Primary Contact Email',
             'Genres', 'Brief Description', 'Long Description', 'How to Play',
             'Link to Video', 'Link to Game', 'Game Link Password',
             'Game Requires Codes?', 'Code Instructions', 'Build Status', 'Build Notes',
@@ -36,6 +36,7 @@ class Root:
             out.writerow([
                 game.title,
                 game.studio.name,
+                '{}/mivs_applications/continue_app?id={}'.format(c.URL_BASE, game.studio.id),
                 game.studio.primary_contact.full_name,
                 game.email,
                 ' / '.join(game.genres_labels),
