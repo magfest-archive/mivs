@@ -245,6 +245,10 @@ class IndieGame(MagModel, ReviewMixin):
     def has_issues(self):
         return any(r.has_issues for r in self.reviews)
 
+    @property
+    def confirmed(self):
+        return self.status == c.ACCEPTED and self.studio and self.studio.group_id
+
 
 class IndieGameScreenshot(MagModel):
     game_id      = Column(UUID, ForeignKey('indie_game.id'))

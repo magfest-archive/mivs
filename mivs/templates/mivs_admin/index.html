@@ -50,7 +50,7 @@
     <tr>
         <td>{{ game.title }}</td>
         <td>
-            {% if game.status == c.ACCEPTED and game.studio.group_id %}
+            {% if game.confirmed %}
                 confirmed
             {% else %}
                 {{ game.status_label }}

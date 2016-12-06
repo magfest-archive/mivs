@@ -14,7 +14,7 @@ class Root:
     def social_media(self, out, session):
         out.writerow(['Studio', 'Website', 'Twitter', 'Facebook'])
         for game in session.indie_games():
-            if game.status == c.ACCEPTED and game.studio.group_id:
+            if game.confirmed:
                 out.writerow([
                     game.studio.name,
                     game.studio.website,
@@ -52,7 +52,7 @@ class Root:
                 game.build_notes,
                 'submitted' if game.video_submitted else 'not submitted',
                 'submitted' if game.submitted else 'not submitted',
-                'accepted and confirmed' if game.status == c.ACCEPTED and game.studio.group_id else game.status_label,
+                'accepted and confirmed' if game.confirmed else game.status_label,
                 game.registered.strftime('%Y-%m-%d'),
                 '\n'.join(c.URL_BASE + screenshot.url.lstrip('.') for screenshot in game.screenshots),
                 str(game.average_score)
