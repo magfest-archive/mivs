@@ -51,6 +51,8 @@ MIVSEmail(IndieGame, 'Last chance to accept your MIVS booth', 'game_accept_remin
 MIVSEmail(IndieGame, 'MIVS December Updates: Hotels and Magfest Versus!', 'december_updates.txt',
           lambda game: game.confirmed)
 
+MIVSEmail(IndieGame, 'REQUIRED: Pre-flight for MIVS due by midnight, January 2nd', 'game_preflight.txt', lambda game: game.confirmed)
+
 MIVSEmail(IndieGame, 'MIVS judging is wrapping up', 'round_two_closing.txt',
           lambda game: game.submitted, when=days_before(14, c.JUDGING_DEADLINE))
 
