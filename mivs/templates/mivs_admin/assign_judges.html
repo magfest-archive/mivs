@@ -7,24 +7,32 @@
 
 {% if game.reviews %}
     {{ game.title }} already has the following judges assigned:
-    <table class="table">
-    <thead>
-        <tr>
-            <th>Judge</th>
-            <th>Video Review</th>
-            <th>Game Review</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for review in game.reviews %}
+    <form method="post" action="remove">
+        {% csrf_token %}
+        <input type="hidden" name="game_id" value="{{ game.id }}" />
+        <input type="hidden" name="return_to" value="assign_judges?game_id={{ game.id }}" />
+        <table class="table">
+        <thead>
             <tr>
-                <td>{{ review.judge.full_name }}</td>
-                <td>{{ review.video_status_label }}</td>
-                <td>{{ review.game_status_label }}</td>
+                <th>Judge</th>
+                <th>Video Review</th>
+                <th>Game Review</th>
+                <th>Remove Judge</th>
             </tr>
-        {% endfor %}
-    </tbody>
-    </table>
+        </thead>
+        <tbody>
+            {% for review in game.reviews %}
+                <tr>
+                    <td>{{ review.judge.full_name }}</td>
+                    <td>{{ review.video_status_label }}</td>
+                    <td>{{ review.game_status_label }}</td>
+                    <td><input type="checkbox" name="judge_id" value="{{ review.judge.id }}" /></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+        <input type="submit" value="Remove Selected Judges" />
+    </form>
 {% else %}
     {{ game.title }} currently has no judges assigned to review it.
 {% endif %}
