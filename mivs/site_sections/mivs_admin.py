@@ -157,7 +157,7 @@ class Root:
         return_to = return_to + '&message={}'
         for gid in listify(game_id):
             for jid in listify(judge_id):
-                review=session.query(IndieGameReview).filter_by(game_id=gid, judge_id=jid).first()
+                review = session.query(IndieGameReview).filter_by(game_id=gid, judge_id=jid).first()
                 if review:
                     session.delete(review)
         raise HTTPRedirect(return_to, 'Removal successful')
