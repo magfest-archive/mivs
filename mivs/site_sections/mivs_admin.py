@@ -146,12 +146,21 @@ class Root:
     @csrf_protected
     def assign(self, session, game_id, judge_id, return_to):
         return_to = return_to + '&message={}'
-        game_id, judge_id = listify(game_id), listify(judge_id)
         for gid in listify(game_id):
             for jid in listify(judge_id):
                 if not session.query(IndieGameReview).filter_by(game_id=gid, judge_id=jid).first():
                     session.add(IndieGameReview(game_id=gid, judge_id=jid))
         raise HTTPRedirect(return_to, 'Assignment successful')
+
+    @csrf_protected
+    def remove(self, session, game_id, judge_id, return_to):
+        return_to = return_to + '&message={}'
+        for gid in listify(game_id):
+            for jid in listify(judge_id):
+                review = session.query(IndieGameReview).filter_by(game_id=gid, judge_id=jid).first()
+                if review:
+                    session.delete(review)
+        raise HTTPRedirect(return_to, 'Removal successful')
 
     def video_results(self, session, id):
         return {'game': session.indie_game(id)}
