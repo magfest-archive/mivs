@@ -73,7 +73,7 @@ class Root:
         }
 
     def developer(self, session, message='', **params):
-        developer = session.indie_developer(params, applicant=True)
+        developer = session.indie_developer(params, applicant=True, bools=["primary_contact"])
         if cherrypy.request.method == 'POST':
             message = check(developer)
             if not message:
