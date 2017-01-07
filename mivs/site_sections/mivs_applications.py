@@ -77,8 +77,12 @@ class Root:
         if cherrypy.request.method == 'POST':
             message = check(developer)
             if not message:
-                session.add(developer)
-                raise HTTPRedirect('index?message={}', 'Presenter added')
+                primaries = session.query(IndieDeveloper).filter_by(studio_id=developer.studio_id, primary_contact='true').all()
+                if not developer.primary_contact and len(primaries) == 1 and developer.id == primaries[0].id:
+                    message = "Studio requires at least one presenter to receive emails."
+                else:
+                    session.add(developer)
+                    raise HTTPRedirect('index?message={}', 'Presenters updated')
 
         return {
             'message': message,

@@ -32,7 +32,7 @@ This is your application-in-progress for the MAGFest Indie Videogame Showcase fo
             <td>{{ developer.email }}</td>
             <td>
                 {% if developer.primary_contact %}
-                    <i>Primary Contact</i>
+                    <i>Receives Emails</i>
                 {% else %}
                     <form method="post" action="delete_developer">
                         {% csrf_token %}
