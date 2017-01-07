@@ -39,6 +39,8 @@ class Root:
                 message = 'You must select a Game Status to tell us whether or not you were able to download and run the game'
             elif review.game_status == c.PLAYABLE and not review.game_score:
                 message = 'You must indicate whether or not you believe the game should be accepted'
+            elif review.game_status != c.PLAYABLE and review.game_score:
+                message = 'If the game is not playable, please leave the score field blank'
             else:
                 raise HTTPRedirect('index?message={}{}', review.game.title, ' game review has been uploaded')
 
