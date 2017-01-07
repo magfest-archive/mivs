@@ -36,6 +36,13 @@
     </div>
 
     <div class="form-group">
+        <label class="col-sm-3 control-label">Receive Emails?</label>
+        <div class="col-sm-6">
+            <input type="checkbox" name="primary_contact" {% if developer.primary_contact %} checked {%endif%} value="1" />
+        </div>
+    </div>
+
+    <div class="form-group">
         <div class="col-sm-6 col-sm-offset-3">
             <button type="submit" class="btn btn-primary">Upload Presenter Information</button>
         </div>
