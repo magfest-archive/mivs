@@ -16,7 +16,7 @@
 </ul>
 
 <form method="post" action="reset_problems">
-{% csrf_token %}
+{{ csrf_token() }}
 <input type="hidden" name="game_id" value="{{ game.id }}" />
 <input type="submit" value="Mark Problems as Fixed" />
 </form>

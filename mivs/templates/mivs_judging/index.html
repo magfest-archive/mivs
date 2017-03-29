@@ -28,7 +28,7 @@ and {{ judge.game_reviews|length }} have had the actual game reviewed.
             <td><a href="studio?id={{ review.game.studio.id }}">{{ review.game.studio.name }}</a></td>
             {% if c.ALLOW_GAME_SUBMISSION %}
                 <td><a href="game_review?id={{ review.id }}">{{ review.game_status_label }}</a></td>
-                <td>{{ review.game_score|default:"not reviewed yet" }}</td>
+                <td>{{ review.game_score|default("not reviewed yet") }}</td>
             {% else %}
                 <td><a href="video_review?id={{ review.id }}">{{ review.video_status_label }}</a></td>
             {% endif %}

@@ -11,7 +11,7 @@ have reviewed its video submission.
 This game is marked as {{ game.status_label }}.
 {% if game.status == c.NEW %}
     <form method="post" action="mark_verdict">
-        {% csrf_token %}
+        {{ csrf_token() }}
         <input type="hidden" name="id" value="{{ game.id }}" />
         <select name="status">
             <option value="">Choose whether to accept this into Round Two</option>

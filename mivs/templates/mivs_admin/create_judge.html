@@ -11,7 +11,7 @@ Enter the name and email address of the person you'd like to register as a MIVS 
 </ul>
 
 <form method="post" action="create_judge" role="form" class="form-horizontal">
-    {% csrf_token %}
+    {{ csrf_token() }}
 
     <div class="form-group">
         <label class="col-sm-3 control-label">First Name:</label>
@@ -37,7 +37,7 @@ Enter the name and email address of the person you'd like to register as a MIVS 
     <div class="form-group">
         <label class="col-sm-3 control-label">Genres:</label>
         <div class="col-sm-6">
-            {% checkgroup judge.genres %}
+            {{ macros.checkgroup(judge, 'genres') }}
         </div>
     </div>
 

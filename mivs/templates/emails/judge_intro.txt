@@ -1,6 +1,6 @@
 {{ judge.attendee.first_name }},
 
-Thanks again for helping out with judging for this year's Magfest Indie Video Game Showcase.  We've gone ahead and created your judging account.  While the application process for games submitted to MIVS ends {{ c.ROUND_TWO_DEADLINE|datetime:"%b %d" }}, it may take us a couple days for the dust to settle and assign things out to everyone.  You can expect another email from us very soon that will contain more instructions when we officially move into the Game Judging phase.
+Thanks again for helping out with judging for this year's Magfest Indie Video Game Showcase.  We've gone ahead and created your judging account.  While the application process for games submitted to MIVS ends {{ c.ROUND_TWO_DEADLINE|datetime_local("%b %d") }}, it may take us a couple days for the dust to settle and assign things out to everyone.  You can expect another email from us very soon that will contain more instructions when we officially move into the Game Judging phase.
 
 If you have any questions until then, feel free to drop us a line.
 

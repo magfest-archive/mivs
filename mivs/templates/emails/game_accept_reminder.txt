@@ -4,6 +4,6 @@ Congratulations again for your game submission ({{ game.title }}) being accepted
 
 You still haven't told us whether or not you accept the offer of a table in the showcase, which you may do at {{ c.URL_BASE }}/mivs_applications/continue_app?id={{ game.studio.id }}
 
-You must accept or decline the space by {{ c.MIVS_CONFIRM_DEADLINE|datetime }}.  Telling us you aren't able to meet the requirements leaves your team on good terms with the MIVS staff; failing to show or not meeting the requirements will be taken into consideration for future events.
+You must accept or decline the space by {{ c.MIVS_CONFIRM_DEADLINE|datetime_local }}.  Telling us you aren't able to meet the requirements leaves your team on good terms with the MIVS staff; failing to show or not meeting the requirements will be taken into consideration for future events.
 
 {{ c.MIVS_EMAIL_SIGNATURE }}

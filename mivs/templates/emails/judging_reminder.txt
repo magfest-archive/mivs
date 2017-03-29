@@ -1,6 +1,6 @@
 {{ judge.attendee.first_name }},
 
-In our last email, we forgot to mention our timeline for when judging needs to be completed.  The final date we can accept judging is {{ c.JUDGING_DEADLINE|datetime }}.  However, we are encouraging judges to finish by {{ c.SOFT_JUDGING_DEADLINE|datetime }}, which will help us so that we can reassign any entries that still need judging.
+In our last email, we forgot to mention our timeline for when judging needs to be completed.  The final date we can accept judging is {{ c.JUDGING_DEADLINE|datetime_local }}.  However, we are encouraging judges to finish by {{ c.SOFT_JUDGING_DEADLINE|datetime_local }}, which will help us so that we can reassign any entries that still need judging.
 
 {% if judge.judging_complete %}Our records indicate that you've completed reviews of all of games you've been assigned.  Thanks!  Please let us know if you're available to judge any additional games if any other judges find themselves unable to do so.{% else %}Our records indicate that you have completed judging on {{ judge.game_reviews|length }} games, out of the {{ judge.game_reviews|length }} you have been assigned.  Please try to get the remainder evaluated before the deadline, and if you don't think you'll be able to do so, please let us know so that we can assign those games to another judge.{% endif %}
 

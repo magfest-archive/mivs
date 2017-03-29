@@ -14,7 +14,7 @@ This is your application-in-progress for the MAGFest Indie Videogame Showcase fo
 {% elif studio.comped_badges %}
     <h3>Accept or Decline</h3>
 
-    You have been accepted into the showcase, but we need you to confirm by {{ c.MIVS_CONFIRM_DEADLINE|datetime }} that you
+    You have been accepted into the showcase, but we need you to confirm by {{ c.MIVS_CONFIRM_DEADLINE|datetime_local }} that you
     are still interested and able to attend, which you may do by <a href="confirm">clicking here</a>.
 {% else %}
     <h3>Team Members</h3>
@@ -35,7 +35,7 @@ This is your application-in-progress for the MAGFest Indie Videogame Showcase fo
                     <i>Receives Emails</i>
                 {% else %}
                     <form method="post" action="delete_developer">
-                        {% csrf_token %}
+                        {{ csrf_token() }}
                         <input type="hidden" name="id" value="{{ developer.id }}" />
                         <input type="submit" value="Delete" />
                     </form>
@@ -50,7 +50,7 @@ This is your application-in-progress for the MAGFest Indie Videogame Showcase fo
 <h3>Games</h3>
 You have {% if c.BEFORE_ROUND_ONE_DEADLINE %}currently{% endif %} registered {{ studio.games|length }} game{{ studio.games|length|pluralize }}.
 {% if c.BEFORE_ROUND_ONE_DEADLINE %}
-    You may submit any number of games for consideration until {{ c.ROUND_ONE_DEADLINE|datetime }}
+    You may submit any number of games for consideration until {{ c.ROUND_ONE_DEADLINE|datetime_local }}
     after which no more games may be submitted.
 {% endif %}
 
@@ -82,15 +82,15 @@ You have {% if c.BEFORE_ROUND_ONE_DEADLINE %}currently{% endif %} registered {{ 
                 at least 30 seconds of uninterrupted gameplay.  This video will be utilized by our judges to
                 determine if your game is accepted through Round 1 of judging.  If your game is accepted into
                 the showcase, this video link may be embedded on the MIVS web-page and/or other places that
-                MAGFest advertises the MIVS area.  You must submit a video link before {{ c.ROUND_ONE_DEADLINE|datetime }}.
+                MAGFest advertises the MIVS area.  You must submit a video link before {{ c.ROUND_ONE_DEADLINE|datetime_local }}.
             {% elif c.AFTER_ROUND_ONE_DEADLINE and not c.HAS_INDIE_ADMIN_ACCESS %}
                 You may no longer submit this game for consideration, as it is past the
-                {{ c.ROUND_ONE_DEADLINE|datetime }} deadline.
+                {{ c.ROUND_ONE_DEADLINE|datetime_local }} deadline.
             {% else %}
                 Once you're ready for our judges to look at the video link you've provided, you can submit it
-                to our panel of judges for consideration anytime until {{ c.ROUND_ONE_DEADLINE|datetime }}:
+                to our panel of judges for consideration anytime until {{ c.ROUND_ONE_DEADLINE|datetime_local }}:
                 <form method="post" action="submit_video">
-                    {% csrf_token %}
+                    {{ csrf_token() }}
                     <input type="hidden" name="id" value="{{ game.id }}" />
                     <input type="submit" value="Submit Video for Consideration" />
                 </form>
@@ -102,7 +102,7 @@ You have {% if c.BEFORE_ROUND_ONE_DEADLINE %}currently{% endif %} registered {{ 
                     This game has been submitted.
                 {% elif c.AFTER_ROUND_TWO_DEADLINE %}
                     You may no longer submit this game for consideration, as it is past the
-                    {{ c.ROUND_TWO_DEADLINE|datetime }} deadline.
+                    {{ c.ROUND_TWO_DEADLINE|datetime_local }} deadline.
                 {% elif not game.submittable %}
                     You cannot submit this game until the following criteria are met:
                     <ul>
@@ -116,7 +116,7 @@ You have {% if c.BEFORE_ROUND_ONE_DEADLINE %}currently{% endif %} registered {{ 
                     to manage the game codes and screenshots after submitting.  Our judges will not look at your game until you
                     officially submit it by clicking this button:
                     <form method="post" action="submit_game" class="form-horizontal">
-                        {% csrf_token %}
+                        {{ csrf_token() }}
                         <input type="hidden" name="id" value="{{ game.id }}" />
                         <input type="submit" value="Submit Game For Consideration" />
                     </form>
@@ -142,7 +142,7 @@ You have {% if c.BEFORE_ROUND_ONE_DEADLINE %}currently{% endif %} registered {{ 
                             <td>{{ code.code }}</td>
                             <td>
                                 <form method="post" action="delete_code">
-                                {% csrf_token %}
+                                {{ csrf_token() }}
                                 <input type="hidden" name="id" value="{{ code.id }}" />
                                 <input type="submit" value="Delete" />
                                 </form>
@@ -166,7 +166,7 @@ You have {% if c.BEFORE_ROUND_ONE_DEADLINE %}currently{% endif %} registered {{ 
                     <td>{{ screenshot.description }}</td>
                     <td>
                         <form method="post" action="delete_screenshot">
-                        {% csrf_token %}
+                        {{ csrf_token() }}
                         <input type="hidden" name="id" value="{{ screenshot.id }}" />
                         <input type="submit" value="Delete" />
                         </form>

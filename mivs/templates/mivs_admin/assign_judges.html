@@ -8,7 +8,7 @@
 {% if game.reviews %}
     {{ game.title }} already has the following judges assigned:
     <form method="post" action="remove">
-        {% csrf_token %}
+        {{ csrf_token() }}
         <input type="hidden" name="game_id" value="{{ game.id }}" />
         <input type="hidden" name="return_to" value="assign_judges?game_id={{ game.id }}" />
         <table class="table">
@@ -40,10 +40,10 @@
 {% if matching %}
     <h3>Judges matching {{ game.title }}'s genres</h3>
 
-    The following judges have preferences which match {{ game.title }}'s listed genres ({{ game.genres_labels|join:' / ' }}).
+    The following judges have preferences which match {{ game.title }}'s listed genres ({{ game.genres_labels|join(' / ') }}).
 
     <form method="post" action="assign">
-        {% csrf_token %}
+        {{ csrf_token() }}
         <input type="hidden" name="game_id" value="{{ game.id }}" />
         <input type="hidden" name="return_to" value="assign_judges?game_id={{ game.id }}" />
         <table class="table">
@@ -58,7 +58,7 @@
             {% for judge in matching %}
                 <tr>
                     <td>{{ judge.full_name }}</td>
-                    <td>{{ judge.genres_labels|join:' / ' }}</td>
+                    <td>{{ judge.genres_labels|join(' / ') }}</td>
                     <td><input type="checkbox" name="judge_id" value="{{ judge.id }}" /></td>
                 </tr>
             {% endfor %}
@@ -75,7 +75,7 @@
     who you may still assign to review this game anyway as you find appropriate:
 
     <form method="post" action="assign">
-        {% csrf_token %}
+        {{ csrf_token() }}
         <input type="hidden" name="game_id" value="{{ game.id }}" />
         <input type="hidden" name="return_to" value="assign_judges?game_id={{ game.id }}" />
         <table class="table">
@@ -90,7 +90,7 @@
             {% for judge in nonmatching %}
                 <tr>
                     <td>{{ judge.full_name }}</td>
-                    <td>{{ judge.genres_labels|join:' / ' }}</td>
+                    <td>{{ judge.genres_labels|join(' / ') }}</td>
                     <td><input type="checkbox" name="judge_id" value="{{ judge.id }}" /></td>
                 </tr>
             {% endfor %}

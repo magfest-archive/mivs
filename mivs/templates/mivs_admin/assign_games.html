@@ -7,7 +7,7 @@
 
 {% if judge.reviews %}
   <form method="post" action="remove">
-      {% csrf_token %}
+      {{ csrf_token() }}
       <input type="hidden" name="judge_id" value="{{ judge.id }}" />
       <input type="hidden" name="return_to" value="assign_games?judge_id={{ judge.id }}" />
 
@@ -50,11 +50,11 @@
         already assigned to {{ judge.full_name }}.
     {% else %}
         Below is a list of games not already assigned to {{ judge.full_name }} which matches one or more of their preferred
-        genres ({{ judge.genres_labels|join:' / ' }}).
+        genres ({{ judge.genres_labels|join(' / ') }}).
     {% endif %}
 
     <form method="post" action="assign">
-        {% csrf_token %}
+        {{ csrf_token() }}
         <input type="hidden" name="judge_id" value="{{ judge.id }}" />
         <input type="hidden" name="return_to" value="assign_games?judge_id={{ judge.id }}" />
         <table class="table">
@@ -71,7 +71,7 @@
                 <tr>
                     <td>{{ game.title }}</td>
                     <td>{{ game.studio.name }}</td>
-                    <td>{{ game.genres_labels|join:' / ' }}</td>
+                    <td>{{ game.genres_labels|join(' / ') }}</td>
                     <td><input type="checkbox" name="game_id" value="{{ game.id }}" /></td>
                 </tr>
             {% endfor %}
@@ -88,7 +88,7 @@
     them for review anyway as you see appropriate:
 
     <form method="post" action="assign">
-        {% csrf_token %}
+        {{ csrf_token() }}
         <input type="hidden" name="judge_id" value="{{ judge.id }}" />
         <input type="hidden" name="return_to" value="assign_games?judge_id={{ judge.id }}" />
         <table class="table">
@@ -105,7 +105,7 @@
                 <tr>
                     <td>{{ game.title }}</td>
                     <td>{{ game.studio.name }}</td>
-                    <td>{{ game.genres_labels|join:' / ' }}</td>
+                    <td>{{ game.genres_labels|join(' / ') }}</td>
                     <td><input type="checkbox" name="game_id" value="{{ game.id }}" /></td>
                 </tr>
             {% endfor %}

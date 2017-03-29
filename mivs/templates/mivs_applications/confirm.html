@@ -39,7 +39,7 @@ have already left information for your presenters, so here is what will happen i
 <br/>
 
 <form method="post" action="confirm">
-    {% csrf_token %}
+    {{ csrf_token() }}
     <input type="submit" name="decision" value="Accept" />
     <input type="submit" name="decision" value="Decline" />
 </form>

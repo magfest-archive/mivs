@@ -25,7 +25,7 @@
 
 {% if allowed_to_submit %}
     <form method="post" action="studio" class="form-horizontal" role="form">
-        {% csrf_token %}
+        {{ csrf_token() }}
 
         <div class="form-group">
             <label class="col-sm-3 control-label">Studio Name:</label>

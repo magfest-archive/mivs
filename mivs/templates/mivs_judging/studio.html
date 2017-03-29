@@ -5,7 +5,7 @@
 
 <form method="post" action="studio" role="form" class="form-horizontal">
     <input type="hidden" name="id" value="{{ studio.id }}" />
-    {% csrf_token %}
+    {{ csrf_token() }}
 
     <div class="form-group">
         <label class="col-sm-2 control-label">Studio Name:</label>
@@ -56,7 +56,7 @@
     <div class="form-group">
         <label class="col-sm-2 control-label">Registered:</label>
         <div class="col-sm-6 game-display">
-            {{ studio.registered|datetime:"%B %-m" }}
+            {{ studio.registered|datetime_local("%B %-m") }}
         </div>
     </div>
 

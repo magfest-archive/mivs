@@ -6,7 +6,7 @@
 <form method="post" action="code" class="form-horizontal" role="form">
     <input type="hidden" name="id" value="{{ code.db_id }}" />
     <input type="hidden" name="game_id" value="{{ code.game.id }}" />
-    {% csrf_token %}
+    {{ csrf_token() }}
 
     <div class="form-group">
         <label class="col-sm-3 control-label">Code:</label>
@@ -18,7 +18,7 @@
     <div class="form-group">
         <label class="col-sm-3 control-label">Single or Shared Code:</label>
         <div class="col-sm-6">
-            {% checkbox code.unlimited_use %} This code can be shared among all judges instead of being assigned to a single judge.
+            {{ macros.checkbox(code, 'unlimited_use') }} This code can be shared among all judges instead of being assigned to a single judge.
         </div>
     </div>
 
