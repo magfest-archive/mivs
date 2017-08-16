@@ -54,7 +54,7 @@ You have {% if c.BEFORE_ROUND_ONE_DEADLINE %}currently{% endif %} registered {{ 
     after which no more games may be submitted.
 {% endif %}
 
-{% if allowed_to_add_game %}
+{% if c.ALLOWED_TO_SUBMIT_ROUND1 %}
     {% if c.HAS_INDIE_ADMIN_ACCESS %}
         <br/><br/><b><font color="red">
         ADMIN NOTE: Because you are logged in as a MIVS admin, you can still use this form to manually create a

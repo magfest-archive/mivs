@@ -1,17 +1,12 @@
 from mivs import *
 
 
-def allowed_to_submit_round1():
-    return c.BEFORE_ROUND_ONE_DEADLINE or c.HAS_INDIE_ADMIN_ACCESS
-
-
 @all_renderable()
 class Root:
     def index(self, session, message=''):
         return {
             'message': message,
             'studio': session.logged_in_studio(),
-            'allowed_to_add_game': allowed_to_submit_round1(),
         }
 
     def logout(self):
@@ -39,7 +34,7 @@ class Root:
         studio = session.indie_studio(dict(params, id=cherrypy.session.get('studio_id', 'None')), restricted=True)
         developer = session.indie_developer(params)
 
-        allowed_to_submit = allowed_to_submit_round1() or not studio.is_new
+        allowed_to_submit = c.ALLOWED_TO_SUBMIT_ROUND1 or not studio.is_new
 
         if cherrypy.request.method == 'POST' and allowed_to_submit:
             message = check(studio)
