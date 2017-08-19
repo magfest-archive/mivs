@@ -79,7 +79,7 @@ class Root:
 
                 if not attendee:
                     attendee = Attendee(first_name=first_name, last_name=last_name, email=email,
-                                        placeholder=True, badge_type=c.STAFF_BADGE, paid=c.NEED_NOT_PAY)
+                                        placeholder=True, badge_type=c.ATTENDEE_BADGE, paid=c.NEED_NOT_PAY)
                     session.add(attendee)
 
                 password = genpasswd()
