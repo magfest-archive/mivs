@@ -35,6 +35,10 @@ MIVSEmail(IndieStudio, 'MIVS - Wat no video?', 'videoless_studio.txt',
           ident='mivs_missing_video_inquiry',
           when=days_before(7, c.ROUND_ONE_DEADLINE))
 
+MIVSEmail(IndieGame, 'MIVS: Your Submitted Video Is Broken', 'video_broken.txt',
+          lambda game: game.video_broken,
+          ident='mivs_video_broken')
+
 MIVSEmail(IndieGame, 'Last chance to submit your game to MIVS', 'round_two_reminder.txt',
           lambda game: game.status == c.JUDGING and not game.submitted,
           ident='mivs_game_submission_reminder',

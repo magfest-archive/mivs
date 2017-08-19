@@ -216,6 +216,12 @@ class IndieGame(MagModel, ReviewMixin):
         return steps
 
     @property
+    def video_broken(self):
+        for r in self.reviews:
+            if r.video_status == c.BAD_LINK:
+                return True
+
+    @property
     def unlimited_code(self):
         for code in self.codes:
             if code.unlimited_use:
