@@ -21,21 +21,21 @@
     {{ csrf_token() }}
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Game Title:</label>
+        <label class="col-sm-3 control-label">Game Title</label>
         <div class="col-sm-6">
             <input class="form-control focus" type="text" name="title" value="{{ game.title }}" />
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Brief Description:</label>
+        <label class="col-sm-3 control-label">Brief Description</label>
         <div class="col-sm-6">
             <input class="form-control" type="text" maxlength="140" name="brief_description" value="{{ game.brief_description }}" />
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Genres:</label>
+        <label class="col-sm-3 control-label">Genres</label>
         <div class="col-sm-6">
             {{ macros.checkgroup(game, 'genres') }}
             <p class="help-block">
@@ -45,14 +45,14 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Full Description:</label>
+        <label class="col-sm-3 control-label">Full Description</label>
         <div class="col-sm-6">
             <textarea class="form-control" name="description" rows="4">{{ game.description }}</textarea>
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label optional-field">How to Play:</label>
+        <label class="col-sm-3 control-label optional-field">How to Play</label>
         <div class="col-sm-6">
             <textarea class="form-control" name="how_to_play" rows="2">{{ game.how_to_play }}</textarea>
             <p class="help-block">
@@ -63,21 +63,21 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label optional-field">Link to Video:</label>
+        <label class="col-sm-3 control-label">Link to Video</label>
         <div class="col-sm-6">
             <input class="form-control" type="text" name="link_to_video" value="{{ game.link_to_video }}" />
             <p class="help-block">
-                Please include a link to a video, no longer than 2 minutes, showing at least 30 seconds of uninterrupted
-                gameplay.  This video will be utilized by our judges to determine if your game is accepted through Round 1
-                of judging.  If your game is accepted into the showcase, this video link may be embedded on the MIVS
-                web-page and/or other places that MAGFest advertises the MIVS area.
+                Please include a link to a YouTube video, 720p or better, no longer than 2 minutes, showing at least 30 seconds
+                of uninterrupted gameplay.  This video will be utilized by our judges to determine if your game is accepted
+                through Round 1 of judging.  If your game is accepted into the showcase, this video link may be embedded on
+                the MIVS web-page and/or other places that MAGFest advertises the MIVS area.
             </p>
         </div>
     </div>
 
     {% if c.ALLOW_GAME_SUBMISSION and game.status != c.VIDEO_DECLINED %}
         <div class="form-group">
-            <label class="col-sm-3 control-label optional-field">Link to Game:</label>
+            <label class="col-sm-3 control-label optional-field">Link to Game</label>
             <div class="col-sm-6">
                 <input class="form-control" type="text" name="link_to_game" value="{{ game.link_to_game }}" />
                 <p class="help-block">
@@ -88,7 +88,7 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label optional-field">Download Password:</label>
+            <label class="col-sm-3 control-label optional-field">Download Password</label>
             <div class="col-sm-6">
                 <input class="form-control" type="text" name="password_to_game" value="{{ game.password_to_game }}" />
                 <p class="help-block">
@@ -99,7 +99,7 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label">Game Activation Code:</label>
+            <label class="col-sm-3 control-label">Game Activation Code</label>
             <div class="col-sm-6">
                 <select name="code_type" class="form-control">
                     {{ options(c.CODE_TYPE_OPTS,game.code_type) }}
@@ -111,14 +111,14 @@
         </div>
 
         <div class="form-group" style="display: none">
-            <label class="col-sm-3 control-label">Activation Code Instructions:</label>
+            <label class="col-sm-3 control-label">Activation Code Instructions</label>
             <div class="col-sm-6">
                 <input class="form-control" type="text" name="code_instructions" value="{{ game.code_instructions }}" />
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label">Game Build Status:</label>
+            <label class="col-sm-3 control-label">Game Build Status</label>
             <div class="col-sm-6">
                 <select name="build_status" class="form-control">
                     {{ options(c.BUILD_STATUS_OPTS,game.build_status) }}
@@ -127,7 +127,7 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label optional-field">Build Notes:</label>
+            <label class="col-sm-3 control-label optional-field">Build Notes</label>
             <div class="col-sm-6">
                 <input class="form-control" type="text" name="build_notes" value="{{ game.build_notes }}" />
                 <p class="help-block">
@@ -139,7 +139,7 @@
     {% endif %}
 
     <div class="form-group">
-        <label class="col-sm-3 control-label optional-field">Demoed At Other Events:</label>
+        <label class="col-sm-3 control-label optional-field">Demoed At Other Events</label>
         <div class="col-sm-6">
             <textarea class="form-control" name="shown_events" rows="3">{{ game.shown_events }}</textarea>
             <p class="help-block">
@@ -149,7 +149,7 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Showtime Agreement:</label>
+        <label class="col-sm-3 control-label">Showtime Agreement</label>
         <div class="col-sm-6">
             {{ macros.checkbox(game, 'agreed_showtimes') }}
             At least one person from my team will be available to man our booth from 11am to 7pm each full convention day and
@@ -159,7 +159,7 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Liability Waiver:</label>
+        <label class="col-sm-3 control-label">Liability Waiver</label>
         <div class="col-sm-6">
             {{ macros.checkbox(game, 'agreed_liability') }}
             I understand that I am responsible for all equipment brought to the indie showcase by myself or my team,
@@ -168,7 +168,7 @@
     </div>
 
     <div class="form-group">
-        <div class="col-sm-6 col-sm-offset-2">
+        <div class="col-sm-6 col-sm-offset-3">
             <button type="submit" class="btn btn-primary">{% if game.is_new %}Add Game{% else %}Upload Changes{% endif %}</button>
         </div>
     </div>

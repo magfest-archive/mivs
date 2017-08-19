@@ -1,6 +1,23 @@
 {% extends "mivs_base.html" %}
 {% block body %}
 
+<style type="text/css">
+
+.game-container {
+  margin-bottom: 30px;
+  margin-left: 60px;
+}
+
+.game-container h4 {
+  margin-top: 30px;
+}
+
+.game-container h4:first-child {
+  margin-top: 0;
+}
+
+</style>
+
 <h2>MAGFest Indie Videogame Showcase Application</h2>
 This is your application-in-progress for the MAGFest Indie Videogame Showcase for your studio
 <a href="studio">{{ studio.name }}</a>.  If you are not a member of {{ studio.name }} then please
@@ -73,10 +90,45 @@ You have {% if c.BEFORE_ROUND_ONE_DEADLINE %}currently{% endif %} registered {{ 
     {% if game.status in c.FINAL_GAME_STATUSES %}
         This game has been marked as {{ game.status_label }}.
     {% else %}
-        <div style="margin-left: 8ex">
+        {% set needs_screenshots = game.screenshots|length < 2 %}
+        {% set can_delete_screenshots = (not game.submitted and not game.video_submitted) or game.screenshots|length > 2%}
+        <div class="game-container">
+            <h4>Screenshots</h4>
+            You have uploaded {{ game.screenshots|length }} screenshot{{ game.screenshots|length|pluralize }}.
+            {% if needs_screenshots %}
+              <b style="color: red;">You must upload at least 2 screenshots.</b>
+              <br>
+              These should be your two best gameplay images, highest res possible (up to 1920x1080).
+              16:9 preferred but we can work with other aspect ratios.
+            {% elif not can_delete_screenshots %}
+              We require at least 2 screenshots – so if you wish to replace a
+              screenshot, first upload a new one and then delete the old one.
+            {% endif %}
+            <table>
+            {% for screenshot in game.screenshots %}
+                <tr>
+                    <td><ul><li></li></ul></td>
+                    <td><a target="_blank" href="{{ screenshot.url }}">{{ screenshot.filename }}</a></td>
+                    <td>{{ screenshot.description }}</td>
+                    <td>
+                      {% if can_delete_screenshots %}
+                        <form method="post" action="delete_screenshot">
+                        {{ csrf_token() }}
+                        <input type="hidden" name="id" value="{{ screenshot.id }}" />
+                        <input class="btn btn-sm btn-danger" type="submit" value="Delete" />
+                        </form>
+                      {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </table>
+            <a class="btn btn-primary" href="screenshot?game_id={{ game.id }}">Upload a Screenshot</a>
+
             <h4>Video Submission</h4>
             {% if game.video_submitted %}
                 The video of your game has been submitted.
+            {% elif needs_screenshots %}
+                Please upload at least two screenshots before submitting the video of your game.
             {% elif not game.video_submittable %}
                 Please include a link to a video using the Edit link above, no longer than 2 minutes, showing
                 at least 30 seconds of uninterrupted gameplay.  This video will be utilized by our judges to
@@ -92,7 +144,7 @@ You have {% if c.BEFORE_ROUND_ONE_DEADLINE %}currently{% endif %} registered {{ 
                 <form method="post" action="submit_video">
                     {{ csrf_token() }}
                     <input type="hidden" name="id" value="{{ game.id }}" />
-                    <input type="submit" value="Submit Video for Consideration" />
+                    <input class="btn btn-primary" type="submit" value="Submit Video for Consideration" />
                 </form>
             {% endif %}
 
@@ -100,6 +152,8 @@ You have {% if c.BEFORE_ROUND_ONE_DEADLINE %}currently{% endif %} registered {{ 
                 <h4>Game Submission</h4>
                 {% if game.submitted %}
                     This game has been submitted.
+                {% elif needs_screenshots %}
+                    Please upload at least two screenshots before submitting your game for consideration.
                 {% elif c.AFTER_ROUND_TWO_DEADLINE %}
                     You may no longer submit this game for consideration, as it is past the
                     {{ c.ROUND_TWO_DEADLINE|datetime_local }} deadline.
@@ -118,7 +172,7 @@ You have {% if c.BEFORE_ROUND_ONE_DEADLINE %}currently{% endif %} registered {{ 
                     <form method="post" action="submit_game" class="form-horizontal">
                         {{ csrf_token() }}
                         <input type="hidden" name="id" value="{{ game.id }}" />
-                        <input type="submit" value="Submit Game For Consideration" />
+                        <input class="btn btn-primary" type="submit" value="Submit Game For Consideration" />
                     </form>
                 {% endif %}
             {% endif %}
@@ -155,26 +209,6 @@ You have {% if c.BEFORE_ROUND_ONE_DEADLINE %}currently{% endif %} registered {{ 
                     {% endif %}
                 {% endif %}
             {% endif %}
-
-            <h4>Screenshots</h4>
-            You have uploaded {{ game.screenshots|length }} screenshot{{ game.screenshots|length|pluralize }}
-            <table>
-            {% for screenshot in game.screenshots %}
-                <tr>
-                    <td><ul><li></li></ul></td>
-                    <td><a target="_blank" href="{{ screenshot.url }}">{{ screenshot.filename }}</a></td>
-                    <td>{{ screenshot.description }}</td>
-                    <td>
-                        <form method="post" action="delete_screenshot">
-                        {{ csrf_token() }}
-                        <input type="hidden" name="id" value="{{ screenshot.id }}" />
-                        <input type="submit" value="Delete" />
-                        </form>
-                    </td>
-                </tr>
-            {% endfor %}
-            </table>
-            <a href="screenshot?game_id={{ game.id }}">Upload a screenshot</a>
         </div>
     {% endif %}
 {% endfor %}

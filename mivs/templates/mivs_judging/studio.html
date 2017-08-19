@@ -8,7 +8,7 @@
     {{ csrf_token() }}
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">Studio Name:</label>
+        <label class="col-sm-2 control-label">Studio Name</label>
         <div class="col-sm-6 game-display">
             {% if c.HAS_INDIE_ADMIN_ACCESS %}
                 <a href="../mivs_applications/continue_app?id={{ studio.id }}">{{ studio.name }}</a>
@@ -20,7 +20,7 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">Status:</label>
+        <label class="col-sm-2 control-label">Status</label>
         <div class="col-sm-6 game-display">
             {{ studio.status_label }}
         </div>
@@ -28,7 +28,7 @@
 
     {% if studio.website %}
         <div class="form-group">
-            <label class="col-sm-2 control-label">Website:</label>
+            <label class="col-sm-2 control-label">Website</label>
             <div class="col-sm-6 game-display">
                 <a href="{{ studio.website_href }}">{{ studio.website }}</a>
             </div>
@@ -37,7 +37,7 @@
 
     {% if studio.facebook %}
         <div class="form-group">
-            <label class="col-sm-2 control-label">Facebook:</label>
+            <label class="col-sm-2 control-label">Facebook</label>
             <div class="col-sm-6 game-display">
                 {{ studio.facebook }}
             </div>
@@ -46,7 +46,7 @@
 
     {% if studio.twitter %}
         <div class="form-group">
-            <label class="col-sm-2 control-label">Twitter Handle:</label>
+            <label class="col-sm-2 control-label">Twitter Handle</label>
             <div class="col-sm-6 game-display">
                 {{ studio.twitter }}
             </div>
@@ -54,14 +54,14 @@
     {% endif %}
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">Registered:</label>
+        <label class="col-sm-2 control-label">Registered</label>
         <div class="col-sm-6 game-display">
             {{ studio.registered|datetime_local("%B %-m") }}
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">Presenters:</label>
+        <label class="col-sm-2 control-label">Presenters</label>
         <div class="col-sm-6 game-display">
             <table class="nobr">
             {% for dev in studio.developers %}
@@ -81,7 +81,7 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">Games:</label>
+        <label class="col-sm-2 control-label">Games</label>
         <div class="col-sm-6 game-display">
             {% for game in studio.games %}
                 <div>{{ game.title }}</div>
@@ -90,7 +90,7 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">Notes:</label>
+        <label class="col-sm-2 control-label">Notes</label>
         <div class="col-sm-6 game-display">
             <textarea class="form-control" name="staff_notes" rows="4">{{ studio.staff_notes }}</textarea>
         </div>

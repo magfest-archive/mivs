@@ -11,35 +11,35 @@ for reviewing the video:
     {{ csrf_token() }}
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Game Title:</label>
+        <label class="col-sm-3 control-label">Game Title</label>
         <div class="col-sm-6 game-display">
             {{ review.game.title }}
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Studio:</label>
+        <label class="col-sm-3 control-label">Studio</label>
         <div class="col-sm-6 game-display">
             <a href="studio?id={{ review.game.studio.id }}">{{ review.game.studio.name }}</a>
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Genres:</label>
+        <label class="col-sm-3 control-label">Genres</label>
         <div class="col-sm-6 game-display">
             {{ review.game.genres_labels|join(' / ') }}
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Brief Description:</label>
+        <label class="col-sm-3 control-label">Brief Description</label>
         <div class="col-sm-6 game-display">
             {{ review.game.brief_description }}
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Full Description:</label>
+        <label class="col-sm-3 control-label">Full Description</label>
         <div class="col-sm-6 game-display">
             {{ review.game.description|linebreaksbr }}
         </div>
@@ -47,7 +47,7 @@ for reviewing the video:
 
     {% if review.game.shown_events %}
         <div class="form-group">
-            <label class="col-sm-3 control-label">Shown at Other Events:</label>
+            <label class="col-sm-3 control-label">Shown at Other Events</label>
             <div class="col-sm-6 game-display">
                 {{ review.game.shown_events|linebreaksbr }}
             </div>
@@ -55,14 +55,14 @@ for reviewing the video:
     {% endif %}
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Link to Video:</label>
+        <label class="col-sm-3 control-label">Link to Video</label>
         <div class="col-sm-6 game-display">
             <a target="_blank" href="{{ review.game.video_href }}">{{ review.game.link_to_video }}</a>
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Video Status:</label>
+        <label class="col-sm-3 control-label">Video Status</label>
         <div class="col-sm-6">
             <select name="video_status" class="form-control">
                 {{ options(c.VIDEO_REVIEW_STATUS_OPTS,review.video_status) }}
@@ -74,20 +74,20 @@ for reviewing the video:
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Score:</label>
+        <label class="col-sm-3 control-label">Score</label>
         <div class="col-sm-6">
             <select name="video_score" class="form-control">
                 {{ options(c.VIDEO_REVIEW_OPTS,review.video_score) }}
             </select>
             <p class="help-block">
-                Please score the video on a scale of 1-5 where 1 is the lowest score and 5 is the highest score.
-                If you were not able to view the video, you should leave this un-scored.
+                Please choose whether this video should be accepted or rejected.
+                If you were not able to view the video, you should leave this unchanged.
             </p>
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label optional-field">Notes:</label>
+        <label class="col-sm-3 control-label optional-field">Notes</label>
         <div class="col-sm-6">
             <textarea class="form-control" name="video_review" rows="4">{{ review.video_review }}</textarea>
             <p class="help-block">

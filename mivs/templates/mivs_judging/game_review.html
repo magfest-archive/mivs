@@ -11,35 +11,35 @@ for reviewing the game:
     {{ csrf_token() }}
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Game Title:</label>
+        <label class="col-sm-3 control-label">Game Title</label>
         <div class="col-sm-6 game-display">
             {{ review.game.title }}
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Studio:</label>
+        <label class="col-sm-3 control-label">Studio</label>
         <div class="col-sm-6 game-display">
             <a href="studio?id={{ review.game.studio.id }}">{{ review.game.studio.name }}</a>
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Genres:</label>
+        <label class="col-sm-3 control-label">Genres</label>
         <div class="col-sm-6 game-display">
             {{ review.game.genres_labels|join(' / ') }}
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Brief Description:</label>
+        <label class="col-sm-3 control-label">Brief Description</label>
         <div class="col-sm-6 game-display">
             {{ review.game.brief_description }}
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Full Description:</label>
+        <label class="col-sm-3 control-label">Full Description</label>
         <div class="col-sm-6 game-display">
             {{ review.game.description|linebreaksbr }}
         </div>
@@ -47,7 +47,7 @@ for reviewing the game:
 
     {% if review.game.shown_events %}
         <div class="form-group">
-            <label class="col-sm-3 control-label">Shown at Other Events:</label>
+            <label class="col-sm-3 control-label">Shown at Other Events</label>
             <div class="col-sm-6 game-display">
                 {{ review.game.shown_events|linebreaksbr }}
             </div>
@@ -55,7 +55,7 @@ for reviewing the game:
     {% endif %}
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Link to Game:</label>
+        <label class="col-sm-3 control-label">Link to Game</label>
         <div class="col-sm-6 game-display">
             <a target="_blank" href="{{ review.game.href }}">{{ review.game.link_to_game }}</a>
         </div>
@@ -63,7 +63,7 @@ for reviewing the game:
 
     {% if review.game.password_to_game %}
         <div class="form-group">
-            <label class="col-sm-3 control-label">Password:</label>
+            <label class="col-sm-3 control-label">Password</label>
             <div class="col-sm-6 game-display">
                 {{ review.game.password_to_game }}
             </div>
@@ -71,7 +71,7 @@ for reviewing the game:
     {% endif %}
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Game Code Requirements:</label>
+        <label class="col-sm-3 control-label">Game Code Requirements</label>
         <div class="col-sm-6 game-display">
             {{ review.game.code_type_label }}
         </div>
@@ -79,7 +79,7 @@ for reviewing the game:
 
     {% if review.game.code_instructions %}
         <div class="form-group">
-            <label class="col-sm-3 control-label">Code Instructions:</label>
+            <label class="col-sm-3 control-label">Code Instructions</label>
             <div class="col-sm-6 game-display">
                 {{ review.game.code_instructions|linebreaksbr }}
             </div>
@@ -88,7 +88,7 @@ for reviewing the game:
 
     {% if review.game.code_type != c.NO_CODE %}
         <div class="form-group">
-            <label class="col-sm-3 control-label">Game Code:</label>
+            <label class="col-sm-3 control-label">Game Code</label>
             <div class="col-sm-6 game-display">
                 {{ game_code.code|default("No code available due to an error") }}
             </div>
@@ -96,7 +96,7 @@ for reviewing the game:
     {% endif %}
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Game Status:</label>
+        <label class="col-sm-3 control-label">Game Status</label>
         <div class="col-sm-6">
             <select name="game_status" class="form-control">
                 {{ options(c.GAME_REVIEW_STATUS_OPTS,review.game_status) }}
@@ -108,7 +108,7 @@ for reviewing the game:
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Score:</label>
+        <label class="col-sm-3 control-label">Score</label>
         <div class="col-sm-6">
             <select name="game_score" class="form-control">
                 <option value="0">Rate this Game</option>
@@ -122,7 +122,7 @@ for reviewing the game:
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label optional-field">Notes:</label>
+        <label class="col-sm-3 control-label optional-field">Notes</label>
         <div class="col-sm-6">
             <textarea class="form-control" name="game_review" rows="4">{{ review.game_review }}</textarea>
             <p class="help-block">

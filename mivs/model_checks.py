@@ -13,7 +13,10 @@ def _is_invalid_url(url):
         return True
 
 
-IndieStudio.required = [('name', 'Studio Name')]
+IndieStudio.required = [
+    ('name', 'Studio Name'),
+    ('website', 'Website')
+]
 
 
 @validation.IndieStudio
@@ -56,6 +59,7 @@ IndieGame.required = [
     ('brief_description', 'Brief Description'),
     ('genres', 'Genres'),
     ('description', 'Full Description'),
+    ('link_to_video', 'Link to Video')
 ]
 
 

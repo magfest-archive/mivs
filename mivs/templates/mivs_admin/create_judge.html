@@ -14,35 +14,35 @@ Enter the name and email address of the person you'd like to register as a MIVS 
     {{ csrf_token() }}
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">First Name:</label>
+        <label class="col-sm-3 control-label">First Name</label>
         <div class="col-sm-6">
             <input class="form-control focus" type="text" name="first_name" value="{{ first_name }}" />
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Last Name:</label>
+        <label class="col-sm-3 control-label">Last Name</label>
         <div class="col-sm-6">
             <input class="form-control focus" type="text" name="last_name" value="{{ last_name }}" />
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Email Address:</label>
+        <label class="col-sm-3 control-label">Email Address</label>
         <div class="col-sm-6">
             <input class="form-control focus" type="text" name="email" value="{{ email }}" />
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Genres:</label>
+        <label class="col-sm-3 control-label">Genres</label>
         <div class="col-sm-6">
             {{ macros.checkgroup(judge, 'genres') }}
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label optional-field">MIVS Staff Notes:</label>
+        <label class="col-sm-3 control-label optional-field">MIVS Staff Notes</label>
         <div class="col-sm-6">
             <textarea class="form-control" name="staff_notes" rows="4">{{ judge.staff_notes }}</textarea>
         </div>

@@ -8,14 +8,14 @@
     {{ csrf_token() }}
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Genres:</label>
+        <label class="col-sm-3 control-label">Genres</label>
         <div class="col-sm-6">
             {{ macros.checkgroup(judge, 'genres') }}
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label optional-field">MIVS Staff Notes:</label>
+        <label class="col-sm-3 control-label optional-field">MIVS Staff Notes</label>
         <div class="col-sm-6">
             <textarea class="form-control" name="staff_notes" rows="4">{{ judge.staff_notes }}</textarea>
         </div>
