@@ -43,15 +43,10 @@
 {% endif %}
 
 {% if matching %}
-    <h3>Games matching {{ judge.full_name }}'s preferred genres</h3>
+    <h3>Games matching {{ judge.full_name }}'s platforms</h3>
 
-    {% if judge.all_genres %}
-        Because {{ judge.full_name }} is listed as being interested in all game genres, below is a list of all games not
-        already assigned to {{ judge.full_name }}.
-    {% else %}
-        Below is a list of games not already assigned to {{ judge.full_name }} which matches one or more of their preferred
-        genres ({{ judge.genres_labels|join(' / ') }}).
-    {% endif %}
+    Below is a list of games not already assigned to {{ judge.full_name }} which matches one or more of their owned
+    platforms ({{ judge.platforms_labels|join(' / ') }}).
 
     <form method="post" action="assign">
         {{ csrf_token() }}
@@ -62,7 +57,9 @@
                 <tr>
                     <th>Game</th>
                     <th>Studio</th>
+                    <th>Platforms</th>
                     <th>Genres</th>
+                    <th>Matching Genres?</th>
                     <th>Assign <a href="#" onClick="return mivs.checkAll(this)">(Check All)</a></th>
                 </tr>
             </thead>
@@ -71,7 +68,10 @@
                 <tr>
                     <td>{{ game.title }}</td>
                     <td>{{ game.studio.name }}</td>
+                    <td>{{ game.platforms_labels|join(' / ') }}
+                    {% if game.platforms_text %}Other: {{ game.platforms_text }}{% endif %}</td>
                     <td>{{ game.genres_labels|join(' / ') }}</td>
+                    <td>{{ matching_genre|yesno }}</td>
                     <td><input type="checkbox" name="game_id" value="{{ game.id }}" /></td>
                 </tr>
             {% endfor %}
@@ -84,7 +84,7 @@
 {% if nonmatching %}
     <h3>Other Games</h3>
 
-    Below are a list of games NOT matching {{ judge.full_name }}'s preferred genres, which you may still assign to
+    Below are a list of games NOT matching {{ judge.full_name }}'s owned platforms, which you may still assign to
     them for review anyway as you see appropriate:
 
     <form method="post" action="assign">
@@ -96,6 +96,7 @@
                 <tr>
                     <th>Game</th>
                     <th>Studio</th>
+                    <th>Platforms</th>
                     <th>Genres</th>
                     <th>Assign <a href="#" onClick="return mivs.checkAll(this)">(Check All)</a></th>
                 </tr>
@@ -105,6 +106,8 @@
                 <tr>
                     <td>{{ game.title }}</td>
                     <td>{{ game.studio.name }}</td>
+                    <td>{{ game.platforms_labels|join(' / ') }}
+                    {% if game.platforms_text %}Other: {{ game.platforms_text }}{% endif %}</td>
                     <td>{{ game.genres_labels|join(' / ') }}</td>
                     <td><input type="checkbox" name="game_id" value="{{ game.id }}" /></td>
                 </tr>

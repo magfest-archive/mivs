@@ -66,6 +66,8 @@ class Group:
 class IndieJudge(MagModel, ReviewMixin):
     admin_id    = Column(UUID, ForeignKey('admin_account.id'))
     genres      = Column(MultiChoice(c.INDIE_JUDGE_GENRE_OPTS))
+    platforms   = Column(MultiChoice(c.INDIE_PLATFORM_OPTS))
+    platforms_text = Column(UnicodeText)
     staff_notes = Column(UnicodeText)
 
     codes = relationship('IndieGameCode', backref='judge')
@@ -161,6 +163,8 @@ class IndieGame(MagModel, ReviewMixin):
     title             = Column(UnicodeText)
     brief_description = Column(UnicodeText)
     genres            = Column(MultiChoice(c.INDIE_GENRE_OPTS))
+    platforms         = Column(MultiChoice(c.INDIE_PLATFORM_OPTS))
+    platforms_text    = Column(UnicodeText)
     description       = Column(UnicodeText)       # 500 max
     how_to_play       = Column(UnicodeText)       # 1000 max
     link_to_video     = Column(UnicodeText)

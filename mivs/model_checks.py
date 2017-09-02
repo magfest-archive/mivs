@@ -64,6 +64,12 @@ IndieGame.required = [
 
 
 @validation.IndieGame
+def platforms_or_other(game):
+    if not game.platforms and not game.platforms_text:
+        return 'Please select a platform your game runs on or describe another platform in the box provided.'
+
+
+@validation.IndieGame
 def new_game_deadline(game):
     if game.is_new and c.AFTER_ROUND_ONE_DEADLINE and not c.HAS_INDIE_ADMIN_ACCESS:
         return 'Sorry, but the round one deadline has already passed, so no new games may be registered'

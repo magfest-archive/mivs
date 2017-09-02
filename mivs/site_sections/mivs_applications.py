@@ -55,7 +55,7 @@ class Root:
         }
 
     def game(self, session, message='', **params):
-        game = session.indie_game(params, checkgroups=['genres'], bools=['agreed_liability', 'agreed_showtimes'], applicant=True)
+        game = session.indie_game(params, checkgroups=['genres', 'platforms'], bools=['agreed_liability', 'agreed_showtimes'], applicant=True)
         if cherrypy.request.method == 'POST':
             message = check(game)
             if not message:
