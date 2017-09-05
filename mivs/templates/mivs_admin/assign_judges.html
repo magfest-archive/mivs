@@ -5,6 +5,9 @@
 
 <a class="return-link" href="index">Return to main judge/game list</a>
 
+  <strong>{{ game.title }}'s Platform(s)</strong>: {{ game.platforms_labels|join(' / ') }}<br/>
+  <strong>{{ game.title }}'s Genre(s)</strong>: {{ game.genres_labels|join(' / ') }}<br/><br/>
+
 {% if game.reviews %}
     {{ game.title }} already has the following judges assigned:
     <form method="post" action="remove">
@@ -38,9 +41,9 @@
 {% endif %}
 
 {% if matching %}
-    <h3>Judges matching {{ game.title }}'s genres</h3>
+    <h3>Judges matching {{ game.title }}'s platforms</h3>
 
-    The following judges have preferences which match {{ game.title }}'s listed genres ({{ game.genres_labels|join(' / ') }}).
+    The following judges have platforms which match {{ game.title }}'s listed platforms.
 
     <form method="post" action="assign">
         {{ csrf_token() }}
@@ -50,7 +53,9 @@
             <thead>
                 <tr>
                     <th>Judge</th>
+                    <th>Platforms</th>
                     <th>Genres</th>
+                    <th>Matching Genres?</th>
                     <th>Assign <a href="#" onClick="return mivs.checkAll(this)">(Check All)</a></th>
                 </tr>
             </thead>
@@ -58,7 +63,10 @@
             {% for judge in matching %}
                 <tr>
                     <td>{{ judge.full_name }}</td>
+                    <td>{{ judge.platforms_labels|join(' / ') }}
+                      {% if judge.platforms_text %}Other: {{ judge.platforms_text }}{% endif %}</td>
                     <td>{{ judge.genres_labels|join(' / ') }}</td>
+                    <td>{{ matching_genre|yesno }}</td>
                     <td><input type="checkbox" name="judge_id" value="{{ judge.id }}" /></td>
                 </tr>
             {% endfor %}
@@ -71,7 +79,7 @@
 {% if nonmatching %}
     <h3>Other Judges</h3>
 
-    Below is a list of judges whose preferred genres do NOT match {{ game.title }}'s listed genres,
+    Below is a list of judges whose platforms do NOT match {{ game.title }}'s listed platforms,
     who you may still assign to review this game anyway as you find appropriate:
 
     <form method="post" action="assign">
@@ -82,6 +90,7 @@
             <thead>
                 <tr>
                     <th>Judge</th>
+                    <th>Platforms</th>
                     <th>Genres</th>
                     <th>Assign <a href="#" onClick="return mivs.checkAll(this)">(Check All)</a></th>
                 </tr>
@@ -90,6 +99,8 @@
             {% for judge in nonmatching %}
                 <tr>
                     <td>{{ judge.full_name }}</td>
+                    <td>{{ judge.platforms_labels|join(' / ') }}
+                    {% if judge.platforms_text %}Other: {{ judge.platforms_text }}{% endif %}s</td>
                     <td>{{ judge.genres_labels|join(' / ') }}</td>
                     <td><input type="checkbox" name="judge_id" value="{{ judge.id }}" /></td>
                 </tr>

@@ -118,28 +118,29 @@ class Root:
     def assign_games(self, session, judge_id, message=''):
         judge = session.indie_judge(judge_id)
         unassigned_games = [g for g in session.indie_games() if g.video_submitted and judge.id not in (r.judge_id for r in g.reviews)]
-        if judge.all_genres:
-            matching, nonmatching = unassigned_games, []
-        else:
-            matching = [g for g in unassigned_games if set(judge.genres_ints).intersection(g.genres_ints)]
-            nonmatching = [g for g in unassigned_games if g not in matching]
+        matching = [g for g in unassigned_games if set(judge.platforms_ints).intersection(g.platforms_ints)]
+        matching_genre = [g for g in unassigned_games if judge.all_genres or set(judge.genres_ints).intersection(g.genres_ints)]
+        nonmatching = [g for g in unassigned_games if g not in matching]
 
         return {
             'judge': judge,
             'message': message,
             'matching': matching,
+            'matching_genre': matching_genre,
             'nonmatching': nonmatching
         }
 
     def assign_judges(self, session, game_id, message=''):
         game = session.indie_game(game_id)
         unassigned_judges = [j for j in session.indie_judges() if j.id not in (r.judge_id for r in game.reviews)]
-        matching = [j for j in unassigned_judges if j.all_genres or set(game.genres_ints).intersection(j.genres_ints)]
+        matching = [j for j in unassigned_judges if set(game.platforms_ints).intersection(j.platforms_ints)]
+        matching_genre = [j for j in unassigned_judges if j.all_genres or set(game.genres_ints).intersection(j.genres_ints)]
         nonmatching = [j for j in unassigned_judges if j not in matching]
         return {
             'game': game,
             'message': message,
             'matching': matching,
+            'matching_genre': matching_genre,
             'nonmatching': nonmatching
         }
 
