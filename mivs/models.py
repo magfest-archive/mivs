@@ -293,6 +293,7 @@ class IndieGameReview(MagModel):
     judge_id           = Column(UUID, ForeignKey('indie_judge.id'))
     video_status       = Column(Choice(c.VIDEO_REVIEW_STATUS_OPTS), default=c.PENDING)
     game_status        = Column(Choice(c.GAME_REVIEW_STATUS_OPTS), default=c.PENDING)
+    game_content_bad   = Column(Boolean, default=False)
     video_score        = Column(Choice(c.VIDEO_REVIEW_OPTS), default=c.PENDING)
     game_score         = Column(Integer, default=0)  # 0 = not reviewed, 1-10 score (10 is best)
     video_review       = Column(UnicodeText)

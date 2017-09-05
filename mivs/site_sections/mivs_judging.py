@@ -33,7 +33,7 @@ class Root:
         }
 
     def game_review(self, session, message='', **params):
-        review = session.indie_game_review(params)
+        review = session.indie_game_review(params, bools=['game_content_bad'])
         if cherrypy.request.method == 'POST':
             if review.game_status == c.PENDING:
                 message = 'You must select a Game Status to tell us whether or not you were able to download and run the game'

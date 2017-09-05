@@ -43,6 +43,7 @@
     <tr>
         <th>Judge</th>
         <th>Game Status</th>
+        <th>Inappropriate Content?</th>
         <th>Score</th>
         <th>Notes</th>
     </tr>
@@ -52,6 +53,7 @@
     <tr>
         <td>{{ review.judge.full_name }}</td>
         <td>{{ review.game_status_label }}</td>
+        <td>{{ review.game_content_bad|yesno }}</td>
         <td>{% if review.game_score %}{{ review.game_score }}{% endif %}</td>
         <td>{{ review.game_review|linebreaksbr }}</td>
     </tr>
