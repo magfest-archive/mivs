@@ -10,6 +10,12 @@ class Root:
             'games': [g for g in session.indie_games() if g.video_submitted]
         }
 
+    def studios(self, session, message=''):
+        return {
+            'message': message,
+            'studios': session.query(IndieStudio).all()
+        }
+
     @csv_file
     def social_media(self, out, session):
         out.writerow(['Studio', 'Website', 'Twitter', 'Facebook'])

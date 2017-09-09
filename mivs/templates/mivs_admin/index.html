@@ -25,6 +25,7 @@
         <td><a href="assign_games?judge_id={{ judge.id }}">{{ judge.reviews|length }}</a></td>
         <td>{{ judge.video_reviews|length }}</td>
         <td>{{ judge.game_reviews|length }}</td>
+    </tr>
 {% endfor %}
 </tbody>
 </table>
@@ -79,6 +80,7 @@
             {% endif %}
         </td>
         <td>{{ game.average_score }}</td>
+    </tr>
 {% endfor %}
 </tbody>
 </table>
