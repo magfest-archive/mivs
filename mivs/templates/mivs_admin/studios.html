@@ -42,7 +42,7 @@
       {{ studio.website|url_to_link(is_relative=False) }}
     </td>
     <td>
-      {{ c.STUDIO_STATUS[studio.status] }}
+      {{ studio.status_label }}
     </td>
   </tr>
 {% endfor %}
