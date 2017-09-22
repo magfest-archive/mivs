@@ -40,6 +40,11 @@ This is your application-in-progress for the MAGFest Indie Videogame Showcase fo
     One badge for yourself and one can be utilized by another team member.  Additional team members must purchase their badges.
     Transfer of badges between team members is prohibited.
 
+  {% if not studio.primary_contact %}
+    <br/><br/><strong>Warning</strong>: No one is currently assigned as the primary contact for this studio. You must assign a
+    developer as a primary contact in order to receive emails.
+  {% endif %}
+
     <table>
     {% for developer in studio.developers %}
         <tr>
@@ -49,7 +54,7 @@ This is your application-in-progress for the MAGFest Indie Videogame Showcase fo
             <td>{{ developer.email }}</td>
             <td>
                 {% if developer.primary_contact %}
-                    <i>Receives Emails</i>
+                    <i>Primary Contact</i>
                 {% else %}
                     <form method="post" action="delete_developer">
                         {{ csrf_token() }}

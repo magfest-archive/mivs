@@ -48,6 +48,12 @@ def dev_email(dev):
 
 
 @validation.IndieDeveloper
+def only_one_primary_contact(dev):
+    if dev.primary_contact and dev.studio.primary_contact != dev:
+        return 'A studio may only have one primary contact.'
+
+
+@validation.IndieDeveloper
 def dev_cellphone(dev):
     from uber.model_checks import _invalid_phone_number
     if (dev.primary_contact or dev.cellphone) and _invalid_phone_number(dev.cellphone):

@@ -122,7 +122,7 @@ class IndieStudio(MagModel):
 
     @property
     def primary_contact(self):
-        return [dev for dev in self.developers if dev.primary_contact][0]
+        return next(iter([dev for dev in self.developers if dev.primary_contact]), None)
 
     @property
     def submitted_games(self):
@@ -139,7 +139,7 @@ class IndieStudio(MagModel):
 
 class IndieDeveloper(MagModel):
     studio_id       = Column(UUID, ForeignKey('indie_studio.id'))
-    primary_contact = Column(Boolean, default=False)  # just means they receive emails
+    primary_contact = Column(Boolean, default=False)
     first_name      = Column(UnicodeText)
     last_name       = Column(UnicodeText)
     email           = Column(UnicodeText)
