@@ -118,7 +118,7 @@ class IndieStudio(MagModel):
 
     @property
     def email(self):
-        return self.primary_contact.email
+        return [dev.email for dev in self.developers if dev.primary_contact]
 
     @property
     def primary_contact(self):

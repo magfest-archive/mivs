@@ -44,7 +44,7 @@ class Root:
                 game.studio.name,
                 '{}/mivs_applications/continue_app?id={}'.format(c.URL_BASE, game.studio.id),
                 game.studio.primary_contact.full_name,
-                game.email,
+                game.studio.primary_contact.email,
                 ' / '.join(game.genres_labels),
                 game.brief_description,
                 game.description,
