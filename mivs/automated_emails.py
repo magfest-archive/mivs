@@ -103,3 +103,7 @@ MIVSEmail(IndieJudge, 'MIVS Judge badge information', 'judge_badge_info.txt',
 
 MIVSEmail(IndieJudge, 'MIVS Judging about to begin', 'judge_2016.txt',
           ident='mivs_selected_to_judge')
+
+MIVSEmail(IndieGame, 'MIVS 2017: Update on technical problems affecting submissions', '2017_email_blast.txt',
+          lambda game: game.status == c.JUDGING,
+          ident='mivs_2017_update')
