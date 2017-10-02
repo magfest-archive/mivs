@@ -1,192 +1,216 @@
 {% extends "mivs_base.html" %}
 {% block body %}
 
-<script>
-    var showOrHideCodeInstructions = function () {
-        setVisible(
-            $.field('code_instructions').parents('.form-group'),
-            _({{ c.CODES_REQUIRING_INSTRUCTIONS|jsonize }}).contains($.val('code_type'))
-        );
-    };
-    $(function () {
-        showOrHideCodeInstructions();
-        $.field('code_type').on('change', showOrHideCodeInstructions);
-    });
-</script>
+  <script>
+      var showOrHideCodeInstructions = function () {
+          setVisible(
+              $.field('code_instructions').parents('.form-group'),
+              _({{ c.CODES_REQUIRING_INSTRUCTIONS|jsonize }}).contains($.val('code_type'))
+          );
+      };
+      $(function () {
+          showOrHideCodeInstructions();
+          $.field('code_type').on('change', showOrHideCodeInstructions);
+      });
+  </script>
 
-<h2>{% if game.is_new %}Register a Game{% else %}Edit Game Information{% endif %}</h2>
+  <h2>{% if game.is_new %}Register a Game{% else %}Edit Game Information{% endif %}</h2>
 
-<form method="post" action="game" class="form-horizontal" role="form">
+  <form method="post" action="game" class="form-horizontal" role="form">
     <input type="hidden" name="id" value="{{ game.db_id }}" />
     {{ csrf_token() }}
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Game Title</label>
-        <div class="col-sm-6">
-            <input class="form-control focus" type="text" name="title" value="{{ game.title }}" />
-        </div>
+      <label class="col-sm-3 control-label">Game Title</label>
+      <div class="col-sm-6">
+        <input class="form-control focus" type="text" name="title" value="{{ game.title }}" />
+      </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Brief Description</label>
-        <div class="col-sm-6">
-            <input class="form-control" type="text" maxlength="140" name="brief_description" value="{{ game.brief_description }}" />
-        </div>
+      <label class="col-sm-3 control-label">Brief Description</label>
+      <div class="col-sm-6">
+        <input class="form-control" type="text" maxlength="140" name="brief_description" value="{{ game.brief_description }}" />
+      </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Genres</label>
-        <div class="col-sm-6">
-            {{ macros.checkgroup(game, 'genres') }}
-            <p class="help-block">
-                Please select all that apply.
-            </p>
-        </div>
+      <label class="col-sm-3 control-label">Genres</label>
+      <div class="col-sm-6">
+        {{ macros.checkgroup(game, 'genres') }}
+        <p class="help-block">
+          Please select all that apply.
+        </p>
+      </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Platforms</label>
-        <div class="col-sm-6">
-            {{ macros.checkgroup(game, 'platforms') }}
-            <p class="help-block">
-                This is used to match your game with judges that own these platforms, so please only select platforms
-                which your game <em>currently</em> runs on.
-            </p>
-        </div>
-        <div class="clearfix"></div>
-        <div class="col-sm-6 col-sm-offset-3">
-            <input id="platforms-other" class="form-control" type="text" name="platforms_text" value="{{ game.platforms_text }}" placeholder="Other platform(s)"/>
-        </div>
+      <label class="col-sm-3 control-label">Platforms</label>
+      <div class="col-sm-6">
+        {{ macros.checkgroup(game, 'platforms') }}
+        <p class="help-block">
+          This is used to match your game with judges that own these platforms, so please only select platforms
+          which your game <em>currently</em> runs on.
+        </p>
+      </div>
+      <div class="clearfix"></div>
+      <div class="col-sm-6 col-sm-offset-3">
+        <input id="platforms-other" class="form-control" type="text" name="platforms_text" value="{{ game.platforms_text }}" placeholder="Other platform(s)"/>
+      </div>
     </div>
 
-    <div class="form-group">
-        <label class="col-sm-3 control-label">Full Description</label>
+    {% if c.HAS_INDIE_ADMIN_ACCESS %}
+      <div class="form-group">
+        <label class="col-sm-3 control-label optional-field">Previous MIVS Entries</label>
         <div class="col-sm-6">
-            <textarea class="form-control" name="description" rows="4">{{ game.description }}</textarea>
+          {{ macros.checkgroup(game, 'alumni_years') }}
+          <p class="help-block">
+            The prior years this game has been in MIVS, if any. This form is shown only to admins.
+          </p>
         </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-sm-3 control-label optional-field">How to Play</label>
-        <div class="col-sm-6">
-            <textarea class="form-control" name="how_to_play" rows="2">{{ game.how_to_play }}</textarea>
-            <p class="help-block">
-                Please include any instructions necessary to play, especially for things which might
-                not be obvious.
-            </p>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-sm-3 control-label">Link to Video</label>
-        <div class="col-sm-6">
-            <input class="form-control" type="text" name="link_to_video" value="{{ game.link_to_video }}" />
-            <p class="help-block">
-                Please include a link to a YouTube video, 720p or better, no longer than 2 minutes, showing at least 30 seconds
-                of uninterrupted gameplay.  This video will be utilized by our judges to determine if your game is accepted
-                through Round 1 of judging.  If your game is accepted into the showcase, this video link may be embedded on
-                the MIVS web-page and/or other places that MAGFest advertises the MIVS area.
-            </p>
-        </div>
-    </div>
-
-    {% if c.ALLOW_GAME_SUBMISSION and game.status != c.VIDEO_DECLINED %}
-        <div class="form-group">
-            <label class="col-sm-3 control-label optional-field">Link to Game</label>
-            <div class="col-sm-6">
-                <input class="form-control" type="text" name="link_to_game" value="{{ game.link_to_game }}" />
-                <p class="help-block">
-                    This does not need to be a public link, but if it's restricted somehow, you must include
-                    the password or other instructions for how to access it below.
-                </p>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-sm-3 control-label optional-field">Download Password</label>
-            <div class="col-sm-6">
-                <input class="form-control" type="text" name="password_to_game" value="{{ game.password_to_game }}" />
-                <p class="help-block">
-                    If access to the above URL is restricted somehow, please enter whatever credentials are
-                    necessary to access the game.
-                </p>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-sm-3 control-label">Game Activation Code</label>
-            <div class="col-sm-6">
-                <select name="code_type" class="form-control">
-                    {{ options(c.CODE_TYPE_OPTS,game.code_type) }}
-                </select>
-                <p class="help-block">
-                    Please list any other events where you've already run demos of this game.
-                </p>
-            </div>
-        </div>
-
-        <div class="form-group" style="display: none">
-            <label class="col-sm-3 control-label">Activation Code Instructions</label>
-            <div class="col-sm-6">
-                <input class="form-control" type="text" name="code_instructions" value="{{ game.code_instructions }}" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-sm-3 control-label">Game Build Status</label>
-            <div class="col-sm-6">
-                <select name="build_status" class="form-control">
-                    {{ options(c.BUILD_STATUS_OPTS,game.build_status) }}
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-sm-3 control-label optional-field">Build Notes</label>
-            <div class="col-sm-6">
-                <input class="form-control" type="text" name="build_notes" value="{{ game.build_notes }}" />
-                <p class="help-block">
-                    List any special instructions related specifically to this build to work around a known bug.
-                    (Instructions that are relevant to all builds should be included in the "How To Play" section above.)
-                </p>
-            </div>
-        </div>
+      </div>
     {% endif %}
 
     <div class="form-group">
-        <label class="col-sm-3 control-label optional-field">Demoed At Other Events</label>
-        <div class="col-sm-6">
-            <textarea class="form-control" name="shown_events" rows="3">{{ game.shown_events }}</textarea>
-            <p class="help-block">
-                Please list the name and year of any other event(s) where this game has be previously shown.
-            </p>
-        </div>
+      <label class="col-sm-3 control-label">Full Description</label>
+      <div class="col-sm-6">
+        <textarea class="form-control" name="description" rows="4">{{ game.description }}</textarea>
+      </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Showtime Agreement</label>
-        <div class="col-sm-6">
-            {{ macros.checkbox(game, 'agreed_showtimes') }}
-            At least one person from my team will be available to man our booth from 11am to 7pm each full convention day and
-            on the last day from 11am to 2pm.  Core hours exist each day to ensure games are setup for attendees to play. Games
-            may be setup past core hours as the MIVS area is open 24 hours and will have volunteers on hand during this time.
-        </div>
+      <label class="col-sm-3 control-label optional-field">How to Play</label>
+      <div class="col-sm-6">
+        <textarea class="form-control" name="how_to_play" rows="2">{{ game.how_to_play }}</textarea>
+        <p class="help-block">
+          Please include any instructions necessary to play, especially for things which might
+          not be obvious.
+        </p>
+      </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Liability Waiver</label>
+      <label class="col-sm-3 control-label">Link to Video</label>
+      <div class="col-sm-6">
+        <input class="form-control" type="text" name="link_to_video" value="{{ game.link_to_video }}" />
+        <p class="help-block">
+          Please include a link to a YouTube video, 720p or better, no longer than 2 minutes, showing at least 30 seconds
+          of uninterrupted gameplay.  This video will be utilized by our judges to determine if your game is accepted
+          through Round 1 of judging.  If your game is accepted into the showcase, this video link may be embedded on
+          the MIVS web-page and/or other places that MAGFest advertises the MIVS area.
+        </p>
+      </div>
+    </div>
+
+    {% if c.ALLOW_GAME_SUBMISSION and game.status != c.VIDEO_DECLINED %}
+      <div class="form-group">
+        <label class="col-sm-3 control-label optional-field">Link to Game</label>
         <div class="col-sm-6">
-            {{ macros.checkbox(game, 'agreed_liability') }}
-            I understand that I am responsible for all equipment brought to the indie showcase by myself or my team,
-            and we do not hold liable MAGFest, MIVS, or the venue in the event equipment is stolen or damaged.
+          <input class="form-control" type="text" name="link_to_game" value="{{ game.link_to_game }}" />
+          <p class="help-block">
+            This does not need to be a public link, but if it's restricted somehow, you must include
+            the password or other instructions for how to access it below.
+          </p>
         </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label optional-field">Download Password</label>
+        <div class="col-sm-6">
+          <input class="form-control" type="text" name="password_to_game" value="{{ game.password_to_game }}" />
+          <p class="help-block">
+            If access to the above URL is restricted somehow, please enter whatever credentials are
+            necessary to access the game.
+          </p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Game Activation Code</label>
+        <div class="col-sm-6">
+          <select name="code_type" class="form-control">
+            {{ options(c.CODE_TYPE_OPTS,game.code_type) }}
+          </select>
+          <p class="help-block">
+            Please list any other events where you've already run demos of this game.
+          </p>
+        </div>
+      </div>
+
+      <div class="form-group" style="display: none">
+        <label class="col-sm-3 control-label">Activation Code Instructions</label>
+        <div class="col-sm-6">
+          <input class="form-control" type="text" name="code_instructions" value="{{ game.code_instructions }}" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Game Build Status</label>
+        <div class="col-sm-6">
+          <select name="build_status" class="form-control">
+            {{ options(c.BUILD_STATUS_OPTS,game.build_status) }}
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label optional-field">Build Notes</label>
+        <div class="col-sm-6">
+          <input class="form-control" type="text" name="build_notes" value="{{ game.build_notes }}" />
+          <p class="help-block">
+            List any special instructions related specifically to this build to work around a known bug.
+            (Instructions that are relevant to all builds should be included in the "How To Play" section above.)
+          </p>
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="form-group">
+      <label class="col-sm-3 control-label optional-field">Demoed At Other Events</label>
+      <div class="col-sm-6">
+        <textarea class="form-control" name="shown_events" rows="3">{{ game.shown_events }}</textarea>
+        <p class="help-block">
+          Please list the name and year of any other event(s) where this game has be previously shown.
+        </p>
+      </div>
+    </div>
+
+    {% if game.alumni_years %}
+      <div class="form-group">
+        <label class="col-sm-3 control-label optional-field">Game Updates Since Last MIVS Showing</label>
+        <div class="col-sm-6">
+          <textarea class="form-control" name="alumni_update" rows="3">{{ game.alumni_update }}</textarea>
+          <p class="help-block">
+            Please list what has changed in your game since it was last shown in MIVS.
+          </p>
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="form-group">
+      <label class="col-sm-3 control-label">Showtime Agreement</label>
+      <div class="col-sm-6">
+        {{ macros.checkbox(game, 'agreed_showtimes') }}
+        At least one person from my team will be available to man our booth from 11am to 7pm each full convention day and
+        on the last day from 11am to 2pm.  Core hours exist each day to ensure games are setup for attendees to play. Games
+        may be setup past core hours as the MIVS area is open 24 hours and will have volunteers on hand during this time.
+      </div>
     </div>
 
     <div class="form-group">
-        <div class="col-sm-6 col-sm-offset-3">
-            <button type="submit" class="btn btn-primary">{% if game.is_new %}Add Game{% else %}Upload Changes{% endif %}</button>
-        </div>
+      <label class="col-sm-3 control-label">Liability Waiver</label>
+      <div class="col-sm-6">
+        {{ macros.checkbox(game, 'agreed_liability') }}
+        I understand that I am responsible for all equipment brought to the indie showcase by myself or my team,
+        and we do not hold liable MAGFest, MIVS, or the venue in the event equipment is stolen or damaged.
+      </div>
     </div>
-</form>
+
+    <div class="form-group">
+      <div class="col-sm-6 col-sm-offset-3">
+        <button type="submit" class="btn btn-primary">{% if game.is_new %}Add Game{% else %}Upload Changes{% endif %}</button>
+      </div>
+    </div>
+  </form>
 
 {% endblock %}

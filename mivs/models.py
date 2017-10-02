@@ -182,6 +182,8 @@ class IndieGame(MagModel, ReviewMixin):
     agreed_reminder1  = Column(Boolean, default=False)
     agreed_reminder2  = Column(Boolean, default=False)
     status            = Column(Choice(c.GAME_STATUS_OPTS), default=c.NEW, admin_only=True)
+    alumni_years      = Column(MultiChoice(c.PREV_MIVS_YEAR_OPTS))
+    alumni_update     = Column(UnicodeText)
     judge_notes       = Column(UnicodeText, admin_only=True)
     registered        = Column(UTCDateTime, server_default=utcnow())
 
