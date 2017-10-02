@@ -34,9 +34,7 @@ class Root:
         studio = session.indie_studio(dict(params, id=cherrypy.session.get('studio_id', 'None')), restricted=True)
         developer = session.indie_developer(params)
 
-        allowed_to_submit = c.ALLOWED_TO_SUBMIT_ROUND1 or not studio.is_new
-
-        if cherrypy.request.method == 'POST' and allowed_to_submit:
+        if cherrypy.request.method == 'POST':
             message = check(studio)
             if not message and studio.is_new:
                 message = check(developer)
@@ -50,8 +48,7 @@ class Root:
         return {
             'message': message,
             'studio': studio,
-            'developer': developer,
-            'allowed_to_submit': allowed_to_submit,
+            'developer': developer
         }
 
     def game(self, session, message='', **params):

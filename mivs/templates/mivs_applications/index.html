@@ -66,12 +66,12 @@ This is your application-in-progress for the MAGFest Indie Videogame Showcase fo
 
 <h3>Games</h3>
 You have {% if c.BEFORE_ROUND_ONE_DEADLINE %}currently{% endif %} registered {{ studio.games|length }} game{{ studio.games|length|pluralize }}.
-{% if c.BEFORE_ROUND_ONE_DEADLINE %}
+{% if c.CAN_SUBMIT_ROUND_ONE %}
     You may submit any number of games for consideration until {{ c.ROUND_ONE_DEADLINE|datetime_local }}
     after which no more games may be submitted.
 {% endif %}
 
-{% if c.ALLOWED_TO_SUBMIT_ROUND1 %}
+{% if c.CAN_SUBMIT_ROUND_ONE %}
     {% if c.HAS_INDIE_ADMIN_ACCESS and c.AFTER_ROUND_ONE_DEADLINE %}
         <br/><br/><b><font color="red">
         ADMIN NOTE: Because you are logged in as a MIVS admin, you can still use this form to manually create a
@@ -135,9 +135,9 @@ You have {% if c.BEFORE_ROUND_ONE_DEADLINE %}currently{% endif %} registered {{ 
                 determine if your game is accepted through Round 1 of judging.  If your game is accepted into
                 the showcase, this video link may be embedded on the MIVS web-page and/or other places that
                 MAGFest advertises the MIVS area.  You must submit a video link before {{ c.ROUND_ONE_DEADLINE|datetime_local }}.
-            {% elif c.AFTER_ROUND_ONE_DEADLINE and not c.HAS_INDIE_ADMIN_ACCESS %}
-                You may no longer submit this game for consideration, as it is past the
-                {{ c.ROUND_ONE_DEADLINE|datetime_local }} deadline.
+            {% elif not c.CAN_SUBMIT_ROUND_ONE %}
+                You may no longer submit this game for consideration, as it is past the deadline
+                ({{ c.ROUND_ONE_DEADLINE|datetime_local }}).
             {% else %}
                 Once you're ready for our judges to look at the video link you've provided, you can submit it
                 to our panel of judges for consideration anytime until {{ c.ROUND_ONE_DEADLINE|datetime_local }}:
@@ -154,9 +154,9 @@ You have {% if c.BEFORE_ROUND_ONE_DEADLINE %}currently{% endif %} registered {{ 
                     This game has been submitted.
                 {% elif needs_screenshots %}
                     Please upload at least two screenshots before submitting your game for consideration.
-                {% elif c.AFTER_ROUND_TWO_DEADLINE %}
-                    You may no longer submit this game for consideration, as it is past the
-                    {{ c.ROUND_TWO_DEADLINE|datetime_local }} deadline.
+                {% elif not c.CAN_SUBMIT_ROUND_TWO %}
+                    You may no longer submit this game for consideration, as it is past the deadline
+                    ({{ c.ROUND_TWO_DEADLINE|datetime_local }}).
                 {% elif not game.submittable %}
                     You cannot submit this game until the following criteria are met:
                     <ul>
