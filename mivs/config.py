@@ -41,8 +41,8 @@ def really_past_deadline(deadline):
 class IndieConfig:
     @property
     def CAN_SUBMIT_ROUND_ONE(self):
-        return really_past_deadline(c.ROUND_ONE_DEADLINE) or c.HAS_INDIE_ADMIN_ACCESS
+        return not really_past_deadline(c.ROUND_ONE_DEADLINE) or c.HAS_INDIE_ADMIN_ACCESS
 
     @property
     def CAN_SUBMIT_ROUND_TWO(self):
-        return really_past_deadline(c.ROUND_TWO_DEADLINE) or c.HAS_INDIE_ADMIN_ACCESS
+        return not really_past_deadline(c.ROUND_TWO_DEADLINE) or c.HAS_INDIE_ADMIN_ACCESS
