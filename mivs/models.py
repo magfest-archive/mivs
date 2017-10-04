@@ -107,8 +107,8 @@ class IndieStudio(MagModel):
     staff_notes = Column(UnicodeText, admin_only=True)
     registered  = Column(UTCDateTime, server_default=utcnow())
 
-    games = relationship('IndieGame', backref='studio')
-    developers = relationship('IndieDeveloper', backref='studio')
+    games = relationship('IndieGame', backref='studio', order_by='IndieGame.title')
+    developers = relationship('IndieDeveloper', backref='studio', order_by='IndieDeveloper.last_name')
 
     email_model_name = 'studio'
 
