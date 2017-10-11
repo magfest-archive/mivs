@@ -65,7 +65,7 @@ class Root:
             ] + [str(score) for score in game.scores])
 
     def create_judge(self, session, message='', first_name='', last_name='', email='', **params):
-        judge = session.indie_judge(params, checkgroups=['genres'])
+        judge = session.indie_judge(params, checkgroups=['genres', 'platforms'])
         if cherrypy.request.method == 'POST':
             message = check(judge)
             if not message and not first_name or not last_name or not email:
@@ -110,7 +110,7 @@ class Root:
         }
 
     def edit_judge(self, session, message='', **params):
-        judge = session.indie_judge(params)
+        judge = session.indie_judge(params, checkgroups=['genres', 'platforms'])
         if cherrypy.request.method == 'POST':
             message = check(judge)
             if not message:

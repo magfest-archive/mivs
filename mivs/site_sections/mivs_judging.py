@@ -3,10 +3,16 @@ from mivs import *
 
 @all_renderable(c.INDIE_JUDGE)
 class Root:
-    def index(self, session, message=''):
+    def index(self, session, message='', **params):
+        judge = session.indie_judge(params, checkgroups=['genres', 'platforms']) if 'id' in params else session.logged_in_judge()
+        if cherrypy.request.method == 'POST':
+            message = check(judge)
+            if not message:
+                raise HTTPRedirect('index?message={}', 'Preferences updated')
+
         return {
             'message': message,
-            'judge': session.logged_in_judge()
+            'judge': judge
         }
 
     def studio(self, session, message='', **params):
