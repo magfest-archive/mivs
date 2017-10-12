@@ -318,7 +318,8 @@ class IndieGameReview(MagModel):
 
     @property
     def has_game_issues(self):
-        return self.game_status in c.PROBLEM_STATUSES
+        if self.game_status != c.COULD_NOT_PLAY:
+            return self.game_status in c.PROBLEM_STATUSES
 
     @property
     def has_issues(self):

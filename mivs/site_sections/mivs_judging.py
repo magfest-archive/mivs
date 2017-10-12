@@ -31,7 +31,7 @@ class Root:
             elif review.video_status == c.VIDEO_REVIEWED and review.video_score == c.PENDING:
                 message = 'You must indicate whether or not you believe the game should pass to round 2'
             else:
-                if review.video_status not in [c.PENDING, c.VIDEO_REVIEWED]\
+                if review.video_status in c.PROBLEM_STATUSES\
                         and review.video_status != review.orig_value_of('video_status'):
                     body = render('emails/admin_video_broken.txt', {'review': review})
                     send_email(c.MIVS_EMAIL, c.MIVS_EMAIL, 'MIVS Video Submission Marked as Broken', body)
@@ -52,7 +52,7 @@ class Root:
             elif review.game_status != c.PLAYABLE and review.game_score:
                 message = 'If the game is not playable, please leave the score field blank'
             else:
-                if review.game_status not in [c.PENDING, c.PLAYABLE]\
+                if review.game_status in c.PROBLEM_STATUSES\
                         and review.game_status != review.orig_value_of('game_status'):
                     body = render('emails/admin_game_broken.txt', {'review': review})
                     send_email(c.MIVS_EMAIL, c.MIVS_EMAIL, 'MIVS Game Submission Marked as Broken', body)

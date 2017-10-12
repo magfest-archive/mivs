@@ -196,8 +196,14 @@ class Root:
         game = session.indie_game(game_id)
         for review in game.reviews:
             if review.has_video_issues:
+                body = render('emails/video_fixed.txt', {'review': review})
+                send_email(c.MIVS_EMAIL, review.judge.email,
+                           'MIVS: Video Problems Resolved for {}'.format(review.game.title), body)
                 review.video_status = c.PENDING
             if review.has_game_issues:
+                body = render('emails/game_fixed.txt', {'review': review})
+                send_email(c.MIVS_EMAIL, review.judge.email,
+                           'MIVS: Game Problems Resolved for {}'.format(review.game.title), body)
                 review.game_status = c.PENDING
         raise HTTPRedirect('index?message={}{}', review.game.title, ' has been marked as having its judging issues fixed')
 
