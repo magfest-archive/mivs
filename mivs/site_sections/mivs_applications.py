@@ -168,6 +168,8 @@ class Root:
             raise HTTPRedirect('index?message={}', 'You did not have any games accepted')
         elif studio.group:
             raise HTTPRedirect('index?message={}', 'Your group has already been created')
+        elif studio.after_confirm_deadline:
+            raise HTTPRedirect('index?message={}', 'The deadline for confirming your acceptance has passed.')
 
         has_leader = False
         badges_remaining = studio.comped_badges
