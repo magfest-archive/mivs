@@ -35,7 +35,8 @@ class Root:
             'Genres', 'Brief Description', 'Long Description', 'How to Play',
             'Link to Video', 'Link to Game', 'Game Link Password',
             'Game Requires Codes?', 'Code Instructions', 'Build Status', 'Build Notes',
-            'Video Submitted', 'Game Submitted', 'Current Status', 'Registered',
+            'Video Submitted', 'Game Submitted', 'Current Status',
+            'Registered', 'Accepted', 'Confirmation Deadline',
             'Screenshots', 'Average Score', 'Individual Scores'
         ])
         for game in session.indie_games():
@@ -60,6 +61,8 @@ class Root:
                 'submitted' if game.submitted else 'not submitted',
                 'accepted and confirmed' if game.confirmed else game.status_label,
                 game.registered.strftime('%Y-%m-%d'),
+                'n/a' if not game.accepted else game.accepted.strftime('%Y-%m-%d'),
+                'n/a' if not game.accepted else game.studio.confirm_deadline.strftime('%Y-%m-%d'),
                 '\n'.join(c.URL_BASE + screenshot.url.lstrip('.') for screenshot in game.screenshots),
                 str(game.average_score)
             ] + [str(score) for score in game.scores])

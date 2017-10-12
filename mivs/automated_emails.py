@@ -65,7 +65,8 @@ MIVSEmail(IndieGame, 'Your MIVS application has been waitlisted', 'game_waitlist
           ident='mivs_game_waitlisted')
 
 MIVSEmail(IndieGame, 'Last chance to accept your MIVS booth', 'game_accept_reminder.txt',
-          lambda game: game.status == c.ACCEPTED and not game.confirmed, when=days_before(2, c.MIVS_CONFIRM_DEADLINE),
+          lambda game: game.status == c.ACCEPTED and not game.confirmed
+                       and (localized_now() - timedelta(days=2)) > game.studio.confirm_deadline,
           ident='mivs_accept_booth_reminder')
 
 MIVSEmail(IndieGame, 'MIVS December Updates: Hotels and Magfest Versus!', 'december_updates.txt',

@@ -113,6 +113,15 @@ class IndieStudio(MagModel):
     email_model_name = 'studio'
 
     @property
+    def confirm_deadline(self):
+        return sorted([g for g in self.games if g.accepted], key=lambda: g.accepted)[0].accepted\
+               + timedelta(days=c.MIVS_CONFIRM_DEADLINE)
+
+    @property
+    def after_confirm_deadline(self):
+        return self.confirm_deadline < localized_now()
+
+    @property
     def website_href(self):
         return href(self.website)
 
@@ -186,12 +195,18 @@ class IndieGame(MagModel, ReviewMixin):
     alumni_update     = Column(UnicodeText)
     judge_notes       = Column(UnicodeText, admin_only=True)
     registered        = Column(UTCDateTime, server_default=utcnow())
+    accepted          = Column(UTCDateTime, nullable=True)
 
     codes = relationship('IndieGameCode', backref='game')
     reviews = relationship('IndieGameReview', backref='game')
     screenshots = relationship('IndieGameScreenshot', backref='game')
 
     email_model_name = 'game'
+
+    @presave_adjustment
+    def accepted_time(self):
+        if self.status == c.ACCEPTED and not self.accepted:
+            self.accepted = datetime.now(UTC)
 
     @property
     def email(self):
