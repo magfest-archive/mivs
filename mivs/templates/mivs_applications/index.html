@@ -148,7 +148,7 @@
           </form>
         {% endif %}
 
-        {% if c.ALLOW_GAME_SUBMISSION and game.status != c.VIDEO_DECLINED %}
+        {% if c.AFTER_ROUND_TWO_START and game.status != c.VIDEO_DECLINED %}
           <h4>Game Submission</h4>
           {% if game.submitted %}
             This game has been submitted.
