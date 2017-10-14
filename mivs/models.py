@@ -195,6 +195,7 @@ class IndieGame(MagModel, ReviewMixin):
     alumni_update     = Column(UnicodeText)
     judge_notes       = Column(UnicodeText, admin_only=True)
     registered        = Column(UTCDateTime, server_default=utcnow())
+    waitlisted        = Column(UTCDateTime, nullable=True)
     accepted          = Column(UTCDateTime, nullable=True)
 
     codes = relationship('IndieGameCode', backref='game')
@@ -207,6 +208,11 @@ class IndieGame(MagModel, ReviewMixin):
     def accepted_time(self):
         if self.status == c.ACCEPTED and not self.accepted:
             self.accepted = datetime.now(UTC)
+
+    @presave_adjustment
+    def waitlisted_time(self):
+        if self.status == c.WAITLISTED and not self.waitlisted:
+            self.waitlisted = datetime.now(UTC)
 
     @property
     def email(self):

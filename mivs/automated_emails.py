@@ -53,8 +53,12 @@ MIVSEmail(IndieGame, 'Your game has been declined from MIVS', 'video_declined.tx
           ident='mivs_video_declined')
 
 MIVSEmail(IndieGame, 'Your game has been accepted into MIVS', 'game_accepted.txt',
-          lambda game: game.status == c.ACCEPTED,
+          lambda game: game.status == c.ACCEPTED and not game.waitlisted,
           ident='mivs_game_accepted')
+
+MIVSEmail(IndieGame, 'Your game has been accepted into MIVS from our waitlist', 'game_accepted_from_waitlist.txt',
+          lambda game: game.status == c.ACCEPTED and game.waitlisted,
+          ident='mivs_game_accepted_from_waitlist')
 
 MIVSEmail(IndieGame, 'Your game application has been declined from MIVS', 'game_declined.txt',
           lambda game: game.status == c.GAME_DECLINED,
