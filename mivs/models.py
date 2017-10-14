@@ -219,6 +219,10 @@ class IndieGame(MagModel, ReviewMixin):
         return self.studio.email
 
     @property
+    def reviews_to_email(self):
+        return [review for review in self.reviews if review.send_to_studio]
+
+    @property
     def video_href(self):
         return href(self.link_to_video)
 
@@ -323,6 +327,7 @@ class IndieGameReview(MagModel):
     game_review        = Column(UnicodeText)
     developer_response = Column(UnicodeText)
     staff_notes        = Column(UnicodeText)
+    send_to_studio     = Column(Boolean, default=False)
 
     __table_args__ = (UniqueConstraint('game_id', 'judge_id', name='review_game_judge_uniq'),)
 

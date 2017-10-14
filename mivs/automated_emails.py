@@ -81,6 +81,10 @@ MIVSEmail(IndieGame, 'REQUIRED: Pre-flight for MIVS due by midnight, January 2nd
           lambda game: game.confirmed,
           ident='mivs_game_preflight_reminder')
 
+MIVSEmail(IndieGame, 'Summary of judging results for your game', 'reviews_summary.html',
+          lambda game: game.status in c.FINAL_GAME_STATUSES and game.reviews_to_email,
+          ident='mivs_reviews_summary')
+
 MIVSEmail(IndieGame, 'MIVS judging is wrapping up', 'round_two_closing.txt',
           lambda game: game.submitted, when=days_before(14, c.JUDGING_DEADLINE),
           ident='mivs_round_two_closing')

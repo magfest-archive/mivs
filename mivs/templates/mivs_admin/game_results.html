@@ -38,6 +38,9 @@
     });
 </script>
 
+  <form method="post" action="send_reviews">
+  {{ csrf_token() }}
+  <input type="hidden" name="game_id" value="{{ game.id }}" />
 <table class="table">
 <thead>
     <tr>
@@ -46,6 +49,7 @@
         <th>Inappropriate Content?</th>
         <th>Score</th>
         <th>Notes</th>
+        <th>Send to Developer?</th>
     </tr>
 </thead>
 <tbody>
@@ -56,9 +60,18 @@
         <td>{{ review.game_content_bad|yesno }}</td>
         <td>{% if review.game_score %}{{ review.game_score }}{% endif %}</td>
         <td>{{ review.game_review|linebreaksbr }}</td>
+    <td><input type="checkbox" name="review_id" value="{{ review.id }}"
+               {% if review.send_to_studio %} checked {% endif %}/></td>
     </tr>
 {% endfor %}
 </tbody>
 </table>
+    <button type="submit" class="btn btn-primary"
+            {% if game.status not in c.FINAL_GAME_STATUSES %} disabled title="You can only send reviews after a game has been accepted, waitlisted, or declined!"{% endif %}>
+      Mark Reviews for Sending to Indie Studio</button>
+  <p class="help-block">Please note that once the "Summary of judging results for your game" email is
+    <a href="../emails/pending">approved for sending</a>, marking ANY reviews as ready to send will trigger an email to
+    the studio, after which editing the reviews to send will do nothing.</p>
+  </form>
 
 {% endblock %}

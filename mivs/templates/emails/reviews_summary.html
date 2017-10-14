@@ -1,0 +1,18 @@
+{{ game.studio.primary_contact.first_name }},
+
+<br/><br/>Thank you so much for submitting your game to the {{ c.ESCHATON.year }} MAGFest Indie Videogame Showcase
+(MIVS). As a courtesy to developers, we send out summaries of the feedback each game received from our judges. Below
+is the list of judging results for your game submission ({{ game.title }}).
+
+<ul>
+  {% for review in game.reviews_to_email %}
+  <li>
+    {% if review.game_score %}<strong>Score:</strong> {{ review.game_score }}<br/>{% endif %}
+    <strong>Review Notes:</strong> {{ review.game_review|linebreaksbr }}
+  </li>
+  {% endfor %}
+</ul>
+
+<br/><br/>We hope this feedback helps you in your continued development of your game.
+
+<br/><br/>{{ c.MIVS_EMAIL_SIGNATURE|linebreaksbr }}

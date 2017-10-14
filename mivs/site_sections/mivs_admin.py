@@ -175,8 +175,11 @@ class Root:
     def video_results(self, session, id):
         return {'game': session.indie_game(id)}
 
-    def game_results(self, session, id):
-        return {'game': session.indie_game(id)}
+    def game_results(self, session, id, message=''):
+        return {
+            'game': session.indie_game(id),
+            'message': message
+        }
 
     @csrf_protected
     def mark_verdict(self, session, id, status):
@@ -186,6 +189,17 @@ class Root:
             game = session.indie_game(id)
             game.status = int(status)
             raise HTTPRedirect('index?message={}{}{}', game.title, ' has been marked as ', game.status_label)
+
+    @csrf_protected
+    def send_reviews(self, session, game_id, review_id=None):
+        game = session.indie_game(id=game_id)
+        for review in game.reviews:
+            if review.id in listify(review_id):
+                review.send_to_studio = True
+            elif review.send_to_studio:
+                review.send_to_studio = False
+            session.add(review)
+        raise HTTPRedirect('game_results?id={}&message={}', game_id, 'Reviews marked for sending!')
 
     def problems(self, session, game_id):
         game = session.indie_game(game_id)
