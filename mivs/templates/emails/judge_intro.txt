@@ -4,7 +4,7 @@ If you're receiving this, you've been selected to be a Judge for this year's MAG
 
 For helping us judge the entries to be shown for this year, we are happy to give you a free pass to MAGFest.  If you feel at any time that you are unable to complete your duties as a judge, everything will be fine as long as you let us known as soon as possible.
 
-You can expect judging to start a few days after {{ c.ROUND_TWO_DEADLINE|datetime_local("%b %d") }}, as we assign out games to you. Judging will last until {{ c.JUDGING_DEADLINE|datetime_local }}. Be on the lookout for another email from us very soon that will contain more detailed instructions. 
+You can expect judging to start this week, as we assign out games to you. Judging will last until {{ c.JUDGING_DEADLINE|datetime_local }}. Be on the lookout for another email from us very soon that will contain more detailed instructions. 
 
 If you have any questions, feel free to drop us a line at mivs@magfest.org
 
