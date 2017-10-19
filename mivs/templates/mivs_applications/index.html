@@ -83,9 +83,10 @@
   {% endif %}
 
   {% for game in studio.games %}
+    {% set game_edit_link %}[<a href="game?id={{ game.id }}">Edit</a>]{% endset %}
     <h4>
       {{ game.title }}
-      {% if c.HAS_INDIE_ADMIN_ACCESS or not game.submitted %}[<a href="game?id={{ game.id }}">Edit</a>]{% endif %}
+      {% if c.HAS_INDIE_ADMIN_ACCESS or not game.submitted %}{{ game_edit_link }}{% endif %}
     </h4>
 
     {% if game.status in c.FINAL_GAME_STATUSES %}
@@ -134,7 +135,7 @@
         {% elif needs_screenshots %}
           Please upload at least two screenshots before submitting the video of your game.
         {% elif not game.video_submittable %}
-          Please include a link to a video using the Edit link above, no longer than 2 minutes, showing
+          Please include a link to a video for your game {{ game_edit_link }}, no longer than 2 minutes, showing
           at least 30 seconds of uninterrupted gameplay.  This video will be utilized by our judges to
           determine if your game is accepted through Round 1 of judging.  If your game is accepted into
           the showcase, this video link may be embedded on the MIVS web-page and/or other places that
@@ -165,7 +166,8 @@
             You cannot submit this game until the following criteria are met:
             <ul>
               {% for step in game.missing_steps %}
-                <li>{{ step }}</li>
+                <li>{{ step }}
+                  {% if not game.agreed_showtimes or not game.agreed_liability %}{{ game_edit_link }}{% endif %}</li>
               {% endfor %}
             </ul>
           {% else %}

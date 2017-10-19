@@ -267,9 +267,9 @@ class IndieGame(MagModel, ReviewMixin):
             elif not self.unlimited_code and len(self.codes) < c.CODES_REQUIRED:
                 steps.append('You have not attached the {} codes you must provide for our judges'.format(c.CODES_REQUIRED))
         if not self.agreed_showtimes:
-            steps.append('You must agree to the showtimes detailed on the game form (click the Edit link above)')
+            steps.append('You must agree to the showtimes detailed on the game form')
         if not self.agreed_liability:
-            steps.append('You must check the box that agrees to our liability waiver (click the Edit link above)')
+            steps.append('You must check the box that agrees to our liability waiver')
         return steps
 
     @property
