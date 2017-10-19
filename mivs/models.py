@@ -114,7 +114,7 @@ class IndieStudio(MagModel):
 
     @property
     def confirm_deadline(self):
-        return sorted([g for g in self.games if g.accepted], key=lambda: g.accepted)[0].accepted\
+        return sorted([g for g in self.games if g.accepted], key=lambda g: g.accepted)[0].accepted\
                + timedelta(days=c.MIVS_CONFIRM_DEADLINE)
 
     @property
@@ -170,7 +170,7 @@ class IndieDeveloper(MagModel):
 class IndieGame(MagModel, ReviewMixin):
     studio_id         = Column(UUID, ForeignKey('indie_studio.id'))
     title             = Column(UnicodeText)
-    brief_description = Column(UnicodeText)
+    brief_description = Column(UnicodeText)       # 140 max
     genres            = Column(MultiChoice(c.INDIE_GENRE_OPTS))
     platforms         = Column(MultiChoice(c.INDIE_PLATFORM_OPTS))
     platforms_text    = Column(UnicodeText)
@@ -190,9 +190,23 @@ class IndieGame(MagModel, ReviewMixin):
     agreed_showtimes  = Column(Boolean, default=False)
     agreed_reminder1  = Column(Boolean, default=False)
     agreed_reminder2  = Column(Boolean, default=False)
+    alumni_years = Column(MultiChoice(c.PREV_MIVS_YEAR_OPTS))
+    alumni_update = Column(UnicodeText)
+
+    link_to_promo_video = Column(UnicodeText)
+    link_to_webpage = Column(UnicodeText)
+    twitter = Column(UnicodeText)
+    facebook = Column(UnicodeText)
+    other_social_media = Column(UnicodeText)
+
+    tournament_at_event = Column(Boolean, default=False)
+    tournament_prizes = Column(UnicodeText)
+    has_multiplayer = Column(Boolean, default=False)
+    player_count = Column(UnicodeText)
+    multiplayer_game_length = Column(Integer, nullable=True)  # Length in minutes
+    leaderboard_challenge = Column(Boolean, default=False)
+
     status            = Column(Choice(c.GAME_STATUS_OPTS), default=c.NEW, admin_only=True)
-    alumni_years      = Column(MultiChoice(c.PREV_MIVS_YEAR_OPTS))
-    alumni_update     = Column(UnicodeText)
     judge_notes       = Column(UnicodeText, admin_only=True)
     registered        = Column(UTCDateTime, server_default=utcnow())
     waitlisted        = Column(UTCDateTime, nullable=True)
@@ -200,7 +214,7 @@ class IndieGame(MagModel, ReviewMixin):
 
     codes = relationship('IndieGameCode', backref='game')
     reviews = relationship('IndieGameReview', backref='game')
-    screenshots = relationship('IndieGameScreenshot', backref='game')
+    images = relationship('IndieGameImage', backref='game')
 
     email_model_name = 'game'
 
@@ -229,6 +243,18 @@ class IndieGame(MagModel, ReviewMixin):
     @property
     def href(self):
         return href(self.link_to_game)
+
+    @property
+    def screenshots(self):
+        return [img for img in self.images if img.is_screenshot]
+
+    @property
+    def best_screenshots(self):
+        return [img for img in self.images if img.is_screenshot and img.use_in_promo]
+
+    @property
+    def promo_image(self):
+        return next(iter([img for img in self.images if not img.is_screenshot]), None)
 
     @property
     def missing_steps(self):
@@ -287,20 +313,22 @@ class IndieGame(MagModel, ReviewMixin):
         return self.status == c.ACCEPTED and self.studio and self.studio.group_id
 
 
-class IndieGameScreenshot(MagModel):
+class IndieGameImage(MagModel):
     game_id      = Column(UUID, ForeignKey('indie_game.id'))
     filename     = Column(UnicodeText)
     content_type = Column(UnicodeText)
     extension    = Column(UnicodeText)
     description  = Column(UnicodeText)
+    use_in_promo = Column(Boolean, default=False)
+    is_screenshot = Column(Boolean, default=True)
 
     @property
     def url(self):
-        return '../mivs_applications/view_screenshot?id={}'.format(self.id)
+        return '../mivs_applications/view_image?id={}'.format(self.id)
 
     @property
     def filepath(self):
-        return os.path.join(c.SCREENSHOT_DIR, str(self.id))
+        return os.path.join(c.GAME_IMAGE_DIR, str(self.id))
 
 
 class IndieGameCode(MagModel):
@@ -391,5 +419,5 @@ def add_applicant_restriction():
             return instance
         setattr(Session.SessionMixin, method_name, with_applicant)
 
-    for name in ['indie_developer', 'indie_game', 'indie_game_code', 'indie_game_screenshot']:
+    for name in ['indie_developer', 'indie_game', 'indie_game_code', 'indie_game_image']:
         override_getter(name)

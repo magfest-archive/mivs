@@ -13,4 +13,4 @@ dist
 .coverage
 development.ini
 test.ini
-screenshots/
+uploaded_files/mivs_game_images/*

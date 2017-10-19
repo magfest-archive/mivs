@@ -5,6 +5,7 @@
 
 <form method="post" enctype="multipart/form-data" action="screenshot" class="form-horizontal" role="form">
     <input type="hidden" name="game_id" value="{{ screenshot.game.id }}" />
+    <input type="hidden" name="use_in_promo" value="{{ use_in_promo }}" />
     {{ csrf_token() }}
 
     <div class="form-group">

@@ -110,33 +110,58 @@ class Root:
             'code': code
         }
 
-    def screenshot(self, session, game_id, message='', image=None, **params):
-        screenshot = session.indie_game_screenshot(params, applicant=True)
+    def screenshot(self, session, game_id, message='', use_in_promo='', image=None, **params):
+        screenshot = session.indie_game_image(params, applicant=True)
         screenshot.game = session.indie_game(game_id, applicant=True)
         if cherrypy.request.method == 'POST':
             screenshot.filename = image.filename
             screenshot.content_type = image.content_type.value
             screenshot.extension = image.filename.split('.')[-1].lower()
+            if use_in_promo:
+                screenshot.use_in_promo = True
             message = check(screenshot)
             if not message:
                 with open(screenshot.filepath, 'wb') as f:
                     shutil.copyfileobj(image.file, f)
-                raise HTTPRedirect('index?message={}', 'Screenshot Uploaded')
+                if use_in_promo:
+                    raise HTTPRedirect('show_info?id={}&message={}', screenshot.game.id, 'Screenshot Uploaded')
+                else:
+                    raise HTTPRedirect('index?message={}', 'Screenshot Uploaded')
 
         return {
             'message': message,
+            'use_in_promo': use_in_promo,
             'screenshot': screenshot
         }
 
-    def view_screenshot(self, session, id):
-        screenshot = session.indie_game_screenshot(id)
+    def view_image(self, session, id):
+        screenshot = session.indie_game_image(id)
         return serve_file(screenshot.filepath, name=screenshot.filename, content_type=screenshot.content_type)
 
     @csrf_protected
     def delete_screenshot(self, session, id):
-        screenshot = session.indie_game_screenshot(id, applicant=True)
+        screenshot = session.indie_game_image(id, applicant=True)
         session.delete_screenshot(screenshot)
         raise HTTPRedirect('index?message={}', 'Screenshot deleted')
+
+    @csrf_protected
+    def mark_screenshot(self, session, id):
+        screenshot = session.indie_game_image(id, applicant=True)
+        if len(screenshot.game.best_screenshots) >= 2:
+            raise HTTPRedirect('show_info?id={}&message={}', screenshot.game.id,
+                               'You may only have up to two "best" screenshots')
+        screenshot.use_in_promo = True
+        session.add(screenshot)
+        raise HTTPRedirect('show_info?id={}&message={}', screenshot.game.id,
+                           'Screenshot marked as one of your "best" screenshots')
+
+    @csrf_protected
+    def unmark_screenshot(self, session, id):
+        screenshot = session.indie_game_image(id, applicant=True)
+        screenshot.use_in_promo = False
+        session.add(screenshot)
+        raise HTTPRedirect('show_info?id={}&message={}', screenshot.game.id,
+                           'Screenshot unmarked as one of your "best" screenshots')
 
     @csrf_protected
     def delete_code(self, session, id):
@@ -226,4 +251,34 @@ class Root:
         return {
             'studio': studio,
             'developers': developers
+        }
+
+    def show_info(self, session, id, message='', promo_image=None, **params):
+        game = session.indie_game(id=id)
+        if cherrypy.request.method == 'POST':
+            game.apply(params, bools=['tournament_at_event', 'has_multiplayer', 'leaderboard_challenge'],
+                       restricted=False)  # Setting restricted to false lets us define custom bools and checkgroups
+            game.studio.name = params.get('studio_name', '')
+            if promo_image:
+                image = session.indie_game_image(params)
+                image.game = game
+                image.content_type = promo_image.content_type.value
+                image.extension = promo_image.filename.split('.')[-1].lower()
+                image.is_screenshot = False
+                message = check(image)
+                if not message:
+                    with open(screenshot.filepath, 'wb') as f:
+                        shutil.copyfileobj(promo_image.file, f)
+            message = check(game) or check(game.studio)
+            if not message:
+                if game.tournament_at_event and not game.promo_image and not promo_image:
+                    message = 'Please upload a high resolution image of cover art or the game logo.'
+                else:
+
+                    session.add(game)
+                    raise HTTPRedirect('index?message={}', 'Game information uploaded')
+
+        return {
+            'message': message,
+            'game': game
         }

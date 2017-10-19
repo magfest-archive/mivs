@@ -93,12 +93,29 @@ def submitted(game):
         return 'You cannot edit a game after it has been submitted'
 
 
+@validation.IndieGame
+def show_info_required_fields(game):
+    if game.confirmed:
+        if len(game.brief_description) > 80:
+            return 'Please make sure your game has a brief description under 80 characters.'
+        if not game.link_to_promo_video:
+            return 'Please include a link to a 30-second promo video.'
+        if game.has_multiplayer and not game.player_count:
+            return 'Please tell us how many players your game supports.'
+        if game.has_multiplayer and not game.multiplayer_game_length:
+            return 'Please enter the average length for a multiplayer game or match.'
+
+
 IndieGameCode.required = [('code', 'Game Code')]
 
-IndieGameScreenshot.required = [('description', 'Description')]
+
+@validation.IndieGameImage
+def description(image):
+    if image.is_screenshot and not image.description:
+        return 'Please enter a description of the screenshot.'
 
 
-@validation.IndieGameScreenshot
+@validation.IndieGameImage
 def valid_type(screenshot):
     if screenshot.extension not in c.ALLOWED_SCREENSHOT_TYPES:
         return 'Our server did not recognize your upload as a valid image'

@@ -27,11 +27,12 @@
     <h3>Your Badges</h3>
 
     You have been accepted into the showcase and confirmed that you are coming.  You may manage the badges in your
-    <a href="../preregistration/group_members?id={{ studio.group_id }}">group management page</a>.
+    <a href="../preregistration/group_members?id={{ studio.group_id }}">group management page</a>. Please remember to
+    fill out show info for each game below.
   {% elif studio.comped_badges %}
     <h3>Accept or Decline</h3>
 
-    You have been accepted into the showcase, but we need you to confirm by {{ c.MIVS_CONFIRM_DEADLINE|datetime_local }} that you
+    You have been accepted into the showcase, but we need you to confirm by {{ studio.confirm_deadline|datetime_local }} that you
     are still interested and able to attend, which you may do by <a href="confirm">clicking here</a>.
   {% else %}
     <h3>Team Members</h3>
@@ -89,6 +90,9 @@
 
     {% if game.status in c.FINAL_GAME_STATUSES %}
       This game has been marked as {{ game.status_label }}.
+      {% if game.confirmed %}{% if not game.link_to_promo_video %}Please fill out the show information for this game
+      {% else %}You have already filled out this game's show information, but you can edit it{% endif %}
+        <a href="show_info?id={{ game.id }}">here</a>.{% endif %}
     {% else %}
       {% set needs_screenshots = game.screenshots|length < 2 %}
       {% set can_delete_screenshots = (not game.submitted and not game.video_submitted) or game.screenshots|length > 2%}
