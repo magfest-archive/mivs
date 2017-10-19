@@ -124,6 +124,16 @@ class Root:
             'message': message
         }
 
+    def judges_owed_refunds(self, session):
+        return {
+            'judges': [a for a in session.query(Attendee).outerjoin(Group, Attendee.group_id == Group.id)
+                .filter(or_(Attendee.paid == c.HAS_PAID, and_(Attendee.paid == c.PAID_BY_GROUP, Group.amount_paid > 0)))
+                .join(Attendee.admin_account)
+                .filter(AdminAccount.judge != None, AdminAccount.access.contains(str(c.INDIE_JUDGE)))
+                .options(joinedload(Attendee.group))
+                .order_by(Attendee.full_name)]
+        }
+
     def assign_games(self, session, judge_id, message=''):
         judge = session.indie_judge(judge_id)
         unassigned_games = [g for g in session.indie_games() if g.video_submitted and judge.id not in (r.judge_id for r in g.reviews)]
