@@ -53,7 +53,7 @@ sqlite_reflect_kwargs = {
 
 def upgrade():
     if is_sqlite:
-        with op.batch_alter_table('table_name', reflect_kwargs=sqlite_reflect_kwargs) as batch_op:
+        with op.batch_alter_table('indie_game_review', reflect_kwargs=sqlite_reflect_kwargs) as batch_op:
             batch_op.add_column(sa.Column('send_to_studio', sa.Boolean(), server_default='False', nullable=False))
     else:
         op.add_column('indie_game_review', sa.Column('send_to_studio', sa.Boolean(), server_default='False', nullable=False))

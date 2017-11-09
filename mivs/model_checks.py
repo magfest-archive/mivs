@@ -89,7 +89,7 @@ def video_link(game):
 
 @validation.IndieGame
 def submitted(game):
-    if game.submitted and not c.HAS_INDIE_ADMIN_ACCESS:
+    if (game.submitted and not game.status == c.ACCEPTED) and not c.HAS_INDIE_ADMIN_ACCESS:
         return 'You cannot edit a game after it has been submitted'
 
 
