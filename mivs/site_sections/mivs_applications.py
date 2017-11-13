@@ -267,7 +267,7 @@ class Root:
                 image.is_screenshot = False
                 message = check(image)
                 if not message:
-                    with open(screenshot.filepath, 'wb') as f:
+                    with open(image.filepath, 'wb') as f:
                         shutil.copyfileobj(promo_image.file, f)
             message = check(game) or check(game.studio)
             if not message:
