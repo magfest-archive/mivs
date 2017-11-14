@@ -83,7 +83,7 @@ def upgrade():
         op.add_column('indie_game_image', sa.Column('use_in_promo', sa.Boolean(), server_default='False', nullable=False))
 
         op.drop_constraint('fk_indie_game_screenshot_game_id_indie_game', 'indie_game_image', type_='foreignkey')
-        op.create_foreign_key(op.f('fk_indie_game_image_game_id_indie_game'), 'indie_game_image', 'indie_game', 'game_id', ['id'])
+        op.create_foreign_key(op.f('fk_indie_game_image_game_id_indie_game'), 'indie_game_image', 'indie_game', ['game_id'], ['id'])
 
         op.drop_constraint('pk_indie_game_screenshot', 'indie_game_image', type_='primary')
         op.create_primary_key(op.f('pk_indie_game_image'), 'indie_game_image', ['id'])
