@@ -193,7 +193,7 @@ class Root:
             raise HTTPRedirect('index?message={}', 'You did not have any games accepted')
         elif studio.group:
             raise HTTPRedirect('index?message={}', 'Your group has already been created')
-        elif studio.after_confirm_deadline:
+        elif studio.after_confirm_deadline and not c.HAS_INDIE_ADMIN_ACCESS:
             raise HTTPRedirect('index?message={}', 'The deadline for confirming your acceptance has passed.')
 
         has_leader = False
