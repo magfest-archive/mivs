@@ -1,4 +1,5 @@
 from mivs import *
+import uber.scheduler
 
 
 def assign_codes():
@@ -20,4 +21,4 @@ def assign_codes():
                     else:
                         log.warning('unable to find free code for game {} to assign to judge {}', game.title, review.judge.full_name)
 
-DaemonTask(assign_codes, interval=300)
+uber.scheduler.schedule.every(5).minutes.do(assign_codes)
