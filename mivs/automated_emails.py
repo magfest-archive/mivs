@@ -85,7 +85,12 @@ MIVSEmail(IndieGame, 'MIVS 2018: Hotel and selling signups', '2018_hotel_info.tx
           lambda game: game.confirmed,
           ident='2018_hotel_info')
 
-MIVSEmail(IndieGame, 'Summary of judging results for your game', 'reviews_summary.html',
+
+MIVSEmail(IndieGame, 'MIVS 2018: November Updates & info', '2018_email_blast.txt',
+          lambda game: game.confirmed,
+          ident='2018_email_blast')
+
+MIVSEmail(IndieGame, 'Summary of judging feedback for your game', 'reviews_summary.html',
           lambda game: game.status in c.FINAL_GAME_STATUSES and game.reviews_to_email,
           ident='mivs_reviews_summary')
 
@@ -116,3 +121,6 @@ MIVSEmail(IndieJudge, 'MIVS Judge badge information', 'judge_badge_info.txt',
 
 MIVSEmail(IndieJudge, 'MIVS Judging about to begin', 'judge_2016.txt',
           ident='mivs_selected_to_judge')
+
+MIVSEmail(IndieJudge, 'MIVS Judges: A Request for our MIVSY awards', '2018_mivsy_request.txt',
+          ident='2018_mivsy_request')
