@@ -3,19 +3,28 @@ Ahoy {{ game.studio.primary_contact.first_name }},
 We wanted to give you some upcoming info for this year's MIVS:
 
 1) Selling singup reminder
-2) 2018 MIVS Google group
-3) MAGFest Versus!
+2) Badge refunds
+3) 2018 MIVS Google group
+4) MAGFest Versus!
+
 
 1) Selling at MAGFest singup reminder
 If you're interested in selling your game while at MAGFest, we need to collect your groups tax information so it can be sent to the comptroller. The deadline for filling this out is December 1st.
 https://docs.google.com/forms/d/e/1FAIpQLSdOc5Ox6E9wDFGxqORoWkf7tSxnqh9ho4e9OdUdJTVN01zbBg/viewform
 
-2) 2018 MIVS Google Group
+
+
+2) Badge refunds
+As being part of MIVS, you're given two free badges to MAGFest.  If you already paid for a badge, we're now ready to handle refunds.  Please email mivs@magfest.org with your refund request.  
+
+
+
+3) 2018 MIVS Google Group
 We've created a google group and will be adding everyone who is showcasing this year at MIVS.  You will be added to it automatically! This will be used for us to send information and discuss best practices for 2018's MAGFest. MIVS Staff is also on the list to answer your questions.
 
 
-3) MAGFest Versus!
- MAGfest Versus is a game-show like no other, based on Nick Arcade.  This year, MAGFest Versus! will be hosted by Phil Moore, the original host of Nick Arcade, and We're looking for MIVS Games to be used as the challenges!
+4) MAGFest Versus!
+MAGfest Versus is a game-show like no other, based on Nick Arcade.  This year, MAGFest Versus! will be hosted by Phil Moore, the original host of Nick Arcade, and We're looking for MIVS Games to be used as the challenges!
  
  Here is a highlight real of last year's Versus:
  https://www.youtube.com/watch?v=5zY6Ws7l6J0&feature=youtu.be
