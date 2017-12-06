@@ -100,7 +100,8 @@ class Root:
         zip_file.writestr('mivs_accepted_games.xlsx', output)
         for game in session.query(IndieGame).filter_by(status=c.ACCEPTED):
             filenames = game.best_screenshot_download_filenames()
-            for filename, screenshot in zip(filenames, game.best_screenshots):
+            screenshots = game.best_screenshot_downloads()
+            for filename, screenshot in zip(filenames, screenshots):
                 if filename:
                     filepath = os.path.join(c.GAME_IMAGE_DIR, screenshot.id)
                     zip_file.write(filepath, os.path.join('mivs_accepted_game_images', filename))
