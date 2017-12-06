@@ -263,19 +263,20 @@ class IndieGame(MagModel, ReviewMixin):
 
         screenshots = []
         for i, screenshot in enumerate(all_images):
-            filepath = os.path.join(c.GAME_IMAGE_DIR, screenshot.id)
-            if os.path.exists(filepath):
+            if os.path.exists(screenshot.filepath):
                 screenshots.append(screenshot)
                 if len(screenshots) >= count:
                     break
         return screenshots
 
     def best_screenshot_download_filenames(self, count=2):
+        nonchars = re.compile(r'[\W_]+')
+        best_screenshots = self.best_screenshot_downloads(count)
         screenshots = []
-        for i, screenshot in enumerate(self.best_screenshots):
-            filepath = os.path.join(c.GAME_IMAGE_DIR, screenshot.id)
-            if os.path.exists(filepath):
+        for i, screenshot in enumerate(best_screenshots):
+            if os.path.exists(screenshot.filepath):
                 name = '_'.join([s for s in self.title.lower().split() if s])
+                name = nonchars.sub('', name)
                 filename = '{}_{}.{}'.format(name, len(screenshots) + 1, screenshot.extension.lower())
                 screenshots.append(filename)
                 if len(screenshots) >= count:
