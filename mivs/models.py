@@ -214,7 +214,8 @@ class IndieGame(MagModel, ReviewMixin):
 
     codes = relationship('IndieGameCode', backref='game')
     reviews = relationship('IndieGameReview', backref='game')
-    images = relationship('IndieGameImage', backref='game')
+    images = relationship(
+        'IndieGameImage', backref='game', order_by='IndieGameImage.id')
 
     email_model_name = 'game'
 
@@ -251,6 +252,18 @@ class IndieGame(MagModel, ReviewMixin):
     @property
     def best_screenshots(self):
         return [img for img in self.images if img.is_screenshot and img.use_in_promo]
+
+    def best_screenshot_download_filenames(self, count=2):
+        screenshots = []
+        for i, screenshot in enumerate(self.best_screenshots):
+            filepath = os.path.join(c.GAME_IMAGE_DIR, screenshot.id)
+            if os.path.exists(filepath):
+                name = '_'.join([s for s in self.title.lower().split() if s])
+                filename = '{}_{}.{}'.format(name, len(screenshots) + 1, screenshot.extension.lower())
+                screenshots.append(filename)
+                if len(screenshots) >= count:
+                    break
+        return screenshots + ([''] * (count - len(screenshots)))
 
     @property
     def promo_image(self):

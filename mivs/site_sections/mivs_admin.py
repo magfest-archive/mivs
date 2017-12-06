@@ -32,12 +32,13 @@ class Root:
     def everything(self, out, session):
         out.writerow([
             'Game', 'Studio', 'Studio URL', 'Primary Contact Name', 'Primary Contact Email',
+            'Game Website', 'Twitter', 'Facebook', 'Other Social Media',
             'Genres', 'Brief Description', 'Long Description', 'How to Play',
-            'Link to Video', 'Link to Game', 'Game Link Password',
+            'Link to Video for Judging', 'Link to Promo Video', 'Link to Game', 'Game Link Password',
             'Game Requires Codes?', 'Code Instructions', 'Build Status', 'Build Notes',
             'Video Submitted', 'Game Submitted', 'Current Status',
             'Registered', 'Accepted', 'Confirmation Deadline',
-            'Screenshots', 'Average Score', 'Individual Scores'
+            'Screenshot Links', 'Average Score', 'Individual Scores'
         ])
         for game in session.indie_games():
             out.writerow([
@@ -46,11 +47,16 @@ class Root:
                 '{}/mivs_applications/continue_app?id={}'.format(c.URL_BASE, game.studio.id),
                 game.studio.primary_contact.full_name,
                 game.studio.primary_contact.email,
+                game.link_to_webpage,
+                game.twitter,
+                game.facebook,
+                game.other_social_media,
                 ' / '.join(game.genres_labels),
                 game.brief_description,
                 game.description,
                 game.how_to_play,
                 game.link_to_video,
+                game.link_to_promo_video,
                 game.link_to_game,
                 game.password_to_game,
                 game.code_type_label,
@@ -66,6 +72,38 @@ class Root:
                 '\n'.join(c.URL_BASE + screenshot.url.lstrip('.') for screenshot in game.screenshots),
                 str(game.average_score)
             ] + [str(score) for score in game.scores])
+
+    @xlsx_file
+    def accepted_games_xlsx(self, out, session):
+        rows = []
+        for game in session.query(IndieGame).filter_by(status=c.ACCEPTED):
+            screenshots = game.best_screenshot_download_filenames()
+            rows.append([
+                game.studio.name, game.studio.website,
+                game.title, game.brief_description, game.link_to_webpage,
+                game.twitter, game.facebook, game.other_social_media,
+                game.link_to_promo_video, game.link_to_video, game.link_to_game,
+                screenshots[0], screenshots[1]
+            ])
+
+        header_row = [
+            'Studio', 'Studio Website',
+            'Game Title', 'Description', 'Website',
+            'Twitter', 'Facebook', 'Other Social Media',
+            'Link to Promo Video', 'Link to Video for Judging', 'Link to Game',
+            'Screenshot 1', 'Screenshot 2']
+        out.writerows(header_row, rows)
+
+    @multifile_zipfile
+    def accepted_games_zip(self, zip_file, session):
+        output = self.accepted_games_xlsx(set_headers=False)
+        zip_file.writestr('mivs_accepted_games.xlsx', output)
+        for game in session.query(IndieGame).filter_by(status=c.ACCEPTED):
+            filenames = game.best_screenshot_download_filenames()
+            for filename, screenshot in zip(filenames, game.best_screenshots):
+                if filename:
+                    filepath = os.path.join(c.GAME_IMAGE_DIR, screenshot.id)
+                    zip_file.write(filepath, os.path.join('mivs_accepted_game_images', filename))
 
     def create_judge(self, session, message='', first_name='', last_name='', email='', **params):
         judge = session.indie_judge(params, checkgroups=['genres', 'platforms'])
