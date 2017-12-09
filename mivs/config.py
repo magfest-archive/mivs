@@ -1,4 +1,5 @@
 from mivs import *
+from uber.config import dynamic
 
 mivs_config = parse_config(__file__)
 c.include_plugin_config(mivs_config)
@@ -40,9 +41,11 @@ def really_past_deadline(deadline):
 @Config.mixin
 class IndieConfig:
     @property
+    @dynamic
     def CAN_SUBMIT_ROUND_ONE(self):
         return not really_past_deadline(c.ROUND_ONE_DEADLINE) or c.HAS_INDIE_ADMIN_ACCESS
 
     @property
+    @dynamic
     def CAN_SUBMIT_ROUND_TWO(self):
         return not really_past_deadline(c.ROUND_TWO_DEADLINE) or c.HAS_INDIE_ADMIN_ACCESS
