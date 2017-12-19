@@ -124,3 +124,6 @@ MIVSEmail(IndieJudge, 'MIVS Judging about to begin', 'judge_2016.txt',
 
 MIVSEmail(IndieJudge, 'MIVS Judges: A Request for our MIVSY awards', '2018_mivsy_request.txt',
           ident='2018_mivsy_request')
+
+MIVSEmail(IndieJudge, 'MIVS: 2018 MIVSY Awards happening on January 6th, 7pm ', '2018_indie_mivsy_explination.txt',
+          ident='2018_indie_mivsy_explination')
