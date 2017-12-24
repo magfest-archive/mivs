@@ -126,7 +126,9 @@ MIVSEmail(IndieJudge, 'MIVS Judges: A Request for our MIVSY awards', '2018_mivsy
           ident='2018_mivsy_request')
 
 MIVSEmail(IndieGame, 'MIVS: 2018 MIVSY Awards happening on January 6th, 7pm ', '2018_indie_mivsy_explination.txt',
+          lambda game: game.confirmed,
           ident='2018_indie_mivsy_explination')
 
 MIVSEmail(IndieGame, 'MIVS: December updates ', '2018_december_updates.txt',
+          lambda game: game.confirmed,
           ident='2018_december_updates')
