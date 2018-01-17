@@ -92,7 +92,8 @@ MIVSEmail(IndieGame, 'MIVS 2018: November Updates & info', '2018_email_blast.txt
 
 MIVSEmail(IndieGame, 'Summary of judging feedback for your game', 'reviews_summary.html',
           lambda game: game.status in c.FINAL_GAME_STATUSES and game.reviews_to_email,
-          ident='mivs_reviews_summary')
+          ident='mivs_reviews_summary',
+          post_con=True)
 
 MIVSEmail(IndieGame, 'MIVS judging is wrapping up', 'round_two_closing.txt',
           lambda game: game.submitted, when=days_before(14, c.JUDGING_DEADLINE),
@@ -132,3 +133,7 @@ MIVSEmail(IndieGame, 'MIVS: 2018 MIVSY Awards happening on January 6th, 7pm ', '
 MIVSEmail(IndieGame, 'MIVS: December updates ', '2018_december_updates.txt',
           lambda game: game.confirmed,
           ident='2018_december_updates')
+
+MIVSEmail(IndieGame, 'Thanks for Being part of MIVS 2018 - A Request for Feedback', '2018_feedback.txt',
+          ident='2018_mivs_post_event_feedback',
+          post_con=True)
