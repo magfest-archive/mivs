@@ -135,5 +135,6 @@ MIVSEmail(IndieGame, 'MIVS: December updates ', '2018_december_updates.txt',
           ident='2018_december_updates')
 
 MIVSEmail(IndieGame, 'Thanks for Being part of MIVS 2018 - A Request for Feedback', '2018_feedback.txt',
+          lambda game: game.confirmed,
           ident='2018_mivs_post_event_feedback',
           post_con=True)
