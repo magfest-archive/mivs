@@ -66,9 +66,15 @@
 {% endfor %}
 </tbody>
 </table>
-    <button type="submit" class="btn btn-primary"
-            {% if game.status not in c.FINAL_GAME_STATUSES %} disabled title="You can only send reviews after a game has been accepted, waitlisted, or declined!"{% endif %}>
-      Mark Reviews for Sending to Indie Studio</button>
+    <button
+        type="submit"
+        class="btn btn-primary"
+        {% if game.status not in c.FINAL_GAME_STATUSES and not c.AFTER_ESCHATON %}
+        disabled="disabled"
+        title="You can only send reviews after a game has been accepted, waitlisted, or declined!"
+        {% endif %}>
+      Mark Reviews for Sending to Indie Studio
+    </button>
   <p class="help-block">Please note that once the "Summary of judging results for your game" email is
     <a href="../emails/pending">approved for sending</a>, marking ANY reviews as ready to send will trigger an email to
     the studio, after which editing the reviews to send will do nothing.</p>
