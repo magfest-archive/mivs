@@ -10,8 +10,12 @@ You may do with this information what you wish! Hopefully you find use out of th
 <ul>
   {% for review in game.reviews_to_email %}
   <li>
-    {% if review.game_score %}<strong>Score:</strong> {{ review.game_score }}<br/>{% endif %}
-    <strong>Review Notes:</strong> {{ review.game_review|linebreaksbr }}
+    <strong>Review Notes:</strong>
+    {% if review.game_review %}
+      {{ review.game_review|linebreaksbr }}
+    {% else %}
+      <i>No feedback was left</i>
+    {% endif %}
   </li>
   {% endfor %}
 </ul>
