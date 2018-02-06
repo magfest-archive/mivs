@@ -2,7 +2,7 @@ from mivs import *
 
 
 def _is_invalid_url(url):
-    if c.SKIP_MIVS_URL_VALIDATION:
+    if c.MIVS_SKIP_URL_VALIDATION:
         return False
 
     try:
@@ -77,7 +77,7 @@ def new_game_deadline(game):
 
 @validation.IndieGame
 def instructions(game):
-    if game.code_type in c.CODES_REQUIRING_INSTRUCTIONS and not game.code_instructions:
+    if game.code_type in c.MIVS_CODES_REQUIRING_INSTRUCTIONS and not game.code_instructions:
         return 'You must leave instructions for how the judges are to use the code(s) you provide'
 
 
@@ -117,7 +117,7 @@ def description(image):
 
 @validation.IndieGameImage
 def valid_type(screenshot):
-    if screenshot.extension not in c.ALLOWED_SCREENSHOT_TYPES:
+    if screenshot.extension not in c.MIVS_ALLOWED_SCREENSHOT_TYPES:
         return 'Our server did not recognize your upload as a valid image'
 
 

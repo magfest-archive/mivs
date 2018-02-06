@@ -33,7 +33,7 @@ MIVSEmail(IndieStudio, 'MIVS - Wat no video?', 'videoless_studio.txt',
           lambda studio: days_after(2, studio.registered)()
                      and not any(game.video_submitted for game in studio.games),
           ident='mivs_missing_video_inquiry',
-          when=days_before(7, c.ROUND_ONE_DEADLINE))
+          when=days_before(7, c.MIVS_ROUND_ONE_DEADLINE))
 
 MIVSEmail(IndieGame, 'MIVS: Your Submitted Video Is Broken', 'video_broken.txt',
           lambda game: game.video_broken,
@@ -42,7 +42,7 @@ MIVSEmail(IndieGame, 'MIVS: Your Submitted Video Is Broken', 'video_broken.txt',
 MIVSEmail(IndieGame, 'Last chance to submit your game to MIVS', 'round_two_reminder.txt',
           lambda game: game.status == c.JUDGING and not game.submitted,
           ident='mivs_game_submission_reminder',
-          when=days_before(7, c.ROUND_TWO_DEADLINE))
+          when=days_before(7, c.MIVS_ROUND_TWO_DEADLINE))
 
 MIVSEmail(IndieGame, 'Your game has made it into MIVS Round Two', 'video_accepted.txt',
           lambda game: game.status == c.JUDGING,
@@ -91,12 +91,12 @@ MIVSEmail(IndieGame, 'MIVS 2018: November Updates & info', '2018_email_blast.txt
           ident='2018_email_blast')
 
 MIVSEmail(IndieGame, 'Summary of judging feedback for your game', 'reviews_summary.html',
-          lambda game: game.status in c.FINAL_GAME_STATUSES and game.reviews_to_email,
+          lambda game: game.status in c.FINAL_MIVS_GAME_STATUSES and game.reviews_to_email,
           ident='mivs_reviews_summary',
           post_con=True)
 
 MIVSEmail(IndieGame, 'MIVS judging is wrapping up', 'round_two_closing.txt',
-          lambda game: game.submitted, when=days_before(14, c.JUDGING_DEADLINE),
+          lambda game: game.submitted, when=days_before(14, c.MIVS_JUDGING_DEADLINE),
           ident='mivs_round_two_closing')
 
 MIVSEmail(IndieJudge, 'MIVS Judging is about to begin!', 'judge_intro.txt',
@@ -106,12 +106,12 @@ MIVSEmail(IndieJudge, 'MIVS Judging has begun!', 'judging_begun.txt',
           ident='mivs_judging_has_begun')
 
 MIVSEmail(IndieJudge, 'MIVS Judging is almost over!', 'judging_reminder.txt',
-          when=days_before(7, c.SOFT_JUDGING_DEADLINE),
+          when=days_before(7, c.SOFT_MIVS_JUDGING_DEADLINE),
           ident='mivs_judging_due_reminder')
 
-MIVSEmail(IndieJudge, 'Reminder: MIVS Judging due by {}'.format(c.JUDGING_DEADLINE.strftime('%B %-d')), 'final_judging_reminder.txt',
+MIVSEmail(IndieJudge, 'Reminder: MIVS Judging due by {}'.format(c.MIVS_JUDGING_DEADLINE.strftime('%B %-d')), 'final_judging_reminder.txt',
           lambda judge: not judge.judging_complete,
-          when=days_before(5, c.JUDGING_DEADLINE),
+          when=days_before(5, c.MIVS_JUDGING_DEADLINE),
           ident='mivs_judging_due_reminder_last_chance')
 
 MIVSEmail(IndieJudge, 'MIVS Judging and {EVENT_NAME} Staffing', 'judge_staffers.txt',

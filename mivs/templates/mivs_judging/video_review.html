@@ -65,7 +65,7 @@ for reviewing the video:
         <label class="col-sm-3 control-label">Video Status</label>
         <div class="col-sm-6">
             <select name="video_status" class="form-control">
-                {{ options(c.VIDEO_REVIEW_STATUS_OPTS,review.video_status) }}
+                {{ options(c.MIVS_VIDEO_REVIEW_STATUS_OPTS,review.video_status) }}
             </select>
             <p class="help-block">
                 Please indicate whether or not you were able to watch the full video using the link above.
@@ -77,7 +77,7 @@ for reviewing the video:
         <label class="col-sm-3 control-label">Score</label>
         <div class="col-sm-6">
             <select name="video_score" class="form-control">
-                {{ options(c.VIDEO_REVIEW_OPTS,review.video_score) }}
+                {{ options(c.MIVS_VIDEO_REVIEW_OPTS,review.video_score) }}
             </select>
             <p class="help-block">
                 Please choose whether this video should be accepted or rejected.

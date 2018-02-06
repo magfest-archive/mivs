@@ -22,7 +22,7 @@
 <script>
     $(function () {
         var $showLink = $('#show-link'), $markForm = $('#mark-form');
-        {% if game.status in c.FINAL_GAME_STATUSES %}
+        {% if game.status in c.FINAL_MIVS_GAME_STATUSES %}
             $.field('status').val({{ game.status }});
             $showLink
                 .append('This game has already been marked as {{ game.status_label }}, but you can edit it by ')
@@ -69,7 +69,7 @@
     <button
         type="submit"
         class="btn btn-primary"
-        {% if game.status not in c.FINAL_GAME_STATUSES and not c.AFTER_ESCHATON %}
+        {% if game.status not in c.FINAL_MIVS_GAME_STATUSES and not c.AFTER_ESCHATON %}
         disabled="disabled"
         title="You can only send reviews after a game has been accepted, waitlisted, or declined!"
         {% endif %}>

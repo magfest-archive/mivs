@@ -24,7 +24,7 @@
   <label class="col-sm-3 control-label">Game Activation Code</label>
   <div class="col-sm-6">
     <select name="code_type" class="form-control">
-      {{ options(c.CODE_TYPE_OPTS,game.code_type) }}
+      {{ options(c.MIVS_CODE_TYPE_OPTS,game.code_type) }}
     </select>
   </div>
 </div>
@@ -40,7 +40,7 @@
   <label class="col-sm-3 control-label">Game Build Status</label>
   <div class="col-sm-6">
     <select name="build_status" class="form-control">
-      {{ options(c.BUILD_STATUS_OPTS,game.build_status) }}
+      {{ options(c.MIVS_BUILD_STATUS_OPTS,game.build_status) }}
     </select>
   </div>
 </div>

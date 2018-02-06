@@ -8,7 +8,7 @@ Rules for round 2 submissions:
 1) Deadlines to submit your game is before September 30th, 2017.
 2) After the deadline, updated builds will not be accepted
 3) Demos must have at least 15 minutes of game play.
-4) If a registration/unlock code is required; please provide {{ c.CODES_REQUIRED }} codes for our judges or a single code which works for all judges.
+4) If a registration/unlock code is required; please provide {{ c.MIVS_CODES_REQUIRED }} codes for our judges or a single code which works for all judges.
 
 Judging will start October 14th and last throughout the month.
 

@@ -103,7 +103,7 @@ class Root:
             screenshots = game.best_screenshot_downloads()
             for filename, screenshot in zip(filenames, screenshots):
                 if filename:
-                    filepath = os.path.join(c.GAME_IMAGE_DIR, screenshot.id)
+                    filepath = os.path.join(c.MIVS_GAME_IMAGE_DIR, screenshot.id)
                     zip_file.write(filepath, os.path.join('mivs_accepted_game_images', filename))
 
     def create_judge(self, session, message='', first_name='', last_name='', email='', **params):
@@ -177,7 +177,7 @@ class Root:
         judge = session.indie_judge(judge_id)
         unassigned_games = [g for g in session.indie_games() if g.video_submitted and judge.id not in (r.judge_id for r in g.reviews)]
         matching = [g for g in unassigned_games if set(judge.platforms_ints).intersection(g.platforms_ints)]
-        matching_genre = [g for g in unassigned_games if judge.all_genres or set(judge.genres_ints).intersection(g.genres_ints)]
+        matching_genre = [g for g in unassigned_games if judge.mivs_all_genres or set(judge.genres_ints).intersection(g.genres_ints)]
         nonmatching = [g for g in unassigned_games if g not in matching]
 
         return {
@@ -192,7 +192,7 @@ class Root:
         game = session.indie_game(game_id)
         unassigned_judges = [j for j in session.indie_judges() if j.id not in (r.judge_id for r in game.reviews)]
         matching = [j for j in unassigned_judges if set(game.platforms_ints).intersection(j.platforms_ints)]
-        matching_genre = [j for j in unassigned_judges if j.all_genres or set(game.genres_ints).intersection(j.genres_ints)]
+        matching_genre = [j for j in unassigned_judges if j.mivs_all_genres or set(game.genres_ints).intersection(j.genres_ints)]
         nonmatching = [j for j in unassigned_judges if j not in matching]
         return {
             'game': game,

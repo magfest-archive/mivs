@@ -5,7 +5,7 @@
       var showOrHideCodeInstructions = function () {
           setVisible(
               $.field('code_instructions').parents('.form-group'),
-              _({{ c.CODES_REQUIRING_INSTRUCTIONS|jsonize }}).contains($.val('code_type'))
+              _({{ c.MIVS_CODES_REQUIRING_INSTRUCTIONS|jsonize }}).contains($.val('code_type'))
           );
       };
       $(function () {
@@ -102,7 +102,7 @@
       </div>
     </div>
 
-    {% if c.AFTER_ROUND_TWO_START and game.status != c.VIDEO_DECLINED %}
+    {% if c.AFTER_MIVS_ROUND_TWO_START and game.status != c.VIDEO_DECLINED %}
       {% include 'mivs_applications/game_build_info.html' %}
     {% endif %}
 

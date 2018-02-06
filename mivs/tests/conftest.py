@@ -1,1 +1,1 @@
-from uber.tests.conftest import *
+from tests.uber.conftest import *

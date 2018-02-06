@@ -65,8 +65,8 @@ class Group:
 
 class IndieJudge(MagModel, ReviewMixin):
     admin_id    = Column(UUID, ForeignKey('admin_account.id'))
-    genres      = Column(MultiChoice(c.INDIE_JUDGE_GENRE_OPTS))
-    platforms   = Column(MultiChoice(c.INDIE_PLATFORM_OPTS))
+    genres      = Column(MultiChoice(c.MIVS_INDIE_JUDGE_GENRE_OPTS))
+    platforms   = Column(MultiChoice(c.MIVS_INDIE_PLATFORM_OPTS))
     platforms_text = Column(UnicodeText)
     staff_notes = Column(UnicodeText)
 
@@ -80,8 +80,8 @@ class IndieJudge(MagModel, ReviewMixin):
         return len(self.reviews) == len(self.game_reviews)
 
     @property
-    def all_genres(self):
-        return c.ALL_GENRES in self.genres_ints
+    def mivs_all_genres(self):
+        return c.MIVS_ALL_GENRES in self.genres_ints
 
     @property
     def attendee(self):
@@ -103,7 +103,7 @@ class IndieStudio(MagModel):
     website     = Column(UnicodeText)
     twitter     = Column(UnicodeText)
     facebook    = Column(UnicodeText)
-    status      = Column(Choice(c.STUDIO_STATUS_OPTS), default=c.NEW, admin_only=True)
+    status      = Column(Choice(c.MIVS_STUDIO_STATUS_OPTS), default=c.NEW, admin_only=True)
     staff_notes = Column(UnicodeText, admin_only=True)
     registered  = Column(UTCDateTime, server_default=utcnow())
 
@@ -139,7 +139,7 @@ class IndieStudio(MagModel):
 
     @property
     def comped_badges(self):
-        return c.INDIE_BADGE_COMPS * len([g for g in self.games if g.status == c.ACCEPTED])
+        return c.MIVS_INDIE_BADGE_COMPS * len([g for g in self.games if g.status == c.ACCEPTED])
 
     @property
     def unclaimed_badges(self):
@@ -171,17 +171,17 @@ class IndieGame(MagModel, ReviewMixin):
     studio_id         = Column(UUID, ForeignKey('indie_studio.id'))
     title             = Column(UnicodeText)
     brief_description = Column(UnicodeText)       # 140 max
-    genres            = Column(MultiChoice(c.INDIE_GENRE_OPTS))
-    platforms         = Column(MultiChoice(c.INDIE_PLATFORM_OPTS))
+    genres            = Column(MultiChoice(c.MIVS_INDIE_GENRE_OPTS))
+    platforms         = Column(MultiChoice(c.MIVS_INDIE_PLATFORM_OPTS))
     platforms_text    = Column(UnicodeText)
     description       = Column(UnicodeText)       # 500 max
     how_to_play       = Column(UnicodeText)       # 1000 max
     link_to_video     = Column(UnicodeText)
     link_to_game      = Column(UnicodeText)
     password_to_game  = Column(UnicodeText)
-    code_type         = Column(Choice(c.CODE_TYPE_OPTS), default=c.NO_CODE)
+    code_type         = Column(Choice(c.MIVS_CODE_TYPE_OPTS), default=c.NO_CODE)
     code_instructions = Column(UnicodeText)
-    build_status      = Column(Choice(c.BUILD_STATUS_OPTS), default=c.PRE_ALPHA)
+    build_status      = Column(Choice(c.MIVS_BUILD_STATUS_OPTS), default=c.PRE_ALPHA)
     build_notes       = Column(UnicodeText)       # 500 max
     shown_events      = Column(UnicodeText)
     video_submitted   = Column(Boolean, default=False)
@@ -206,7 +206,7 @@ class IndieGame(MagModel, ReviewMixin):
     multiplayer_game_length = Column(Integer, nullable=True)  # Length in minutes
     leaderboard_challenge = Column(Boolean, default=False)
 
-    status            = Column(Choice(c.GAME_STATUS_OPTS), default=c.NEW, admin_only=True)
+    status            = Column(Choice(c.MIVS_GAME_STATUS_OPTS), default=c.NEW, admin_only=True)
     judge_notes       = Column(UnicodeText, admin_only=True)
     registered        = Column(UTCDateTime, server_default=utcnow())
     waitlisted        = Column(UTCDateTime, nullable=True)
@@ -295,8 +295,8 @@ class IndieGame(MagModel, ReviewMixin):
         if self.code_type != c.NO_CODE and self.link_to_game:
             if not self.codes:
                 steps.append('You have not yet attached any codes to this game for our judges to use')
-            elif not self.unlimited_code and len(self.codes) < c.CODES_REQUIRED:
-                steps.append('You have not attached the {} codes you must provide for our judges'.format(c.CODES_REQUIRED))
+            elif not self.unlimited_code and len(self.codes) < c.MIVS_CODES_REQUIRED:
+                steps.append('You have not attached the {} codes you must provide for our judges'.format(c.MIVS_CODES_REQUIRED))
         if not self.agreed_showtimes:
             steps.append('You must agree to the showtimes detailed on the game form')
         if not self.agreed_liability:
@@ -359,7 +359,7 @@ class IndieGameImage(MagModel):
 
     @property
     def filepath(self):
-        return os.path.join(c.GAME_IMAGE_DIR, str(self.id))
+        return os.path.join(c.MIVS_GAME_IMAGE_DIR, str(self.id))
 
 
 class IndieGameCode(MagModel):
@@ -377,10 +377,10 @@ class IndieGameCode(MagModel):
 class IndieGameReview(MagModel):
     game_id            = Column(UUID, ForeignKey('indie_game.id'))
     judge_id           = Column(UUID, ForeignKey('indie_judge.id'))
-    video_status       = Column(Choice(c.VIDEO_REVIEW_STATUS_OPTS), default=c.PENDING)
-    game_status        = Column(Choice(c.GAME_REVIEW_STATUS_OPTS), default=c.PENDING)
+    video_status       = Column(Choice(c.MIVS_VIDEO_REVIEW_STATUS_OPTS), default=c.PENDING)
+    game_status        = Column(Choice(c.MIVS_GAME_REVIEW_STATUS_OPTS), default=c.PENDING)
     game_content_bad   = Column(Boolean, default=False)
-    video_score        = Column(Choice(c.VIDEO_REVIEW_OPTS), default=c.PENDING)
+    video_score        = Column(Choice(c.MIVS_VIDEO_REVIEW_OPTS), default=c.PENDING)
     game_score         = Column(Integer, default=0)  # 0 = not reviewed, 1-10 score (10 is best)
     video_review       = Column(UnicodeText)
     game_review        = Column(UnicodeText)
@@ -399,12 +399,12 @@ class IndieGameReview(MagModel):
 
     @property
     def has_video_issues(self):
-        return self.video_status in c.PROBLEM_STATUSES
+        return self.video_status in c.MIVS_PROBLEM_STATUSES
 
     @property
     def has_game_issues(self):
         if self.game_status != c.COULD_NOT_PLAY:
-            return self.game_status in c.PROBLEM_STATUSES
+            return self.game_status in c.MIVS_PROBLEM_STATUSES
 
     @property
     def has_issues(self):
