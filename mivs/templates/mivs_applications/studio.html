@@ -3,7 +3,7 @@
 
 {% if studio.is_new %}
     <h2>MAGFest Indie Videogame Showcase</h2>
-    {% if c.CAN_SUBMIT_ROUND_ONE %}
+    {% if c.CAN_SUBMIT_MIVS_ROUND_ONE %}
         Please fill out information about your studio.  You will then be prompted to enter information about the game(s)
         you are submitting.  If you've already submitted an application, you can use the link provided in the email we've
         sent you which you can use to continue an existing application.
@@ -23,7 +23,7 @@
     <h2>Edit Your Studio Information</h2>
 {% endif %}
 
-{% if c.CAN_SUBMIT_ROUND_ONE or not studio.is_new %}
+{% if c.CAN_SUBMIT_MIVS_ROUND_ONE or not studio.is_new %}
     <form method="post" action="studio" class="form-horizontal" role="form">
         {{ csrf_token() }}
 

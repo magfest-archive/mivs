@@ -21,7 +21,7 @@ IndieStudio.required = [
 
 @validation.IndieStudio
 def new_studio_deadline(studio):
-    if studio.is_new and not c.CAN_SUBMIT_ROUND_ONE:
+    if studio.is_new and not c.CAN_SUBMIT_MIVS_ROUND_ONE:
         return 'Sorry, but the round one deadline has already passed, so no new studios may be registered'
 
 
@@ -71,7 +71,7 @@ def platforms_or_other(game):
 
 @validation.IndieGame
 def new_game_deadline(game):
-    if game.is_new and not c.CAN_SUBMIT_ROUND_ONE:
+    if game.is_new and not c.CAN_SUBMIT_MIVS_ROUND_ONE:
         return 'Sorry, but the round one deadline has already passed, so no new games may be registered'
 
 

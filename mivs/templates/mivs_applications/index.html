@@ -67,12 +67,12 @@
 
   <h3>Games</h3>
   You have {% if c.BEFORE_MIVS_ROUND_ONE_DEADLINE %}currently{% endif %} registered {{ studio.games|length }} game{{ studio.games|length|pluralize }}.
-  {% if c.CAN_SUBMIT_ROUND_ONE %}
+  {% if c.CAN_SUBMIT_MIVS_ROUND_ONE %}
     You may submit any number of games for consideration until {{ c.MIVS_ROUND_ONE_DEADLINE|datetime_local }}
     after which no more games may be submitted.
   {% endif %}
 
-  {% if c.CAN_SUBMIT_ROUND_ONE %}
+  {% if c.CAN_SUBMIT_MIVS_ROUND_ONE %}
     {% if c.HAS_INDIE_ADMIN_ACCESS and c.AFTER_MIVS_ROUND_ONE_DEADLINE %}
       <br/><br/><b><font color="red">
       ADMIN NOTE: Because you are logged in as a MIVS admin, you can still use this form to manually create a
@@ -140,7 +140,7 @@
           determine if your game is accepted through Round 1 of judging.  If your game is accepted into
           the showcase, this video link may be embedded on the MIVS web-page and/or other places that
           MAGFest advertises the MIVS area.  You must submit a video link before {{ c.MIVS_ROUND_ONE_DEADLINE|datetime_local }}.
-        {% elif not c.CAN_SUBMIT_ROUND_ONE %}
+        {% elif not c.CAN_SUBMIT_MIVS_ROUND_ONE %}
           You may no longer submit this game for consideration, as it is past the deadline
           ({{ c.MIVS_ROUND_ONE_DEADLINE|datetime_local }}).
         {% else %}
@@ -159,7 +159,7 @@
             This game has been submitted.
           {% elif needs_screenshots %}
             Please upload at least two screenshots before submitting your game for consideration.
-          {% elif not c.CAN_SUBMIT_ROUND_TWO %}
+          {% elif not c.CAN_SUBMIT_MIVS_ROUND_TWO %}
             You may no longer submit this game for consideration, as it is past the deadline
             ({{ c.MIVS_ROUND_TWO_DEADLINE|datetime_local }}).
           {% elif not game.submittable %}
@@ -183,7 +183,7 @@
           {% endif %}
         {% endif %}
 
-        {% if c.CAN_SUBMIT_ROUND_TWO %}
+        {% if c.CAN_SUBMIT_MIVS_ROUND_TWO %}
           <h4>Game Build Information</h4>
           <form method="post" action="index" class="form-horizontal" role="form">
             {{ csrf_token() }}

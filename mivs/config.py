@@ -34,7 +34,7 @@ for num in range(c.ESCHATON.year - c.MIVS_START_YEAR):
     c.PREV_MIVS_YEARS[val] = desc
 
 
-def really_past_deadline(deadline):
+def really_past_mivs_deadline(deadline):
     return localized_now() > (deadline + timedelta(minutes=c.MIVS_SUBMISSION_GRACE_PERIOD))
 
 
@@ -42,10 +42,10 @@ def really_past_deadline(deadline):
 class IndieConfig:
     @property
     @dynamic
-    def CAN_SUBMIT_ROUND_ONE(self):
-        return not really_past_deadline(c.MIVS_ROUND_ONE_DEADLINE) or c.HAS_INDIE_ADMIN_ACCESS
+    def CAN_SUBMIT_MIVS_ROUND_ONE(self):
+        return not really_past_mivs_deadline(c.MIVS_ROUND_ONE_DEADLINE) or c.HAS_INDIE_ADMIN_ACCESS
 
     @property
     @dynamic
-    def CAN_SUBMIT_ROUND_TWO(self):
-        return not really_past_deadline(c.MIVS_ROUND_TWO_DEADLINE) or c.HAS_INDIE_ADMIN_ACCESS
+    def CAN_SUBMIT_MIVS_ROUND_TWO(self):
+        return not really_past_mivs_deadline(c.MIVS_ROUND_TWO_DEADLINE) or c.HAS_INDIE_ADMIN_ACCESS
